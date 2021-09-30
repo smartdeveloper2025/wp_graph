@@ -1,0 +1,60 @@
+[2021/09/16 08:16:22] - SUCCESS: Stripe SCA Buy Now IPN received. Processing request...
+[2021/09/16 08:16:23] - SUCCESS: Stripe SCA Buy Now charge successful.
+[2021/09/16 08:16:23] - SUCCESS: swpm_handle_subsc_signup_stand_alone(). Custom value: subsc_ref=3&user_ip=223.178.209.127, Unique reference: ch_3JaFgdBXlg80jM8u1KFwj3xL
+[2021/09/16 08:16:23] - SUCCESS: Could not find any record using the given email address (tanu@staplelogic.in). Attempting to query database using the unique reference: ch_3JaFgdBXlg80jM8u1KFwj3xL
+[2021/09/16 08:16:23] - SUCCESS: Did not find a match for an existing member profile for the given reference. This must be a new payment from a new member.
+[2021/09/16 08:16:23] - SUCCESS: Creating new member account. Membership level ID: 3, Subscriber ID value: ch_3JaFgdBXlg80jM8u1KFwj3xL
+[2021/09/16 08:16:23] - SUCCESS: Member signup URL: https://beta.knomad.ai/membership-join/membership-registration/?member_id=1&code=fb45d9c8649f48aadb0b5c6f4be793bc
+[2021/09/16 08:16:23] - SUCCESS: Member signup (prompt to complete registration) email successfully sent to: tanu@staplelogic.in
+[2021/09/16 08:16:24] - SUCCESS: Transaction data saved.
+[2021/09/16 08:16:24] - SUCCESS: Redirecting customer to: https://beta.knomad.ai
+[2021/09/16 08:16:24] - SUCCESS: End of Stripe SCA Buy Now IPN processing.
+
+------------------------------------------------------------------
+
+[2021/09/16 10:58:03] - SUCCESS: Stripe SCA Buy Now IPN received. Processing request...
+[2021/09/16 10:58:05] - SUCCESS: Stripe SCA Buy Now charge successful.
+[2021/09/16 10:58:05] - SUCCESS: swpm_handle_subsc_signup_stand_alone(). Custom value: subsc_ref=3&user_ip=223.178.209.127, Unique reference: ch_3JaIGgBXlg80jM8u0tbJdDnQ
+[2021/09/16 10:58:05] - SUCCESS: Found a match in the member database. Member ID: 1
+[2021/09/16 10:58:05] - SUCCESS: Modifying the existing membership profile... Member ID: 1
+[2021/09/16 10:58:05] - SUCCESS: Setting access starts date value to: 2023-09-16
+[2021/09/16 10:58:05] - SUCCESS: Updating the current membership level (3) of this member to the newly paid level (3)
+[2021/09/16 10:58:05] - SUCCESS: swpm_membership_level_changed action triggered. Member ID: 1, Old Level: 3, New Level: 3
+[2021/09/16 10:58:05] - SUCCESS: The to (Level ID: 3) and from (Level ID: 3) values are the same. Nothing to do here.
+[2021/09/16 10:58:05] - SUCCESS: Member upgrade/update completion email successfully sent to: tanu@staplelogic.in
+[2021/09/16 10:58:06] - SUCCESS: Transaction data saved.
+[2021/09/16 10:58:06] - SUCCESS: Redirecting customer to: https://beta.knomad.ai
+[2021/09/16 10:58:06] - SUCCESS: End of Stripe SCA Buy Now IPN processing.
+
+------------------------------------------------------------------
+
+[2021/09/16 11:00:49] - SUCCESS: Member registration complete email sent to: tanu@staplelogic.in. From email address value used: Knomad <hello@knomad.ai>
+[2021/09/16 11:00:49] - SUCCESS: Admin notification email sent to: Knomad <hello@knomad.ai>
+[2021/09/16 11:00:49] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: knomad
+[2021/09/16 11:00:50] - SUCCESS: Handling auto login request...
+[2021/09/16 12:05:56] - SUCCESS: Stripe SCA Buy Now IPN received. Processing request...
+[2021/09/16 12:05:57] - SUCCESS: Stripe SCA Buy Now charge successful.
+[2021/09/16 12:05:57] - SUCCESS: swpm_handle_subsc_signup_stand_alone(). Custom value: subsc_ref=3&user_ip=223.178.209.127, Unique reference: ch_3JaJKgBXlg80jM8u0ZDB5A9p
+[2021/09/16 12:05:57] - SUCCESS: Could not find any record using the given email address (tanu.staplelogicin@gmail.com). Attempting to query database using the unique reference: ch_3JaJKgBXlg80jM8u0ZDB5A9p
+[2021/09/16 12:05:57] - SUCCESS: Did not find a match for an existing member profile for the given reference. This must be a new payment from a new member.
+[2021/09/16 12:05:57] - SUCCESS: Creating new member account. Membership level ID: 3, Subscriber ID value: ch_3JaJKgBXlg80jM8u0ZDB5A9p
+[2021/09/16 12:05:57] - SUCCESS: Member signup URL: https://beta.knomad.ai/membership-join/membership-registration/?member_id=2&code=3a4c8d287196dff98e43f5b710c5ddac
+[2021/09/16 12:05:57] - SUCCESS: Member signup (prompt to complete registration) email successfully sent to: tanu.staplelogicin@gmail.com
+[2021/09/16 12:05:59] - SUCCESS: Transaction data saved.
+[2021/09/16 12:05:59] - SUCCESS: Redirecting customer to: https://beta.knomad.ai/paid-registration/
+[2021/09/16 12:05:59] - SUCCESS: End of Stripe SCA Buy Now IPN processing.
+
+------------------------------------------------------------------
+
+[2021/09/17 05:51:56] - SUCCESS: Member registration complete email sent to: basic@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/09/17 05:51:57] - SUCCESS: Admin notification email sent to: Knomad <hello@knomad.ai>
+[2021/09/17 05:51:57] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: basicplan
+[2021/09/17 05:51:57] - SUCCESS: Handling auto login request...
+[2021/09/17 10:34:50] - SUCCESS: Member registration complete email sent to: aniiyaprem123@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/09/17 10:34:50] - SUCCESS: Admin notification email sent to: Knomad <hello@knomad.ai>
+[2021/09/17 10:34:50] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: Prem8058
+[2021/09/17 10:34:51] - SUCCESS: Handling auto login request...
+[2021/09/20 00:58:55] - SUCCESS: Member registration complete email sent to: shenalkharakh@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/09/20 00:58:55] - SUCCESS: Admin notification email sent to: Knomad <hello@knomad.ai>
+[2021/09/20 00:58:55] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: shenal
+[2021/09/20 00:58:55] - SUCCESS: Handling auto login request...
