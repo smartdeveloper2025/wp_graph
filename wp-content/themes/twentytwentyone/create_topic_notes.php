@@ -222,6 +222,11 @@ function main_creation(){
                       if(res.flag == 'success'){
 						jQuery('#hdn_creation_id').val(res.creation_id);
                         alert(res.msg);
+						//graph ajax start
+						if(res.creation_id != ''){
+							create_topic_graph(res.creation_id);
+						}
+						//graph ajax end
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
                       }else{
@@ -235,6 +240,29 @@ function main_creation(){
         return false;
       }
     /****************************/
+}
+
+function create_topic_graph(creation_id){
+	jQuery.ajax({
+					url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
+					type:'POST',
+					data: 'action=start_creation_graph_by_ajax&creation_id='+creation_id,
+					dataType: 'JSON',
+					 success:function(res)
+					   {
+							console.log(res);
+						  if(res.flag == 'success'){
+							
+							
+							//location.reload();
+							//window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
+						  }else{
+							  alert('Opps! Something went wrong');
+						  }
+					  //  alert(results);
+			  
+						  }
+				   });
 }
 
 function sub_creation(index){
@@ -283,24 +311,31 @@ var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTre
 var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
 
 
-// Set data
-series.data = [
-	{
-		"name": "Main", "value":200, "color":"#FF6633",
-		"children": [{
-			"name": "Sub-1", "value": 2, "color":"#FF33FF"
-		}, {
-			"name": "Sub-2", "value": 100, "color":"#FFB399"
-		}
-	]},{
-	"name": "Case Study", "value":100, "color":"#80cbc4","link": ["Tourism", "Globalization","Sub-1"]
-},{
-	"name": "Globalization", "value":100, "color":"#00B3E6","link": ["Sub-1","Tourism"]
-},{
-	"name": "Tourism", "value":100, "color":"#E6B333","link": ["Sub-1", "Globalization"]
-}
 
-];
+// Set data
+series.data =	[
+					{
+						"name": "Main", "value":100, "color":"#9ba2a6",
+						"children": [
+										{
+											"name": "Sub-1", "value": 50, "color":"#000000"
+										}, 
+										{
+											"name": "Sub-2", "value": 50, "color":"#000000"
+										}
+									]
+					},
+					{
+						"name": "Case Study", "value":30, "color":"#593e97","link": ["Tourism", "Globalization","Sub-1"]
+					},
+					{
+						"name": "Globalization", "value":20, "color":"#b4bcfc","link": ["Sub-1","Tourism"]
+					},
+					{
+						"name": "Tourism", "value":20, "color":"#b4bcfc","link": ["Sub-1", "Globalization"]
+					}
+
+				];
 // Set up data fields
 series.dataFields.value = "value";
 series.dataFields.name = "name";
@@ -322,8 +357,8 @@ series.nodes.template.label.fill = am4core.color("#000");
 series.nodes.template.label.dy = 10;
 series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
 series.fontSize = 9;
-series.minRadius = 30;
-series.maxRadius = 50;
+series.minRadius = 10;
+series.maxRadius = 20;
 series.dataFields.collapsed = "off";
 series.dataFields.fixed = "fixed";
 series.nodes.template.propertyFields.x = "x";
