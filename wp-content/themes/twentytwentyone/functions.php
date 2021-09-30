@@ -782,6 +782,25 @@ function create_sub_creation_ajax() {
 }
 add_action('wp_ajax_create_sub_creation_by_ajax', 'create_sub_creation_ajax');
 
+function start_creation_graph_by_ajax() {
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$response =array();
+	//echo "<pre>"; print_r($_POST); die('=========form--------gggg--');
+	if(isset($_POST['action']) && $_POST['action'] == 'start_creation_graph_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$results = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
+		//echo "<br>";
+		//echo "<pre>"; print_r($results); die("======rrrrrrr");
+		$result_count = count($results);
+
+		if($result_count <= 0){
+			$response = array('flag'=> 'success', 'topicname'=>$results[0][name], 'msg'=> 'Graph Topic Name.');
+		}
+	}
+}
+add_action('wp_ajax_start_creation_graph_by_ajax', 'start_creation_graph_by_ajax');
+
 /*add_action('wp_logout','auto_redirect_after_logout');
 
 function auto_redirect_after_logout(){
