@@ -11,6 +11,25 @@
 
 
 get_header();
+/*$current_user_id = get_current_user_id();
+global $wpdb;
+$creation_table = $wpdb->prefix."tbl_creation";
+$results = $wpdb->get_results( "SELECT * from $creation_table where user_id = '$current_user_id'", ARRAY_A );
+$json_array = array();
+$result_count = count($results);
+if($result_count > 0){
+//if(isset($results)) {
+  $colorArray = array('#FF6633', '#FFB399', '#FF33FF', '#80cbc4', '#00B3E6','#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D');
+  foreach ($results as $key => $val) {
+    $strPerc = (($val['task_completed'] / $val['total_task']) * 100);
+    $json_array[] = array(
+                  language => $val['job_title'],
+                  value =>  number_format($strPerc,2,'.',''),
+                  color =>  $colorArray[$key]
+            );
+  }
+  
+}*/
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo bloginfo('template_url'); ?>/assets/css/amsify.suggestags.css">
 
@@ -22,6 +41,10 @@ get_header();
         display: grid;
         grid-template-rows: 85px;
     }
+	#chartdiv {
+	  width: 100%;
+	height:550px;
+	}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -67,7 +90,7 @@ get_header();
                         <h4 class="section-link mb-2"><a href="">Sub-Topic: 1</a></h4>
                     </div>
 					<form method="post" id="sub_creation_frm_1" action="" >
-						<div class="col-lg-7 col-md-7 col-sm-12 p-0">
+						<div class="col-lg-7 col-md-7 col-sm-7 p-0">
 							<div class="row m-0">
 								<div class="col-12">
 									<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_1" value="" />
@@ -111,6 +134,9 @@ get_header();
 									<input type="text" name="sub_topic_notes" placeholder="Type Here" class="form-control creation_input">
 								</div>
 							</div>
+						</div>
+						<div class="col-lg-5 col-md-5 col-sm-5 p-0">
+							<div id="chartdiv"></div>
 						</div>
 					</form>
                 </div>
@@ -240,8 +266,80 @@ function sub_creation(index){
       }
     /****************************/
 }
+</script>
+<!---Graph Js Start--->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/plugins/forceDirected.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script>
+// Themes begin
+am4core.useTheme(am4themes_animated);
+
+// Create chart
+var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+
+// Create series
+var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
 
 
+// Set data
+series.data = [
+	{
+		"name": "Main", "value":200, "color":"#FF6633",
+		"children": [{
+			"name": "Sub-1", "value": 2, "color":"#FF33FF"
+		}, {
+			"name": "Sub-2", "value": 100, "color":"#FFB399"
+		}
+	]},{
+	"name": "Case Study", "value":100, "color":"#80cbc4","link": ["Tourism", "Globalization","Sub-1"]
+},{
+	"name": "Globalization", "value":100, "color":"#00B3E6","link": ["Sub-1","Tourism"]
+},{
+	"name": "Tourism", "value":100, "color":"#E6B333","link": ["Sub-1", "Globalization"]
+}
 
+];
+// Set up data fields
+series.dataFields.value = "value";
+series.dataFields.name = "name";
+series.dataFields.children = "children";
+series.dataFields.id = "name";
+series.dataFields.linkWith = "link";
+series.dataFields.color = "color";
+	
+
+// Add labels
+series.nodes.template.label.text = "{name}";
+//series.minRadius = 50;
+series.centerStrength = 0.5;
+	
+// Add labels
+//series.nodes.template.label.text = "{name}";
+series.nodes.template.label.valign = "bottom";
+series.nodes.template.label.fill = am4core.color("#000");
+series.nodes.template.label.dy = 10;
+series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
+series.fontSize = 9;
+series.minRadius = 30;
+series.maxRadius = 50;
+series.dataFields.collapsed = "off";
+series.dataFields.fixed = "fixed";
+series.nodes.template.propertyFields.x = "x";
+series.nodes.template.propertyFields.y = "y";
+
+
+// Set link width
+series.links.template.adapter.add("strokeWidth", function(width, target) {
+  var from = target.source;
+  var to = target.target;
+  var widths = from.dataItem.dataContext.linkWidths;
+  if (widths && widths[to.dataItem.id]) {
+    return widths[to.dataItem.id];
+  }
+  return width;
+});
 
 </script>
+<!---Graph Js End--->
