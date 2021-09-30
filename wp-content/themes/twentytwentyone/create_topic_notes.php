@@ -250,6 +250,8 @@ function create_topic_graph(creation_id){
 					dataType: 'JSON',
 					 success:function(res)
 					   {
+							
+							plot_topic_graph(res);
 							console.log(res);
 						  if(res.flag == 'success'){
 							
@@ -301,19 +303,65 @@ function sub_creation(index){
 <script src="https://www.amcharts.com/lib/4/plugins/forceDirected.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
 <script>
-// Themes begin
-am4core.useTheme(am4themes_animated);
 
-// Create chart
-var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
+	
+function plot_topic_graph(graph_data){
+		
+	// Themes begin
+	am4core.useTheme(am4themes_animated);
 
-// Create series
-var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries())
+	// Create chart
+	var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
 
+	// Create series
+	var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
+	
+	
+	// Set up data fields
+	series.dataFields.value = "value";
+	series.dataFields.name = "name";
+	series.dataFields.children = "children";
+	series.dataFields.id = "name";
+	series.dataFields.linkWith = "link";
+	series.dataFields.color = "color";
+	
+	series.data	= graph_data;
+
+	// Add labels
+	series.nodes.template.label.text = "{name}";
+	//series.minRadius = 50;
+	series.centerStrength = 0.5;
+		
+	// Add labels
+	//series.nodes.template.label.text = "{name}";
+	series.nodes.template.label.valign = "bottom";
+	series.nodes.template.label.fill = am4core.color("#000");
+	series.nodes.template.label.dy = 10;
+	series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
+	series.fontSize = 9;
+	series.minRadius = 10;
+	series.maxRadius = 20;
+	series.dataFields.collapsed = "off";
+	series.dataFields.fixed = "fixed";
+	series.nodes.template.propertyFields.x = "x";
+	series.nodes.template.propertyFields.y = "y";
+
+
+	// Set link width
+	series.links.template.adapter.add("strokeWidth", function(width, target) {
+	  var from = target.source;
+	  var to = target.target;
+	  var widths = from.dataItem.dataContext.linkWidths;
+	  if (widths && widths[to.dataItem.id]) {
+		return widths[to.dataItem.id];
+	  }
+	  return width;
+	});
+}
 
 
 // Set data
-series.data =	[
+/* series.data =	[
 					{
 						"name": "Main", "value":100, "color":"#9ba2a6",
 						"children": [
@@ -374,7 +422,7 @@ series.links.template.adapter.add("strokeWidth", function(width, target) {
     return widths[to.dataItem.id];
   }
   return width;
-});
+}); */
 
 </script>
 <!---Graph Js End--->
