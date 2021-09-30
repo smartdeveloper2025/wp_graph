@@ -783,7 +783,7 @@ function create_sub_creation_ajax() {
 add_action('wp_ajax_create_sub_creation_by_ajax', 'create_sub_creation_ajax');
 
 function start_creation_graph_by_ajax() {
-	global $wpdb;
+	/* global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
 	//echo "<pre>"; print_r($_POST); die('=========form--------gggg--');
@@ -797,7 +797,66 @@ function start_creation_graph_by_ajax() {
 		if($result_count <= 0){
 			$response = array('flag'=> 'success', 'topicname'=>$results[0][name], 'msg'=> 'Graph Topic Name.');
 		}
-	}
+	} */
+	
+	$test = array (
+  0 => 
+  array (
+    'name' => 'Main',
+    'value' => 100,
+    'color' => '#9ba2a6',
+    'children' => 
+    array (
+      0 => 
+      array (
+        'name' => 'Sub-1',
+        'value' => 50,
+        'color' => '#000000',
+      ),
+      1 => 
+      array (
+        'name' => 'Sub-2',
+        'value' => 50,
+        'color' => '#000000',
+      ),
+    ),
+  ),
+  1 => 
+  array (
+    'name' => 'Case Study',
+    'value' => 30,
+    'color' => '#593e97',
+    'link' => 
+    array (
+      0 => 'Tourism',
+      1 => 'Globalization',
+      2 => 'Sub-1',
+    ),
+  ),
+  2 => 
+  array (
+    'name' => 'Globalization',
+    'value' => 20,
+    'color' => '#b4bcfc',
+    'link' => 
+    array (
+      0 => 'Sub-1',
+      1 => 'Tourism',
+    ),
+  ),
+  3 => 
+  array (
+    'name' => 'Tourism',
+    'value' => 20,
+    'color' => '#b4bcfc',
+    'link' => 
+    array (
+      0 => 'Sub-1',
+      1 => 'Globalization',
+    ),
+  ),
+);
+echo json_encode($test); die();
 }
 add_action('wp_ajax_start_creation_graph_by_ajax', 'start_creation_graph_by_ajax');
 
