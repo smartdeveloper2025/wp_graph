@@ -133,21 +133,21 @@ get_header();
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
 /*********clone skills tr td start***********/
-/* function clone_skills(obj_skills , count ){
+function clone_skills(obj_skills , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
 	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(obj_skills).parent().parent().parent().before(tr);
 	jQuery('#skills_count_'+count ).val(skills_count);
-} */
+}
 //jQuery(document).ready(function () {
-	/* jQuery(document).on('click','.remove__list',function(){
+	jQuery(document).on('click','.remove__list',function(){
 		jQuery(this).parent().parent().parent().remove(); 
-	}); */ 
+	}); 
 //});
 /*********clone skills tr td end***********/
 /*********clone code start*************/
-/* function html_clone(){
+function html_clone(){
 	var clone_counter = jQuery('#clone_counter').val();
 	clone_counter++;
 	var html = '';
@@ -171,7 +171,7 @@ get_header();
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			
 	jQuery('#next_counter_value').html(clone_counter+1);			
-} */
+}
 
 /*********clone code end*************/
 
@@ -182,8 +182,6 @@ function tag_call(obj){
 }
 
 function main_creation(){
-	alert('hii');
-	console.log(jQuery("#main_creation_frm").serialize());
 	var topic_name = jQuery('#topic_name').val();
 	var hdn_creation_id = jQuery('#hdn_creation_id').val();
 	/****************************/
@@ -195,8 +193,6 @@ function main_creation(){
                 dataType: 'JSON',
                  success:function(res)
                    {
-					   alert('ssss');
-					   console.log(res);
                       if(res.flag == 'success'){
 						jQuery('#hdn_creation_id').val(res.creation_id);
                         alert(res.msg);
