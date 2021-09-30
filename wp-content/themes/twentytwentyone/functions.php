@@ -639,11 +639,10 @@ function twentytwentyone_add_ie_class() {
 add_action( 'wp_footer', 'twentytwentyone_add_ie_class' );
 
 function create_creation_ajax() {
-	die("hellllo");
 	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
-	echo "<pre>"; print_r($_POST); die('=========form--------11ccc--');
+	//echo "<pre>"; print_r($_POST); die('=========form--------cccccc--');
 	if(isset($_POST['action']) && $_POST['action'] == 'create_creation_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
 		$type = trim($_POST['type']);
