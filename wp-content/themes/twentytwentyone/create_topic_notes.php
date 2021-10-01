@@ -221,7 +221,7 @@ function main_creation(){
                    {
                       if(res.flag == 'success'){
 						jQuery('#hdn_creation_id').val(res.creation_id);
-                        alert(res.msg);
+                        // alert(res.msg);
 						//graph ajax start
 						if(res.creation_id != ''){
 							create_topic_graph(res.creation_id);
@@ -230,7 +230,7 @@ function main_creation(){
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
                       }else{
-                          alert('Opps! Something went wrong');
+                          // alert('Opps! Something went wrong');
                       }
                   //  alert(results);
           
@@ -259,7 +259,7 @@ function create_topic_graph(creation_id){
 							//location.reload();
 							//window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
 						  }else{
-							  alert('Opps! Something went wrong');
+							  // alert('Opps! Something went wrong');
 						  }
 					  //  alert(results);
 			  
@@ -281,14 +281,14 @@ function sub_creation(index){
 					   console.log(res);
                       if(res.flag == 'success'){
 						jQuery('#hdn_sub_creation_id_'+index).val(res.sub_creation_id);
-                        alert(res.msg);
+                        // alert(res.msg);
 						if(hdn_creation_id != ''){
 							create_topic_graph(hdn_creation_id);
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
                       }else{
-                          alert('Opps! Something went wrong');
+                          // alert('Opps! Something went wrong');
                       }
                   //  alert(results);
           
@@ -329,7 +329,7 @@ function plot_topic_graph(graph_data){
 	series.dataFields.color = "color";
 	
 	series.data	= graph_data;
-	// series.data	= [{"name":"tanu-node","value":100,"color":"#9ba2a6","children":[{"name":"tanu sub 1","value":50,"color":"#000000"},{"name":"tanu sub 2","value":50,"color":"#000000"}]},{"name":"sub1 l1","value":30,"color":"#593e97"},{"name":"sub1 l2","value":30,"color":"#593e97"},{"name":"sub2 l1","value":30,"color":"#593e97"},{"name":"s2 l2","value":30,"color":"#593e97"}];
+	// series.data	= [{"name":"Main","value":100,"color":"#9ba2a6","children":[{"name":"Sub-1","value":50,"color":"#000000"},{"name":"sub-2","value":50,"color":"#000000"}]},{"name":"SB-Lft-1","value":30,"color":"#593e97","link":["a","b","c"]},{"name":"a","value":30,"color":"#593e97"},{"name":"b","value":30,"color":"#593e97"},{"name":"c","value":30,"color":"#593e97"},{"name":"SB-Lft-2","value":30,"color":"#593e97","link":["x","h"]},{"name":"x","value":30,"color":"#593e97"},{"name":"h","value":30,"color":"#593e97"},{"name":"SB2-LFT-1","value":30,"color":"#593e97","link":["1"]},{"name":"1","value":30,"color":"#593e97"}];
 	
 
 	// Add labels

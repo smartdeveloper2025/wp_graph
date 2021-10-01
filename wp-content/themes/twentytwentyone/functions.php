@@ -809,17 +809,38 @@ function start_creation_graph_by_ajax() {
 
 			if(count($sub_creation_result) >= 0){
 				
-				foreach($sub_creation_result as $sub_data){
+				foreach($sub_creation_result as $sub_key => $sub_data){
 					//  append children to main node
-					$graph_child['children'][] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
 				
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
 					if(count($detail_sub_creation_result) >= 0){
-						$left_link = $right_link = array();
 						foreach($detail_sub_creation_result as $key => $detail_data){
-							$other_nodes[] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
-							$other_nodes[] = array('name' =>$detail_data['right_val'],'value' => 30,'color' => '#593e97');
+							$left_link = $right_link = array();
+							//collect left node
+							$left_link = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+							
+							$graph_child['children'][$sub_key]['link'][] = array($left_link['name']);
+							
+							if(!empty($detail_data['right_val'])){
+								$rightValueArray = explode(',', trim($detail_data['right_val']));	
+									
+									// echo "<pre>rightValueArray=="; print_r($rightValueArray); 
+								$left_link['link'] = $rightValueArray; //create node linking
+									
+								//collect left node with linking
+								$other_nodes[] = $left_link;
+								
+								//collect right node
+								foreach($rightValueArray as $r_key => $r_val){
+									$other_nodes[] = array('name' =>$r_val,'value' => 30,'color' => '#593e97');
+								}
+							}
+								// echo "<pre>=========right_link=="; print_r($right_link); 
+								// $other_nodes[] = array_merge($left_link,$right_link); 
+								// $other_nodes[] = $left_link; 
+								// echo "<pre>other_nodes=="; print_r($other_nodes); 
 						}
 						
 					}
@@ -828,6 +849,7 @@ function start_creation_graph_by_ajax() {
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
 				
+				// echo "<pre>graph_data==="; print_r($graph_data); 
 				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
