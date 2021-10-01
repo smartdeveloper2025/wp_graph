@@ -790,27 +790,43 @@ function start_creation_graph_by_ajax() {
 	//echo "<pre>"; print_r($_POST); die('=========form--------gggg--');
 	if(isset($_POST['action']) && $_POST['action'] == 'start_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
 		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
 		// echo "<br>";
 		// echo "<pre>"; print_r($results); die("======rrrrrrr");
 		if(count($creation_result) >= 0){
-			$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
 			if(count($sub_creation_result) >= 0){
 				$children_array = array();
-				foreach($sub_creation_result as $key => $sub_data){
-					$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
-					// $children_array['children']['name'] = $sub_data['field_1'];
-					// $children_array['children']['value'] = 50;
-					// $children_array['children']['color'] = '#000000';
+				$detail_nodes_array = array();
+				foreach($sub_creation_result as $sub_data){
+				
+					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
+					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+					if(count($detail_sub_creation_result) >= 0){
+						foreach($detail_sub_creation_result as $key => $detail_data){
+							$key++;
+							$detail_nodes_array[] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+							// $detail_nodes_array['name'] = $detail_data['left_val'];
+							// $detail_nodes_array['value'] = 30;
+							// $detail_nodes_array['color'] = '#593e97';
+						}
+						
+						$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
+					} else {
+						$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
+					}
+					
 				}
-				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6',
+				$test = array ("0" => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6',
 											'children' => $children_array,
 																
-											)
+											),
+								$detail_nodes_array
 							   );
-				//echo "<pre>"; print_r($test); die('---ssssssss');
+				echo "<pre>"; print_r($test); die('---ssssssss');
 				echo json_encode($test); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
