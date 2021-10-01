@@ -821,6 +821,7 @@ function start_creation_graph_by_ajax() {
 							//collect left node
 							$left_link = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 							
+							// create linking of sub-topic title node
 							$graph_child['children'][$sub_key]['link'][] = array($left_link['name']);
 							
 							if(!empty($detail_data['right_val'])){
@@ -834,13 +835,9 @@ function start_creation_graph_by_ajax() {
 								
 								//collect right node
 								foreach($rightValueArray as $r_key => $r_val){
-									$other_nodes[] = array('name' =>$r_val,'value' => 30,'color' => '#593e97');
+									$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
 								}
 							}
-								// echo "<pre>=========right_link=="; print_r($right_link); 
-								// $other_nodes[] = array_merge($left_link,$right_link); 
-								// $other_nodes[] = $left_link; 
-								// echo "<pre>other_nodes=="; print_r($other_nodes); 
 						}
 						
 					}
@@ -849,7 +846,6 @@ function start_creation_graph_by_ajax() {
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
 				
-				// echo "<pre>graph_data==="; print_r($graph_data); 
 				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
