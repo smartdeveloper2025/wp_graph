@@ -282,6 +282,9 @@ function sub_creation(index){
                       if(res.flag == 'success'){
 						jQuery('#hdn_sub_creation_id_'+index).val(res.sub_creation_id);
                         alert(res.msg);
+						if(hdn_creation_id != ''){
+							create_topic_graph(hdn_creation_id);
+						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
                       }else{

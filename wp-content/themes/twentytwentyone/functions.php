@@ -783,80 +783,44 @@ function create_sub_creation_ajax() {
 add_action('wp_ajax_create_sub_creation_by_ajax', 'create_sub_creation_ajax');
 
 function start_creation_graph_by_ajax() {
-	/* global $wpdb;
+	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
+	$test = array();
 	//echo "<pre>"; print_r($_POST); die('=========form--------gggg--');
 	if(isset($_POST['action']) && $_POST['action'] == 'start_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
-		$results = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
-		//echo "<br>";
-		//echo "<pre>"; print_r($results); die("======rrrrrrr");
-		$result_count = count($results);
-
-		if($result_count <= 0){
-			$response = array('flag'=> 'success', 'topicname'=>$results[0][name], 'msg'=> 'Graph Topic Name.');
-		}
-	} */
+		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
+		// echo "<br>";
+		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		if(count($creation_result) >= 0){
+			$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
+			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+			if(count($sub_creation_result) >= 0){
+				$children_array = array();
+				foreach($sub_creation_result as $key => $sub_data){
+					$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
+					// $children_array['children']['name'] = $sub_data['field_1'];
+					// $children_array['children']['value'] = 50;
+					// $children_array['children']['color'] = '#000000';
+				}
+				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6',
+											'children' => $children_array,
+																
+											)
+							   );
+				//echo "<pre>"; print_r($test); die('---ssssssss');
+				echo json_encode($test); die();
+			} else {
+				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
+				echo json_encode($test); die();
+			}
+			
+		 } 
+	} 
 	
-	$test = array (
-  0 => 
-  array (
-    'name' => 'Main',
-    'value' => 100,
-    'color' => '#9ba2a6',
-    'children' => 
-    array (
-      0 => 
-      array (
-        'name' => 'Sub-1',
-        'value' => 50,
-        'color' => '#000000',
-      ),
-      1 => 
-      array (
-        'name' => 'Sub-2',
-        'value' => 50,
-        'color' => '#000000',
-      ),
-    ),
-  ),
-  1 => 
-  array (
-    'name' => 'Case Study',
-    'value' => 30,
-    'color' => '#593e97',
-    'link' => 
-    array (
-      0 => 'Tourism',
-      1 => 'Globalization',
-      2 => 'Sub-1',
-    ),
-  ),
-  2 => 
-  array (
-    'name' => 'Globalization',
-    'value' => 20,
-    'color' => '#b4bcfc',
-    'link' => 
-    array (
-      0 => 'Sub-1',
-      1 => 'Tourism',
-    ),
-  ),
-  3 => 
-  array (
-    'name' => 'Tourism',
-    'value' => 20,
-    'color' => '#b4bcfc',
-    'link' => 
-    array (
-      0 => 'Sub-1',
-      1 => 'Globalization',
-    ),
-  ),
-);
-echo json_encode($test); die();
+	
 }
 add_action('wp_ajax_start_creation_graph_by_ajax', 'start_creation_graph_by_ajax');
 
