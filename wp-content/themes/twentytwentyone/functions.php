@@ -786,8 +786,8 @@ function start_creation_graph_by_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
-	$test = array();
-	//echo "<pre>"; print_r($_POST); die('=========form--------gggg--');
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
+
 	if(isset($_POST['action']) && $_POST['action'] == 'start_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
 		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
@@ -795,39 +795,40 @@ function start_creation_graph_by_ajax() {
 		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
 		// echo "<br>";
 		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		
 		if(count($creation_result) >= 0){
+			//graph main node
+			$graph_nodes = array(
+									'name' => $creation_result[0]['name'],
+									'value' => 100,
+									'color' => '#9ba2a6'
+								);
+			
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+
 			if(count($sub_creation_result) >= 0){
-				$children_array = array();
-				$detail_nodes_array = array();
+				
 				foreach($sub_creation_result as $sub_data){
+					//  append children to main node
+					$graph_child['children'][] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
 				
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
 					if(count($detail_sub_creation_result) >= 0){
+						$left_link = $right_link = array();
 						foreach($detail_sub_creation_result as $key => $detail_data){
-							$key++;
-							$detail_nodes_array[] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
-							// $detail_nodes_array['name'] = $detail_data['left_val'];
-							// $detail_nodes_array['value'] = 30;
-							// $detail_nodes_array['color'] = '#593e97';
+							$other_nodes[] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+							$other_nodes[] = array('name' =>$detail_data['right_val'],'value' => 30,'color' => '#593e97');
 						}
 						
-						$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
-					} else {
-						$children_array[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
 					}
-					
 				}
-				$test = array ("0" => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6',
-											'children' => $children_array,
-																
-											),
-								$detail_nodes_array
-							   );
-				echo "<pre>"; print_r($test); die('---ssssssss');
-				echo json_encode($test); die();
+				
+				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				$graph_data = array_merge($graph_data,$other_nodes);
+				
+				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
 				echo json_encode($test); die();

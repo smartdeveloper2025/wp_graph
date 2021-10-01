@@ -329,6 +329,8 @@ function plot_topic_graph(graph_data){
 	series.dataFields.color = "color";
 	
 	series.data	= graph_data;
+	// series.data	= [{"name":"tanu-node","value":100,"color":"#9ba2a6","children":[{"name":"tanu sub 1","value":50,"color":"#000000"},{"name":"tanu sub 2","value":50,"color":"#000000"}]},{"name":"sub1 l1","value":30,"color":"#593e97"},{"name":"sub1 l2","value":30,"color":"#593e97"},{"name":"sub2 l1","value":30,"color":"#593e97"},{"name":"s2 l2","value":30,"color":"#593e97"}];
+	
 
 	// Add labels
 	series.nodes.template.label.text = "{name}";
