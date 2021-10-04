@@ -144,11 +144,12 @@ get_header();
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
 /*********clone skills tr td start***********/
-function clone_skills(obj_skills , count ){
+function clone_skills(objThis , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
 	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
-	jQuery(obj_skills).parent().parent().parent().before(tr);
+	jQuery(objThis).parent().parent().parent().before(tr);
+	jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
 	jQuery('#skills_count_'+count ).val(skills_count);
 }
 //jQuery(document).ready(function () {
@@ -330,7 +331,7 @@ function plot_topic_graph(graph_data){
 	series.nodes.template.label.valign = "bottom";
 	series.nodes.template.label.fill = am4core.color("#000");
 	series.nodes.template.label.dy = 10;
-	//series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
+	series.nodes.template.tooltipText = "[bold]{tooltip}[/]";
 	series.fontSize = 9;
 	series.minRadius = 10;
 	series.maxRadius = 20;
@@ -340,20 +341,20 @@ function plot_topic_graph(graph_data){
 	series.nodes.template.propertyFields.y = "y";
 	
 	// Set tooltip of nodes on hover
-	series.nodes.template.adapter.add("tooltipText", function(text, target) {
+	/* series.nodes.template.adapter.add("tooltipText", function(text, target) {
 	  if (target.dataItem) {
 		switch(target.dataItem.level) {
 		  case 0:
-			return "#1: {name}";
+			return "{name}";
 		  case 1:
-			return "#2: {parent.name} > {name} ({value})";
+			return "{tooltip}";
 		  case 2:
-			return "#3: {parent.parent.name} > {parent.name} > {name} ({value})";
+			return "{parent.parent.name} > {parent.name} > {name} ({value})";
 		}
 	  }
 	  return text;
 	});
-
+ */
 	// Set link width
 	series.links.template.adapter.add("strokeWidth", function(width, target) {
 	  var from = target.source;

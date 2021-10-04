@@ -812,7 +812,12 @@ function start_creation_graph_by_ajax() {
 				
 				foreach($sub_creation_result as $sub_key => $sub_data){
 					//  append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000');
+					if($sub_data['notes'] != ''){
+						$tooltip_text = $sub_data['notes'];
+					} else {
+						$tooltip_text = $sub_data['field_1'];
+					}
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
 				
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
