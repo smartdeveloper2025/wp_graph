@@ -756,7 +756,8 @@ function create_sub_creation_ajax() {
 			//==end-waste
 			
 					foreach($_POST['tag_val'] as $key => $tag_val){
-						if(!($tag_val["left"] == '' && $tag_val["right"] == '')){
+						//if(!($tag_val["left"] == '' && $tag_val["right"] == '')){
+						if($tag_val["right"] != ''){
 							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
 			//==waste
 			$sql_log[] = $sqlInsertSubDetail;
@@ -817,25 +818,36 @@ function start_creation_graph_by_ajax() {
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
 					if(count($detail_sub_creation_result) >= 0){
 						foreach($detail_sub_creation_result as $key => $detail_data){
-							$left_link = $right_link = array();
-							//collect left node
-							$left_link = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+							$left_node = array();
+							
+							// if($detail_data['left_val'] != '')
+								// $left_link = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 							
 							// create linking of sub-topic title node
-							$graph_child['children'][$sub_key]['link'][] = array($left_link['name']);
+							if($left_node['name'] != '')
+								$graph_child['children'][$sub_key]['link'][] = $left_node['name'];
 							
 							if(!empty($detail_data['right_val'])){
 								$rightValueArray = explode(',', trim($detail_data['right_val']));	
+								
+								
+								//collect left node
+								if($detail_data['left_val'] != ''){
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 									
-									// echo "<pre>rightValueArray=="; print_r($rightValueArray); 
-								$left_link['link'] = $rightValueArray; //create node linking
+									$left_node['link'] = $rightValueArray; //create node linking
 									
-								//collect left node with linking
-								$other_nodes[] = $left_link;
+									//collect left node with linking
+									$other_nodes[] = $left_node;
+								}
+								
+								
 								
 								//collect right node
 								foreach($rightValueArray as $r_key => $r_val){
 									$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+									if($r_val != '')
+										$graph_child['children'][$sub_key]['link'][] = $r_val;
 								}
 							}
 						}
@@ -846,6 +858,7 @@ function start_creation_graph_by_ajax() {
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
 				
+					//echo "<pre>"; print_r($graph_data); //die('==hello');
 				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));

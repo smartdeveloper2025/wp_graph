@@ -11,25 +11,7 @@
 
 
 get_header();
-/*$current_user_id = get_current_user_id();
-global $wpdb;
-$creation_table = $wpdb->prefix."tbl_creation";
-$results = $wpdb->get_results( "SELECT * from $creation_table where user_id = '$current_user_id'", ARRAY_A );
-$json_array = array();
-$result_count = count($results);
-if($result_count > 0){
-//if(isset($results)) {
-  $colorArray = array('#FF6633', '#FFB399', '#FF33FF', '#80cbc4', '#00B3E6','#E6B333', '#3366E6', '#999966', '#99FF99', '#B34D4D');
-  foreach ($results as $key => $val) {
-    $strPerc = (($val['task_completed'] / $val['total_task']) * 100);
-    $json_array[] = array(
-                  language => $val['job_title'],
-                  value =>  number_format($strPerc,2,'.',''),
-                  color =>  $colorArray[$key]
-            );
-  }
-  
-}*/
+
 ?>
 <link rel="stylesheet" type="text/css" href="<?php echo bloginfo('template_url'); ?>/assets/css/amsify.suggestags.css">
 
@@ -67,7 +49,7 @@ if($result_count > 0){
 						<div class="col-lg-7 col-md-7 col-sm-12">
 							<input type="text" placeholder="Name your overall topic" onblur="main_creation()"  id="topic_name" name="topic_name" class="form-control creation_input">
 							<label for="topic_desc">Description</label>
-							<textarea name="topic_desc" id="topic_desc" class="form-control creation_input" ></textarea>
+							<textarea name="topic_desc" id="topic_desc" onblur="main_creation()" class="form-control creation_input" ></textarea>
 							<p>
 								[you can use this space to describe the purpose of this creation]
 							</p>
@@ -85,12 +67,13 @@ if($result_count > 0){
                         <h5 class="m-0 mt-2">A Knomad creation</h5>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row chart__div">
                     <div class="col-12">
                         <h4 class="section-link mb-2"><a href="">Sub-Topic: 1</a></h4>
                     </div>
-					<form method="post" id="sub_creation_frm_1" action="" >
-						<div class="col-lg-7 col-md-7 col-sm-7 p-0">
+                    <div class="col-lg-7 col-md-7 col-sm-7 p-0">
+						<form method="post" id="sub_creation_frm_1" action="" >
+						<!-- <div class="col-lg-7 col-md-7 col-sm-7 p-0"> -->
 							<div class="row m-0">
 								<div class="col-12">
 									<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_1" value="" />
@@ -112,13 +95,13 @@ if($result_count > 0){
 										<tbody>
 											<tr><td><div class="d-flex align-items-center">
 														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,1)" >
+														<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1)" >
 													</div>
 												</td>
 												<td>
 													<div class="d-flex align-items-center">
 														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][right]" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
+														<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
 													</div>
 												</td>
 											</tr>
@@ -131,14 +114,16 @@ if($result_count > 0){
 							<div class="row m-0 mt-4 experience_row_box">
 								<div class="col-12">
 									<label>Notes</label>
-									<input type="text" name="sub_topic_notes" placeholder="Type Here" class="form-control creation_input">
+									<input type="text" name="sub_topic_notes" onblur="sub_creation(1)" placeholder="Type Here" class="form-control creation_input">
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-5 col-md-5 col-sm-5 p-0">
-							<div id="chartdiv"></div>
-						</div>
-					</form>
+						<!-- </div> -->
+						
+						</form>
+					</div>
+					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
+						<div id="chartdiv"></div>
+					</div>
                 </div>
 				
 				<div class="additional_clone_data">
@@ -147,7 +132,7 @@ if($result_count > 0){
             <!--</form>-->
             <div class="row">
                 <div class="col-lg-7 col-md-7 col-sm-12 mt-5">
-                    <h4 class="section-link mb-2"><a href="javascript:;" class="d-flex align-items-center"><i class="fas fa-plus mr-2 " onclick="html_clone()"></i> Sub-Topis: <span id="next_counter_value">2</span></a></h4>
+                    <h4 class="section-link mb-2"><a href="javascript:;" class="d-flex align-items-center"><i class="fas fa-plus mr-2 " onclick="html_clone()"></i> Sub-Topic: <span id="next_counter_value">2</span></a></h4>
                 </div>
             </div>
         </div>
@@ -162,7 +147,7 @@ if($result_count > 0){
 function clone_skills(obj_skills , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(obj_skills).parent().parent().parent().before(tr);
 	jQuery('#skills_count_'+count ).val(skills_count);
 }
@@ -190,9 +175,9 @@ function html_clone(){
 	html += '<table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
-	html += '<div class="col-12"><label>Notes</label><input type="text" name="sub_topic_notes" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div>';
+	html += '<div class="col-12"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div>';
 	
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			
@@ -315,10 +300,13 @@ function plot_topic_graph(graph_data){
 
 	// Create chart
 	var chart = am4core.create("chartdiv", am4plugins_forceDirected.ForceDirectedTree);
-
 	// Create series
 	var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 	
+	chart.legend = new am4charts.Legend();
+	chart.legend.position = "bottom";
+	chart.legend.fontSize = 12;
+	chart.fontFamily = "Arial";
 	
 	// Set up data fields
 	series.dataFields.value = "value";
@@ -342,7 +330,7 @@ function plot_topic_graph(graph_data){
 	series.nodes.template.label.valign = "bottom";
 	series.nodes.template.label.fill = am4core.color("#000");
 	series.nodes.template.label.dy = 10;
-	series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
+	//series.nodes.template.tooltipText = "{name}: [bold]{value}[/]";
 	series.fontSize = 9;
 	series.minRadius = 10;
 	series.maxRadius = 20;
@@ -350,7 +338,21 @@ function plot_topic_graph(graph_data){
 	series.dataFields.fixed = "fixed";
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
-
+	
+	// Set tooltip of nodes on hover
+	series.nodes.template.adapter.add("tooltipText", function(text, target) {
+	  if (target.dataItem) {
+		switch(target.dataItem.level) {
+		  case 0:
+			return "#1: {name}";
+		  case 1:
+			return "#2: {parent.name} > {name} ({value})";
+		  case 2:
+			return "#3: {parent.parent.name} > {parent.name} > {name} ({value})";
+		}
+	  }
+	  return text;
+	});
 
 	// Set link width
 	series.links.template.adapter.add("strokeWidth", function(width, target) {
@@ -429,5 +431,25 @@ series.links.template.adapter.add("strokeWidth", function(width, target) {
   return width;
 }); */
 
+
+
+
+
+
+// code by prem
+jQuery(document).ready(function() {
+  	var stickyTop = jQuery('#chartdiv').offset().top;
+  	var windowTop = jQuery(window).scrollTop();
+  	console.log(windowTop);
+  	console.log('stickyTop');
+  // 	jQuery(window).scroll(function() {
+  //   	var windowTop = jQuery(window).scrollTop();
+  //   	if(stickyTop<windowTop && jQuery(".chart__div").height() + jQuery(".chart__div").offset().top- jQuery("#chartdiv").height()>windowTop){
+  //     		jQuery('#chartdiv').css('position', 'fixed');
+  //   	}else{
+  //     		jQuery('#chartdiv').css('position', 'unset');
+  //   	}
+  // });
+});
 </script>
 <!---Graph Js End--->

@@ -559,4 +559,8 @@
         outline: none;
         box-shadow: none;
     }
+
+    #chartdiv{
+        background: #eee;
+    }
     
