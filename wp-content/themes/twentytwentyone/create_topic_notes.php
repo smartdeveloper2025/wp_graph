@@ -340,6 +340,10 @@ function plot_topic_graph(graph_data){
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
+	series.manyBodyStrength = -50;
+series.links.template.distance = 1;
+series.links.template.strength = 1;
+	
 	// Set tooltip of nodes on hover
 	/* series.nodes.template.adapter.add("tooltipText", function(text, target) {
 	  if (target.dataItem) {
