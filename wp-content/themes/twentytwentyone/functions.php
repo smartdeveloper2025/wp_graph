@@ -805,38 +805,36 @@ function start_creation_graph_by_ajax() {
 									'color' => '#9ba2a6'
 								);
 			
+			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
 
 			if(count($sub_creation_result) >= 0){
-				
+				// loop for all sub-topic
 				foreach($sub_creation_result as $sub_key => $sub_data){
-					//  append children to main node
 					if($sub_data['notes'] != ''){
 						$tooltip_text = $sub_data['notes'];
 					} else {
 						$tooltip_text = $sub_data['field_1'];
 					}
+					
+					// append children to main node
 					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
-				
+					
+					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+					
 					if(count($detail_sub_creation_result) >= 0){
+						// loop for all left-right (Source-Learning) nodes
 						foreach($detail_sub_creation_result as $key => $detail_data){
 							$left_node = array();
 							
-							// if($detail_data['left_val'] != '')
-								// $left_link = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
-							
-							// create linking of sub-topic title node
-							if($left_node['name'] != '')
-								$graph_child['children'][$sub_key]['link'][] = $left_node['name'];
-							
+							// pick left node if right node is present
 							if(!empty($detail_data['right_val'])){
 								$rightValueArray = explode(',', trim($detail_data['right_val']));	
 								
-								
-								//collect left node
+								//collect left node, as Right node is not empty
 								if($detail_data['left_val'] != ''){
 									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 									
@@ -844,15 +842,21 @@ function start_creation_graph_by_ajax() {
 									
 									//collect left node with linking
 									$other_nodes[] = $left_node;
+									
+									// create link with sub-topic of left_node
+									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
 								}
-								
-								
 								
 								//collect right node
 								foreach($rightValueArray as $r_key => $r_val){
-									$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
-									if($r_val != '')
+									if($r_val != ''){
+										// push right node to nodes array, so that it wil create a node
+										$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+										// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+										
+										// create link with sub-topic of right-node
 										$graph_child['children'][$sub_key]['link'][] = $r_val;
+									}
 								}
 							}
 						}

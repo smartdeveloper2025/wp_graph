@@ -201,6 +201,7 @@ function main_creation(){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
+				//async:false,
                 data: jQuery("#main_creation_frm").serialize() +'&action=create_creation_by_ajax&type=topic',
                 dataType: 'JSON',
                  success:function(res)
@@ -232,6 +233,7 @@ function create_topic_graph(creation_id){
 	jQuery.ajax({
 					url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
 					type:'POST',
+					//async:false,
 					data: 'action=start_creation_graph_by_ajax&creation_id='+creation_id,
 					dataType: 'JSON',
 					 success:function(res)
@@ -260,6 +262,7 @@ function sub_creation(index){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
+				//async:false,
                 data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_sub_creation_by_ajax&creation_id='+hdn_creation_id+'&counter='+index,
                 dataType: 'JSON',
                  success:function(res)
@@ -304,10 +307,21 @@ function plot_topic_graph(graph_data){
 	// Create series
 	var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 	
-	chart.legend = new am4charts.Legend();
+	/* chart.legend = new am4charts.Legend();
 	chart.legend.position = "bottom";
 	chart.legend.fontSize = 12;
-	chart.fontFamily = "Arial";
+	chart.fontFamily = "Arial"; */
+	
+	chart.legend = new am4charts.Legend();
+	chart.legend.useDefaultMarker = true;
+	var marker = chart.legend.markers.template.children.getIndex(0);
+	marker.cornerRadius(12, 12, 12, 12);
+	marker.strokeWidth = 2;
+	marker.strokeOpacity = 1;
+	marker.stroke = am4core.color("#ccc");
+
+
+	chart.colors.step = 2;
 	
 	// Set up data fields
 	series.dataFields.value = "value";
