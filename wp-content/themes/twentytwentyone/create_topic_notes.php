@@ -298,7 +298,9 @@ function sub_creation(index){
 
 	
 function plot_topic_graph(graph_data){
-		
+	
+	//license key of amcharts for remove branding
+	am4core.addLicense("CH297328668")
 	// Themes begin
 	am4core.useTheme(am4themes_animated);
 
@@ -383,6 +385,27 @@ series.links.template.strength = 1;
 	  }
 	  return width;
 	});
+	
+	// Add watermark
+	var watermark = chart.createChild(am4core.Label);
+	watermark.text = "Source: A Knomad Creation";
+	watermark.align = "right";
+	watermark.fontSize = 15;
+	watermark.fillOpacity = 0.5;
+	watermark.disabled = false;
+
+	// Enable watermark on export
+	chart.exporting.events.on("exportstarted", function(ev) {
+	  watermark.disabled = false;
+	});
+
+	// Disable watermark when export finishes
+	chart.exporting.events.on("exportfinished", function(ev) {
+	  watermark.disabled = true;
+	});
+
+	// Add watermark to validated sprites
+	chart.exporting.validateSprites.push(watermark);
 }
 
 

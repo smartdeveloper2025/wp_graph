@@ -846,7 +846,9 @@ function start_creation_graph_by_ajax() {
 								if(!empty($detail_data['right_val'])){
 									$rightValueArray = explode(',', trim($detail_data['right_val']));
 									
-									$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									if($detail_data['left_val'] != ''){
+										$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									}
 									
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
@@ -861,7 +863,9 @@ function start_creation_graph_by_ajax() {
 								}
 								
 								//collect left node with linking
-								$other_nodes[] = $left_node;
+								if(count($left_node) > 0){
+									$other_nodes[] = $left_node;
+								}
 							}
 						}
 						

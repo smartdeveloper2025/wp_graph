@@ -56,14 +56,15 @@ get_header();
                     <p class="creation-info m-0">Last edit: 22 mints ago</p>
 
                 </div>
-                <div class="mycreation-box">
-                    <i class="creaton-dot"></i>
-                    <i class="creaton-dot"></i>
-                    <i class="creaton-dot"></i>
-                    <h4 class="creation-heading m-0">ANTh001 notes</h4>
-                    <p class="creation-info m-0">Last edit: 22 mints ago</p>
-
-                </div>
+                <a href="http://localhost/knomad/edit-topic-notes/?edit_id=1">
+					<div class="mycreation-box">
+						<i class="creaton-dot"></i>
+						<i class="creaton-dot"></i>
+						<i class="creaton-dot"></i>
+						<h4 class="creation-heading m-0">ANTh001 notes</h4>
+						<p class="creation-info m-0">Last edit: 22 mints ago</p>
+					</div>
+				</a>
             </div>
         </div>
 	</div>
