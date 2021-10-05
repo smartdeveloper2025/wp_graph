@@ -721,7 +721,7 @@ function create_sub_creation_ajax() {
 					$wpdb->query($sqlDeleteOldSubDetail);
 					
 					foreach($_POST['tag_val'] as $key => $tag_val){
-						if(!($tag_val["left"] == '' && $tag_val["right"] == '')){
+						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
 							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
 							$wpdb->query($sqlInsertSubDetail);
 				//==waste
@@ -756,8 +756,7 @@ function create_sub_creation_ajax() {
 			//==end-waste
 			
 					foreach($_POST['tag_val'] as $key => $tag_val){
-						//if(!($tag_val["left"] == '' && $tag_val["right"] == '')){
-						if($tag_val["right"] != ''){
+						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
 							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
 			//==waste
 			$sql_log[] = $sqlInsertSubDetail;
@@ -829,35 +828,40 @@ function start_creation_graph_by_ajax() {
 						// loop for all left-right (Source-Learning) nodes
 						foreach($detail_sub_creation_result as $key => $detail_data){
 							$left_node = array();
-							
-							// pick left node if right node is present
-							if(!empty($detail_data['right_val'])){
-								$rightValueArray = explode(',', trim($detail_data['right_val']));	
-								
-								//collect left node, as Right node is not empty
+							// echo '<pre><br/>===';
+							// var_dump($detail_data);
+							// echo '</pre>';
+							// pick all left node and right node
+							if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
+								// echo '<br/>he='.$detail_data['left_val'];
+								//collect left node
 								if($detail_data['left_val'] != ''){
 									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
-									
-									$left_node['link'] = $rightValueArray; //create node linking
-									
-									//collect left node with linking
-									$other_nodes[] = $left_node;
 									
 									// create link with sub-topic of left_node
 									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
 								}
 								
-								//collect right node
-								foreach($rightValueArray as $r_key => $r_val){
-									if($r_val != ''){
-										// push right node to nodes array, so that it wil create a node
-										$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
-										// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
-										
-										// create link with sub-topic of right-node
-										$graph_child['children'][$sub_key]['link'][] = $r_val;
+								//collect right node if not empty
+								if(!empty($detail_data['right_val'])){
+									$rightValueArray = explode(',', trim($detail_data['right_val']));
+									
+									$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									
+									foreach($rightValueArray as $r_key => $r_val){
+										if($r_val != ''){
+											// push right node to nodes array, so that it wil create a node
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											
+											// create link with sub-topic of right-node
+											$graph_child['children'][$sub_key]['link'][] = $r_val;
+										}
 									}
 								}
+								
+								//collect left node with linking
+								$other_nodes[] = $left_node;
 							}
 						}
 						

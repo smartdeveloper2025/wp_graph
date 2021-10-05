@@ -262,7 +262,7 @@ function sub_creation(index){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
-				//async:false,
+				async:false,
                 data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_sub_creation_by_ajax&creation_id='+hdn_creation_id+'&counter='+index,
                 dataType: 'JSON',
                  success:function(res)
@@ -345,7 +345,7 @@ function plot_topic_graph(graph_data){
 	series.nodes.template.label.valign = "bottom";
 	series.nodes.template.label.fill = am4core.color("#000");
 	series.nodes.template.label.dy = 10;
-	series.nodes.template.tooltipText = "[bold]{tooltip}[/]";
+	//series.nodes.template.tooltipText = "[bold]{tooltip}[/]";
 	series.fontSize = 9;
 	series.minRadius = 10;
 	series.maxRadius = 20;
@@ -359,7 +359,7 @@ series.links.template.distance = 1;
 series.links.template.strength = 1;
 	
 	// Set tooltip of nodes on hover
-	/* series.nodes.template.adapter.add("tooltipText", function(text, target) {
+	series.nodes.template.adapter.add("tooltipText", function(text, target) {
 	  if (target.dataItem) {
 		switch(target.dataItem.level) {
 		  case 0:
@@ -367,12 +367,12 @@ series.links.template.strength = 1;
 		  case 1:
 			return "{tooltip}";
 		  case 2:
-			return "{parent.parent.name} > {parent.name} > {name} ({value})";
+			return "{name}";
 		}
 	  }
 	  return text;
 	});
- */
+ 
 	// Set link width
 	series.links.template.adapter.add("strokeWidth", function(width, target) {
 	  var from = target.source;
