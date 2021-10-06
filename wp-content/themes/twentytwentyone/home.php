@@ -64,8 +64,8 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 								$color_class = '';
 							} 
 						?>
-							<a href="http://localhost/knomad/edit-topic-notes/?edit_id=<?php echo $creation_data['id']; ?>">
-							<div class="mycreation-box <?php echo $color_class;  ?>"">
+							<a href="<?php echo esc_url( home_url( ) ); ?>/edit-topic-notes/?edit_id=<?php echo $creation_data['id']; ?>">
+							<div class="mycreation-box <?php echo $color_class;  ?>">
 								<i class="creaton-dot"></i>
 								<i class="creaton-dot"></i>
 								<i class="creaton-dot"></i>
