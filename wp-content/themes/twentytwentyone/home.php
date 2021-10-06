@@ -56,15 +56,19 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 						foreach($creation_result as $creation_data){
 							if($creation_data['type'] == 'topic'){
 								$color_class = 'topic_color';
+								$link_name = 'edit-topic-notes';
 							} else if($creation_data['type'] == 'network'){
 								$color_class = 'network_color';
+								$link_name = 'edit-network';
 							} else if($creation_data['type'] == 'experience'){
 								$color_class = 'experience_color';
+								$link_name = 'edit-experience';
 							} else {
 								$color_class = '';
+								$link_name = 'edit-topic-notes';
 							} 
 						?>
-							<a href="<?php echo esc_url( home_url( ) ); ?>/edit-topic-notes/?edit_id=<?php echo $creation_data['id']; ?>">
+							<a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>">
 							<div class="mycreation-box <?php echo $color_class;  ?>">
 								<i class="creaton-dot"></i>
 								<i class="creaton-dot"></i>

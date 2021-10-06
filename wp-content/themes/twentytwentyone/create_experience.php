@@ -158,7 +158,7 @@ get_header();
 function clone_skills(objThis , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_exp_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_exp_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(objThis).parent().parent().parent().before(tr);
 	jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
 	jQuery('#skills_count_'+count ).val(skills_count);
@@ -206,24 +206,24 @@ function tag_call(obj){
 }
 
 function exp_main_creation(){
-	var topic_name = jQuery('#topic_name').val();
-	var hdn_creation_id = jQuery('#hdn_creation_id').val();
+	var exp_name = jQuery('#exp_name').val();
+	var hdn_exp_creation_id = jQuery('#hdn_exp_creation_id').val();
 	/****************************/
-      if(topic_name != ''){
+      if(exp_name != ''){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
 				//async:false,
-                data: jQuery("#main_creation_frm").serialize() +'&action=create_creation_by_ajax&type=topic',
+                data: jQuery("#main_creation_frm").serialize() +'&action=create_experience_creation_by_ajax&type=experience',
                 dataType: 'JSON',
                  success:function(res)
                    {
                       if(res.flag == 'success'){
-						jQuery('#hdn_creation_id').val(res.creation_id);
+						jQuery('#hdn_exp_creation_id').val(res.creation_id);
                         // alert(res.msg);
 						//graph ajax start
 						if(res.creation_id != ''){
-							create_topic_graph(res.creation_id);
+							create_experience_graph(res.creation_id);
 						}
 						//graph ajax end
                         //location.reload();
@@ -241,50 +241,39 @@ function exp_main_creation(){
     /****************************/
 }
 
-function create_topic_graph(creation_id){
+function create_experience_graph(creation_id){
 	jQuery.ajax({
 					url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
 					type:'POST',
 					//async:false,
-					data: 'action=start_creation_graph_by_ajax&creation_id='+creation_id,
+					data: 'action=start_experience_creation_graph_by_ajax&creation_id='+creation_id,
 					dataType: 'JSON',
 					 success:function(res)
-					   {
-							
-							plot_topic_graph(res);
-							console.log(res);
-						  if(res.flag == 'success'){
-							
-							
-							//location.reload();
-							//window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
-						  }else{
-							  // alert('Opps! Something went wrong');
-						  }
-					  //  alert(results);
-			  
-						  }
+					    {							
+							plot_experience_graph(res);
+							console.log(res);			  
+						}
 				   });
 }
 
 function sub_exp_creation(index){
-	var hdn_creation_id = jQuery('#hdn_creation_id').val();
+	var hdn_exp_creation_id = jQuery('#hdn_exp_creation_id').val();
 	/****************************/
-      if(hdn_creation_id != ''){
+      if(hdn_exp_creation_id != ''){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
 				async:false,
-                data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_sub_creation_by_ajax&creation_id='+hdn_creation_id+'&counter='+index,
+                data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_experience_sub_creation_by_ajax&creation_id='+hdn_exp_creation_id+'&counter='+index,
                 dataType: 'JSON',
                  success:function(res)
                    {
 					   console.log(res);
                       if(res.flag == 'success'){
-						jQuery('#hdn_sub_creation_id_'+index).val(res.sub_creation_id);
+						jQuery('#hdn_exp_sub_creation_id_'+index).val(res.sub_creation_id);
                         // alert(res.msg);
-						if(hdn_creation_id != ''){
-							create_topic_graph(hdn_creation_id);
+						if(hdn_exp_creation_id != ''){
+							create_experience_graph(hdn_exp_creation_id);
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";
@@ -309,7 +298,7 @@ function sub_exp_creation(index){
 <script>
 
 	
-function plot_topic_graph(graph_data){
+function plot_experience_graph(graph_data){
 	
 	//license key of amcharts for remove branding
 	am4core.addLicense("CH297328668")
