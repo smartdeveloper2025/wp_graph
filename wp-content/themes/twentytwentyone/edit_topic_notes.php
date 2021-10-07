@@ -78,7 +78,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                 </div>
             </div>
             <!--<form method="post" id="topic_creation" action="" >-->
-			<input type="hidden" name="clone_counter" id="clone_counter" value="1" />
+			<input type="hidden" name="clone_counter" id="clone_counter" value="<?php echo count($subcreation_data); ?>" />
                 <div class="row mb-5">
 					<form method="post" id="main_creation_frm" action="" >
 						<div class="col-lg-7 col-md-7 col-sm-12">
@@ -198,6 +198,10 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
 create_topic_graph(<?php echo $_GET['edit_id']; ?>);
+jQuery(document).ready(function(){
+	var clone_counter_loop = parseInt(jQuery('#clone_counter').val());
+	jQuery('#next_counter_value').html(clone_counter_loop+1);	
+});
 /*********clone skills tr td start***********/
 function clone_skills(objThis , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();

@@ -18,15 +18,108 @@ get_header();
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/template-style.css" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style type="text/css">
+body{
+	font-family: 'Athiti', sans-serif!important;
+}
     .experience_row_box {
         display: grid;
         grid-template-rows: 85px;
     }
 	#chartdiv {
-	  width: 100%;
-	height:550px;
+	    position: sticky;
+	    width: 100%;
+	    height: 550px;
+	    top: 70px;
+	    display: flex;
+	    justify-content: center;
+	    background-color: transparent;
+	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
+	    border-radius: 5px;
 	}
+	.sec_devided{
+		background-color: rgba(255,255,255);
+	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
+	    padding: 15px 15px;
+	    border-radius: 5px;
+	    margin-bottom: 30px;
+	}
+	.sec_devided h4 {
+	    font-weight: 500;
+	    margin-bottom: 20px!Important;
+	    font-family: 'Athiti', sans-serif;
+	}
+	.sec_devided h4 a {
+    position: relative;
+    font-family: 'Athiti', sans-serif!important;
+    font-size: 18px;
+    color: #121212!important;
+}
+	.sec_devided h4 a:before {
+    content: '';
+    background-color: #666666;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    bottom: -3px;
+    z-index: 1;
+    opacity: 32%;
+}
+.sec_devided .topic__table .form-control{
+	border-radius: 0px;
+	border-left: 0px;
+	border-right: none;
+	border-top: none;
+	font-family: 'Athiti', sans-serif!important;
+}
+.sec_devided .topic__table .fas.fa-circle{
+	font-size: 10px;
+}
+.sec_devided .topic__table .form-control:hover, .sec_devided .topic__table .form-control:focus{
+	border-left: 0px!important;
+	border-right: none!important;
+	border-top: none!important;
+}
+.sec_devided .topic__table .amsify-suggestags-area{
+	width: 100%;
+}
+.sec_devided .topic__table .amsify-suggestags-area input.amsify-suggestags-input{
+	max-width: 100%;
+}
+.sec_devided .topic__table .amsify-suggestags-area span.amsify-select-tag {
+    font-family: 'Athiti', sans-serif;
+    position: relative;
+}
+.sec_devided .topic__table .amsify-suggestags-area .amsify-remove-tag {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background-color: rgba(0,0,0,0.7);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: -4px;
+    right: -3px;
+}
+.sec_devided .topic__table .amsify-suggestags-area .amsify-remove-tag img {
+    font-size: 8px;
+}
+.sec_devided .topic__table .remove__list{
+	cursor: pointer;
+}
+.sec_devided th {
+    font-family: 'Athiti', sans-serif;
+}
+.sec_devided label{
+	font-family: 'Athiti', sans-serif;
+}
+form#main_creation_frm input {
+    margin-bottom: 10px;
+}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -67,71 +160,73 @@ get_header();
                         <h5 class="m-0 mt-2">A Knomad creation</h5>
                     </div>
                 </div>
-                <div class="row chart__div">
-                    <div class="col-12">
-                        <h4 class="section-link mb-2"><a href="">Sub-Topic: 1</a></h4>
-                    </div>
-                    <div class="col-lg-7 col-md-7 col-sm-7 p-0">
-						<form method="post" id="sub_creation_frm_1" action="" >
-						<!-- <div class="col-lg-7 col-md-7 col-sm-7 p-0"> -->
-							<div class="row m-0">
-								<div class="col-12">
-									<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_1" value="" />
-									
-									<label><i class="fas fa-circle"></i> Name of Sub-Topic</label>
-									<input type="text" name="sub_topic_name" onblur="sub_creation(1)" placeholder="Name the subject" class="form-control creation_input">
+                <div class="row chart__div">                    
+                    <div class="col-lg-7 col-md-7 col-sm-7">                    	
+                    	<div class="sec_devided">
+                    		<h4 class="section-link mb-2"><a href="">Sub-Topic: 1</a></h4>
+							<form method="post" id="sub_creation_frm_1" action="" >
+							<!-- <div class="col-lg-7 col-md-7 col-sm-7 p-0"> -->
+								<div class="row m-0">
+									<div class="col-12 p-0">
+										<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_1" value="" />
+										
+										<label><i class="fas fa-circle"></i> Name of Sub-Topic</label>
+										<input type="text" name="sub_topic_name" onblur="sub_creation(1)" placeholder="Name the subject" class="form-control creation_input">
+									</div>
 								</div>
-							</div>
-							<div class="row m-0 mt-5">
-								<div class="col-12">
-									<input type="hidden" name="skills_count" id="skills_count_1" value="0" />
-									<table class="creation_table table_bordered topic__table">
-										<thead>
-											<tr>
-												<th style="width:50%">Source material/location [you can use this to group the keyword]?</th>
-												<th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr><td><div class="d-flex align-items-center">
-														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1)" >
-													</div>
-												</td>
-												<td>
-													<div class="d-flex align-items-center">
-														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
-													</div>
-												</td>
-											</tr>
-											
-										</tbody>
-									</table>
+								<div class="row m-0 mt-5">
+									<div class="col-12 p-0">
+										<input type="hidden" name="skills_count" id="skills_count_1" value="0" />
+										<table class="creation_table table_bordered topic__table">
+											<thead>
+												<tr>
+													<th style="width:50%">Source material/location [you can use this to group the keyword]?</th>
+													<th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr><td><div class="d-flex align-items-center">
+															<i class="fas fa-circle" aria-hidden="true"></i>
+															<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1)" >
+														</div>
+													</td>
+													<td>
+														<div class="d-flex align-items-center">
+															<i class="fas fa-circle" aria-hidden="true"></i>
+															<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
+														</div>
+													</td>
+												</tr>
+												
+											</tbody>
+										</table>
+									</div>
 								</div>
-							</div>
+								
+								<div class="row m-0 mt-4 experience_row_box">
+									<div class="col-12 p-0">
+										<label>Notes</label>
+										<input type="text" name="sub_topic_notes" onblur="sub_creation(1)" placeholder="Type Here" class="form-control creation_input">
+									</div>
+								</div>
+							<!-- </div> -->
 							
-							<div class="row m-0 mt-4 experience_row_box">
-								<div class="col-12">
-									<label>Notes</label>
-									<input type="text" name="sub_topic_notes" onblur="sub_creation(1)" placeholder="Type Here" class="form-control creation_input">
-								</div>
-							</div>
-						<!-- </div> -->
-						
-						</form>
+							</form>
+						</div>
+						<div class="additional_clone_data">
+
+						</div>
 					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
 						<div id="chartdiv"></div>
 					</div>
                 </div>
 				
-				<div class="additional_clone_data">
-				</div>
+				
 				
             <!--</form>-->
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-12 mt-5">
+                <div class="col-lg-7 col-md-7 col-sm-12 mt-2">
                     <h4 class="section-link mb-2"><a href="javascript:;" class="d-flex align-items-center"><i class="fas fa-plus mr-2 " onclick="html_clone()"></i> Sub-Topic: <span id="next_counter_value">2</span></a></h4>
                 </div>
             </div>
@@ -164,21 +259,19 @@ function html_clone(){
 	clone_counter++;
 	var html = '';
 	html += '<div class="row">';
-    html += '<div class="col-12"><h4 class="section-link mb-2"><a href="">Sub-Topic: ' + clone_counter + '</a></h4></div>';
-	html += '<form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
-	html += '<div class="col-lg-7 col-md-7 col-sm-12 p-0">';
-	html += '<div class="row m-0"><div class="col-12">';
+	html += '<div class="col-lg-12"><div class="sec_devided"><h4 class="section-link mb-2"><a href="">Sub-Topic: ' + clone_counter + '</a></h4><form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
+	html += '<div class="row m-0"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_' + clone_counter + '" value="" />';
 	html += '<label><i class="fas fa-circle"></i> Name of Sub-Topic</label>';
 	html += '<input type="text" name="sub_topic_name" onblur="sub_creation(' + clone_counter + ')" placeholder="Name the subject" class="form-control creation_input"></div></div>';
-	html += '<div class="row m-0 mt-5"><div class="col-12">';
+	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
 	html += '<table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
 	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
-	html += '<div class="col-12"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div>';
+	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div>';
 	
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			

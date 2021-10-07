@@ -1,13 +1,13 @@
     body{
-        font-family: "Raleway", Sans-serif;
+        font-family: 'Athiti', sans-serif;
         font-size: 18px;
         color: var(--global--color-primary);
     }
     h1,h2,h3,h4,h5,h6,p{
-        font-family: "Raleway", Sans-serif !important;
+        font-family: 'Athiti', sans-serif;
     }
     *{
-        font-family: "Raleway", Sans-serif;
+        font-family: 'Athiti', sans-serif;
     }
     a{
         color:var(--global--color-primary);
@@ -563,4 +563,15 @@
     #chartdiv{
         background: #eee;
     }
-    
+    .creation-row .experience_color{
+		background: #593E97;
+	    color: #fff;
+	}
+	.creation-row .network_color {
+	    background: #28303D;
+	    color: #fff;
+	}
+	.creation-row .topic_color {
+	    background: #28303D;
+	    color: #fff;
+	}

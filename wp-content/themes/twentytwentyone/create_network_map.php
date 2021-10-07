@@ -48,7 +48,7 @@ get_header();
 					<form method="post" id="main_creation_frm" action="" >
 						<div class="col-lg-7 col-md-7 col-sm-12">
 							<input type="text" placeholder="Name your network map" onblur="net_main_creation()"  id="net_name" name="net_name" class="form-control creation_input">
-							<label for="exp_desc">Description</label>
+							<label for="net_desc">Description</label>
 							<textarea name="net_desc" id="net_desc" onblur="net_main_creation()" class="form-control creation_input" ></textarea>
 							<p>
 								[you can use this space to describe the purpose of this creation]
