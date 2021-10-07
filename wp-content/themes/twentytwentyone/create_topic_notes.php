@@ -187,13 +187,13 @@ form#main_creation_frm input {
 											<tbody>
 												<tr><td><div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1)" >
+															<input type="text" name="tag_val[0][left]" placeholder="Add source" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1)" >
 														</div>
 													</td>
 													<td>
 														<div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
+															<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" >
 														</div>
 													</td>
 												</tr>
@@ -242,7 +242,7 @@ form#main_creation_frm input {
 function clone_skills(objThis , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add source" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(objThis).parent().parent().parent().before(tr);
 	jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
 	jQuery('#skills_count_'+count ).val(skills_count);
@@ -269,7 +269,7 @@ function html_clone(){
 	html += '<table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
 	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div>';
 	

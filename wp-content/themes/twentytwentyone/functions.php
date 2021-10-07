@@ -1299,6 +1299,9 @@ add_action('wp_ajax_create_network_sub_creation_by_ajax', 'create_network_sub_cr
 function start_network_creation_graph_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
+	$current_user = wp_get_current_user();
+		// echo "<pre>"; print_r($current_user); die("======yyyyyy");
+	
 	$response =array();
 	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
 
@@ -1310,13 +1313,14 @@ function start_network_creation_graph_ajax() {
 		// echo "<br>";
 		// echo "<pre>"; print_r($results); die("======rrrrrrr");
 		
+		
 		if(count($creation_result) >= 0){
 			//graph main node
-			/*$graph_nodes = array(
-									'name' => $creation_result[0]['name'],
+			$graph_nodes = array(
+									'name' => $current_user->display_name,
 									'value' => 100,
-									'color' => '#9ba2a6'
-								);*/
+									'color' => '#000000'
+								);
 			
 			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
@@ -1332,7 +1336,10 @@ function start_network_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					
+					$graph_child['children'] = $detail_data['left_val'];
+					
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1353,7 +1360,7 @@ function start_network_creation_graph_ajax() {
 									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 									
 									// create link with sub-topic of left_node
-									$graph_child['link'][] = $detail_data['left_val'];
+									//$graph_child['link'][] = $detail_data['left_val'];
 								}
 								
 								//collect right node if not empty
@@ -1361,7 +1368,7 @@ function start_network_creation_graph_ajax() {
 									$rightValueArray = explode(',', trim($detail_data['right_val']));
 									
 									if($detail_data['left_val'] != ''){
-										$left_node['link'] = $rightValueArray; //create left node linking with right node 
+										//$left_node['link'] = $rightValueArray; //create left node linking with right node 
 									}
 									
 									foreach($rightValueArray as $r_key => $r_val){
@@ -1371,7 +1378,7 @@ function start_network_creation_graph_ajax() {
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
-											$graph_child['link'][] = $r_val;
+											//$graph_child['link'][] = $r_val;
 										}
 									}
 								}
