@@ -75,18 +75,19 @@ get_header();
 							<div class="row m-0">
 								<div class="col-12">
 									<input type="hidden" name="hdn_exp_sub_creation_id" id="hdn_exp_sub_creation_id_1" value="" />
-									
-									<div class="col-md-4">
-										<label><i class="fas fa-circle"></i> Name of Experience</label>
-										<input type="text" name="sub_exp_name" onblur="sub_exp_creation(1)" placeholder="name the experience" class="form-control creation_input">
-									</div>
-									<div class="col-md-4">
-										<label><i class="fas fa-circle"></i> Position/Title</label>
-										<input type="text" name="sub_exp_title" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
-									</div>
-									<div class="col-md-4">
-										<label><i class="fas fa-circle"></i> Location</label>
-										<input type="text" name="sub_exp_location" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
+									<div class="row m-0">
+										<div class="col-md-4">
+											<label><i class="fas fa-circle"></i> Name of Experience</label>
+											<input type="text" name="sub_exp_name" onblur="sub_exp_creation(1)" placeholder="name the experience" class="form-control creation_input">
+										</div>
+										<div class="col-md-4">
+											<label><i class="fas fa-circle"></i> Position/Title</label>
+											<input type="text" name="sub_exp_title" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
+										</div>
+										<div class="col-md-4">
+											<label><i class="fas fa-circle"></i> Location</label>
+											<input type="text" name="sub_exp_location" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
+										</div>
 									</div>
 								</div>
 							</div>

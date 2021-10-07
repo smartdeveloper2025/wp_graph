@@ -1149,6 +1149,262 @@ add_action('wp_ajax_start_experience_creation_graph_by_ajax', 'start_experience_
 
 /*****************Experience Functions End**************************/
 
+/*****************Network Functions Start**************************/
+function create_network_creation_ajax() {
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$response =array();
+	//echo "<pre>"; print_r($_POST); die('=========form--------cccccc--');
+	if(isset($_POST['action']) && $_POST['action'] == 'create_network_creation_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$type = trim($_POST['type']);
+		$net_name = trim($_POST['net_name']);
+		$net_desc = trim($_POST['net_desc']);
+		$hdn_creation_id = trim($_POST['hdn_net_creation_id']);
+		
+		if(empty($hdn_creation_id) && !empty($net_name) ){ 
+			$sqlInsert = "INSERT INTO {$creation_table} set user_id='{$current_user_id}', name='{$net_name}', description='{$net_desc}', type='{$type}'";
+			
+			if($wpdb->query($sqlInsert)) 
+    		{
+			//die('here localkk');
+				$creation_id = $wpdb->insert_id;
+				$response = array('flag'=> 'success','creation_id'=>$creation_id, 'msg'=> 'Network inserted successfully');
+			}else{
+				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
+			}
+		} else if(!empty($hdn_creation_id) && !empty($net_name) ){
+			$sqlUpdate = "update {$creation_table} set name='{$net_name}', description='{$net_desc}' where id={$hdn_creation_id} and user_id={$current_user_id}";
+			
+			$updResult = $wpdb->query($sqlUpdate);
+			
+			if($updResult === 0 || $updResult > 0)
+    		{
+				// check if skill/tools array is not empty
+				$response = array('flag'=> 'success','creation_id'=>$hdn_creation_id, 'msg'=> 'Network Updated successfully');
+			}else{
+				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
+			}
+		} else {
+			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
+		}
+	} // end if
+		// Encoding array in JSON format
+		echo json_encode($response);
+			die();
+}
+add_action('wp_ajax_create_network_creation_by_ajax', 'create_network_creation_ajax');
+
+function create_network_sub_creation_ajax() {
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$response =array();
+	//==waste
+		$sql_log =array();
+	//==end-waste
+	//echo "<pre>"; print_r($_POST); //die('=========form--------ssss1--');
+	if(isset($_POST['action']) && $_POST['action'] == 'create_network_sub_creation_by_ajax')	{
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+		$counter = trim($_POST['counter']);
+		$hdn_creation_id = trim($_POST['creation_id']);
+		$hdn_sub_creation_id = trim($_POST['hdn_net_sub_creation_id']);
+		$sub_net_name = trim($_POST['sub_net_name']);
+		$sub_net_title = trim($_POST['sub_net_title']);
+		$sub_net_location = trim($_POST['sub_net_location']);
+		$net_notes = trim($_POST['sub_net_notes']);
+		
+		//check creation_id not empty and sub_creation_id empty and sub_topic_name not empty
+		if(empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
+			
+			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$net_notes}' ";
+			
+			//==waste
+			$sql_log[] = $sqlInsertSub;
+			
+			if($wpdb->query($sqlInsertSub)) 
+    		{
+				$sub_creation_id = $wpdb->insert_id;
+				
+				// check if skill/tools array is not empty
+				if(!empty($_POST['tag_val'])){
+					$sqlDeleteOldSubDetail = "DELETE from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and  creation_id = '{$hdn_creation_id}' and sub_creation_id = '{$hdn_sub_creation_id}' ";
+				//==waste
+				$sql_log[] = $sqlDeleteOldSubDetail;
+			
+					$wpdb->query($sqlDeleteOldSubDetail);
+					
+					foreach($_POST['tag_val'] as $key => $tag_val){
+						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$wpdb->query($sqlInsertSubDetail);
+				//==waste
+				$sql_log[] = $sqlInsertSubDetail;
+			
+						}
+					}
+				}
+				
+				$response = array('flag'=> 'success', 'counter'=>$counter, 'sub_creation_id'=>$sub_creation_id, 'msg'=> 'Sub creation created successfully');
+			}else{
+				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong--1');
+			}
+		} else if(!empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
+			
+			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$exp_notes}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+			
+			//==waste
+			$sql_log[] = $sqlUpdateSub;
+			//==end-waste
+			
+			$updResult = $wpdb->query($sqlUpdateSub);
+			
+			if($updResult === 0 || $updResult > 0) 
+    		{
+				// check if skill/tools array is not empty
+				if(!empty($_POST['tag_val'])){
+					$sqlDeleteOldSubDetail = "DELETE from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and  creation_id = '{$hdn_creation_id}' and sub_creation_id = '{$hdn_sub_creation_id}' ";
+					$wpdb->query($sqlDeleteOldSubDetail);
+			//==waste
+			$sql_log[] = $sqlDeleteOldSubDetail;
+			//==end-waste
+			
+					foreach($_POST['tag_val'] as $key => $tag_val){
+						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+			//==waste
+			$sql_log[] = $sqlInsertSubDetail;
+			//==end-waste
+			
+							$wpdb->query($sqlInsertSubDetail);
+						}
+					}
+				}
+				
+				$response = array('flag'=> 'success', 'counter'=>$counter, 'sub_creation_id'=>$hdn_sub_creation_id, 'msg'=> 'Sub creation updated successfully');
+			}else{
+				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong---2');
+			}
+		} else {
+			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
+		}
+	} // end if
+		
+		// Encoding array in JSON format
+		echo json_encode(array_merge($response, $sql_log));
+			die();
+}
+add_action('wp_ajax_create_network_sub_creation_by_ajax', 'create_network_sub_creation_ajax');
+
+function start_network_creation_graph_ajax() {
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$response =array();
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
+
+	if(isset($_POST['action']) && $_POST['action'] == 'start_network_creation_graph_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
+		// echo "<br>";
+		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		
+		if(count($creation_result) >= 0){
+			//graph main node
+			/*$graph_nodes = array(
+									'name' => $creation_result[0]['name'],
+									'value' => 100,
+									'color' => '#9ba2a6'
+								);*/
+			
+			// get sub-topic
+			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
+			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+
+			if(count($sub_creation_result) >= 0){
+				// loop for all sub-topic
+				foreach($sub_creation_result as $sub_key => $sub_data){
+					if($sub_data['notes'] != ''){
+						$tooltip_text = $sub_data['notes'];
+					} else {
+						$tooltip_text = $sub_data['field_1'];
+					}
+					
+					// append children to main node
+					$graph_child = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					
+					// get left-right (Source-Learning) nodes
+					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
+					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+					
+					if(count($detail_sub_creation_result) >= 0){
+						// loop for all left-right (Source-Learning) nodes
+						foreach($detail_sub_creation_result as $key => $detail_data){
+							$left_node = array();
+							// echo '<pre><br/>===';
+							// var_dump($detail_data);
+							// echo '</pre>';
+							// pick all left node and right node
+							if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
+								// echo '<br/>he='.$detail_data['left_val'];
+								//collect left node
+								if($detail_data['left_val'] != ''){
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									
+									// create link with sub-topic of left_node
+									$graph_child['link'][] = $detail_data['left_val'];
+								}
+								
+								//collect right node if not empty
+								if(!empty($detail_data['right_val'])){
+									$rightValueArray = explode(',', trim($detail_data['right_val']));
+									
+									if($detail_data['left_val'] != ''){
+										$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									}
+									
+									foreach($rightValueArray as $r_key => $r_val){
+										if($r_val != ''){
+											// push right node to nodes array, so that it wil create a node
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											
+											// create link with sub-topic of right-node
+											$graph_child['link'][] = $r_val;
+										}
+									}
+								}
+								
+								//collect left node with linking
+								if(count($left_node) > 0){
+									$other_nodes[] = $left_node;
+								}
+							}
+						}
+						
+					}
+				}
+				
+				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				$graph_data = array_merge($graph_data,$other_nodes);
+				
+					//echo "<pre>"; print_r($graph_data); //die('==hello');
+				echo json_encode($graph_data); die();
+			} else {
+				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
+				echo json_encode($test); die();
+			}
+			
+		 } 
+	} 
+	
+	
+}
+add_action('wp_ajax_start_network_creation_graph_by_ajax', 'start_network_creation_graph_ajax');
+
+/*****************Experience Functions End**************************/
+
 /*add_action('wp_logout','auto_redirect_after_logout');
 
 function auto_redirect_after_logout(){
