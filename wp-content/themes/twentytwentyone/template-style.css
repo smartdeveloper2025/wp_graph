@@ -563,15 +563,18 @@
     #chartdiv{
         background: #eee;
     }
-    .creation-row .experience_color{
-		background: #593E97;
-	    color: #fff;
+	.creation-row .experience_color{
+		background: rgba(196, 196, 196);
+		background: radial-gradient(circle, rgba(89, 62, 151, 0.7) -22%, rgba(196, 196, 196, 0.2) 85%);
 	}
-	.creation-row .network_color {
-	    background: #28303D;
-	    color: #fff;
+	.creation-row .network_color{
+		background: rgba(196, 196, 196);
+		background: radial-gradient(circle, rgba(8, 0, 28, 0.4) -12%, rgba(196, 196, 196, 0.2) 85%);
 	}
-	.creation-row .topic_color {
-	    background: #28303D;
-	    color: #fff;
+	.creation-row .topic_color
+		background: rgba(196, 196, 196);
+		background: radial-gradient(circle, rgba(180, 188, 252, 0.9) 5%, rgba(196, 196, 196, 0.2) 85%);
 	}
+    
+    
+    
