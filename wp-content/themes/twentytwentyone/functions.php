@@ -1303,7 +1303,7 @@ function start_network_creation_graph_ajax() {
 		// echo "<pre>"; print_r($current_user); die("======yyyyyy");
 	
 	$response =array();
-	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = $other_sub_nodes = array();
 
 	if(isset($_POST['action']) && $_POST['action'] == 'start_network_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
@@ -1336,11 +1336,15 @@ function start_network_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
-					
-					$graph_child['children'] = $detail_data['left_val'];
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
 					
 					
+					
+					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => '#593e97', 'link'=>[$sub_data['field_3']] );
+					
+					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => '#b4bcfc','link'=>[$sub_data['field_1']] );
+					
+					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
@@ -1357,10 +1361,10 @@ function start_network_creation_graph_ajax() {
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#9ba2a6');
 									
 									// create link with sub-topic of left_node
-									//$graph_child['link'][] = $detail_data['left_val'];
+									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
 								}
 								
 								//collect right node if not empty
@@ -1374,11 +1378,11 @@ function start_network_creation_graph_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
-											//$graph_child['link'][] = $r_val;
+											//$graph_child['children'][$sub_key]['link'][] = $r_val;
 										}
 									}
 								}
