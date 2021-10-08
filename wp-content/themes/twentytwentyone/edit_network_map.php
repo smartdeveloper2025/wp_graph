@@ -65,7 +65,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 	<div id="content" class="content" role="main">
         <div class="container py-5">
             <div class="row mx-0">
-                <h4 class="section-link"><a href=""><u>Network Map</u></a></h4>
+                <h4 class="section-link"><a href=""><u>Edit Network Map</u></a></h4>
                 <div class="col-12">
                     <div class="d-flex justify-content-end">
                         <p class="form-text">

@@ -29,97 +29,6 @@ body{
         display: grid;
         grid-template-rows: 85px;
     }
-	#chartdiv {
-	    position: sticky;
-	    width: 100%;
-	    height: 550px;
-	    top: 70px;
-	    display: flex;
-	    justify-content: center;
-	    background-color: transparent;
-	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
-	    border-radius: 5px;
-	}
-	.sec_devided{
-		background-color: rgba(255,255,255);
-	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
-	    padding: 15px 15px;
-	    border-radius: 5px;
-	    margin-bottom: 30px;
-	}
-	.sec_devided h4 {
-	    font-weight: 500;
-	    margin-bottom: 20px!Important;
-	    font-family: 'Athiti', sans-serif;
-	}
-	.sec_devided h4 a {
-    position: relative;
-    font-family: 'Athiti', sans-serif!important;
-    font-size: 18px;
-    color: #121212!important;
-}
-	.sec_devided h4 a:before {
-    content: '';
-    background-color: #666666;
-    width: 100%;
-    height: 2px;
-    position: absolute;
-    bottom: -3px;
-    z-index: 1;
-    opacity: 32%;
-}
-.sec_devided .topic__table .form-control{
-	border-radius: 0px;
-	border-left: 0px;
-	border-right: none;
-	border-top: none;
-	font-family: 'Athiti', sans-serif!important;
-}
-.sec_devided .topic__table .fas.fa-circle{
-	font-size: 10px;
-}
-.sec_devided .topic__table .form-control:hover, .sec_devided .topic__table .form-control:focus{
-	border-left: 0px!important;
-	border-right: none!important;
-	border-top: none!important;
-}
-.sec_devided .topic__table .amsify-suggestags-area{
-	width: 100%;
-}
-.sec_devided .topic__table .amsify-suggestags-area input.amsify-suggestags-input{
-	max-width: 100%;
-}
-.sec_devided .topic__table .amsify-suggestags-area span.amsify-select-tag {
-    font-family: 'Athiti', sans-serif;
-    position: relative;
-}
-.sec_devided .topic__table .amsify-suggestags-area .amsify-remove-tag {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background-color: rgba(0,0,0,0.7);
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    top: -4px;
-    right: -3px;
-}
-.sec_devided .topic__table .amsify-suggestags-area .amsify-remove-tag img {
-    font-size: 8px;
-}
-.sec_devided .topic__table .remove__list{
-	cursor: pointer;
-}
-.sec_devided th {
-    font-family: 'Athiti', sans-serif;
-}
-.sec_devided label{
-	font-family: 'Athiti', sans-serif;
-}
-form#main_creation_frm input {
-    margin-bottom: 10px;
-}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -177,6 +86,7 @@ form#main_creation_frm input {
 								<div class="row m-0 mt-5">
 									<div class="col-12 p-0">
 										<input type="hidden" name="skills_count" id="skills_count_1" value="0" />
+										<div class="table-responsive">
 										<table class="creation_table table_bordered topic__table">
 											<thead>
 												<tr>
@@ -201,6 +111,7 @@ form#main_creation_frm input {
 											</tbody>
 										</table>
 									</div>
+									</div>
 								</div>
 								
 								<div class="row m-0 mt-4 experience_row_box">
@@ -218,7 +129,7 @@ form#main_creation_frm input {
 						</div>
 					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
-						<div id="chartdiv"></div>
+						<div id="chartdiv" class="scoll_chart"></div>
 					</div>
                 </div>
 				
@@ -266,10 +177,10 @@ function html_clone(){
 	html += '<input type="text" name="sub_topic_name" onblur="sub_creation(' + clone_counter + ')" placeholder="Name the subject" class="form-control creation_input"></div></div>';
 	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
-	html += '<table class="creation_table table_bordered topic__table">';
+	html += '<div class="table-responsive"><table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" ></div></td></tr></tbody></table></div></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
 	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div>';
 	
