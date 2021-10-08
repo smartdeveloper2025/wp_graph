@@ -52,15 +52,14 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/template-style.css" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style type="text/css">
     .experience_row_box {
         display: grid;
         grid-template-rows: 85px;
     }
-	#chartdiv {
-	  width: 100%;
-	height:550px;
-	}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -103,16 +102,16 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                 </div>
 			<input type="hidden" name="clone_counter" id="clone_counter" value="<?php echo count($subcreation_data); ?>" />
                 <div class="row chart__div">
+					
+					
+						<div class="col-lg-7 col-md-7 col-sm-7 ">
 					<?php foreach($subcreation_data as $sub_key => $sub_data){ $sub_key++;  ?>
-					<div class="edit_loop">
-						<div class="col-12">
+							<div class="sec_devided">
 							<h4 class="section-link mb-2"><a href="">Contact: <?php echo $sub_key; ?></a></h4>
-						</div>
-						<div class="col-lg-7 col-md-7 col-sm-7 p-0">
 							<form method="post" id="sub_creation_frm_<?php echo $sub_key; ?>" action="" >
 							<!-- <div class="col-lg-7 col-md-7 col-sm-7 p-0"> -->
-								<div class="col-12">
-									<div class="row m-0">
+								<div class="col-12 p-0">
+									<div class="row">
 										<input type="hidden" name="hdn_net_sub_creation_id" id="hdn_net_sub_creation_id_<?php echo $sub_key; ?>" value="<?php echo $sub_data['id']; ?>" />
 										
 										<div class="col-md-4">
@@ -130,8 +129,9 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 									</div>
 								</div>
 								<div class="row m-0 mt-5">
-									<div class="col-12">
+									<div class="col-12 p-0">
 										<input type="hidden" name="skills_count" id="skills_count_<?php echo $sub_key; ?>" value="<?php echo count($sub_data['details']); ?>" />
+										<div class="table-responsive">
 										<table class="creation_table table_bordered network__table">
 											<thead>
 												<tr>
@@ -171,10 +171,11 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 											</tbody>
 										</table>
 									</div>
+									</div>
 								</div>
 								
 								<div class="row m-0 mt-4 experience_row_box">
-									<div class="col-12">
+									<div class="col-12 p-0">
 										<label>Notes</label>
 										<input type="text" name="sub_net_notes" onblur="sub_net_creation(<?php echo $sub_key; ?>)" placeholder="Type Here" class="form-control creation_input" value="<?php echo $sub_data['notes']; ?>" >
 									</div>
@@ -183,19 +184,23 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 							
 							</form>
 						</div>
-					</div>
+						
+					
 					<?php } ?>
-					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
-						<div id="chartdiv"></div>
+					<div class="additional_clone_data">
+					</div>
+				</div>
+					
+					<div class="col-lg-5 col-md-5 col-sm-5 p-0">
+						<div id="chartdiv" class="scoll_chart"></div>
 					</div>
                 </div>
 				
-				<div class="additional_clone_data">
-				</div>
+				
 				
             <!--</form>-->
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-12 mt-5">
+                <div class="col-lg-12 mt-2">
                     <h4 class="section-link mb-2"><a href="javascript:;" class="d-flex align-items-center"><i class="fas fa-plus mr-2 " onclick="html_clone()"></i> Contact: <span id="next_counter_value">2</span></a></h4>
                 </div>
             </div>
@@ -233,22 +238,21 @@ function html_clone(){
 	clone_counter++;
 	var html = '';
 	html += '<div class="row">';
-    html += '<div class="col-12"><h4 class="section-link mb-2"><a href="">Contact: ' + clone_counter + '</a></h4></div>';
-	html += '<form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
-	html += '<div class="col-lg-7 col-md-7 col-sm-12 p-0">';
-	html += '<div class="col-12"><div class="row m-0">';
+	html += '<div class="col-lg-12"><div class="sec_devided"><h4 class="section-link mb-2"><a href="">Contact: ' + clone_counter + '</a></h4><form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
+	html += '<div class="col-lg-12 p-0">';
+	html += '<div class="col-12 p-0"><div class="row">';
 	html += '<input type="hidden" name="hdn_net_sub_creation_id" id="hdn_net_sub_creation_id_' + clone_counter + '" value="" />';
 	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Name of Contact</label>';
 	html += '<input type="text" name="sub_net_name" onblur="sub_net_creation(' + clone_counter + ')" placeholder="first & last name" class="form-control creation_input"></div>';
 	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Organization</label><input type="text" name="sub_net_title" onblur="sub_net_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div><div class="col-md-4"><label><i class="fas fa-circle"></i> Position</label><input type="text" name="sub_net_location" onblur="sub_net_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div></div></div>';
-	html += '<div class="row m-0 mt-5"><div class="col-12">';
+	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
-	html += '<table class="creation_table table_bordered network__table">';
+	html += '<div class="table-responsive"><table class="creation_table table_bordered network__table">';
 	html += '<thead><tr><th style="width:50%">How can they help me?</th><th style="width:50%">How can I help them? [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_net_creation(' + clone_counter + ')" placeholder="What benefit can this person provide?[e.g. referral, resume tips]" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_net_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="What benefit can you provide this person?" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_net_creation(' + clone_counter + ')" placeholder="What benefit can this person provide?[e.g. referral, resume tips]" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_net_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="What benefit can you provide this person?" class="form-control creation_input" ></div></td></tr></tbody></table></div></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
-	html += '<div class="col-12"><label>Notes</label><input type="text" name="sub_net_notes" onblur="sub_net_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div>';
+	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_net_notes" onblur="sub_net_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div></div>';
 	
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			

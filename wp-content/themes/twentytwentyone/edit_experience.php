@@ -57,10 +57,6 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
         display: grid;
         grid-template-rows: 85px;
     }
-	#chartdiv {
-	  width: 100%;
-	height:650px;
-	}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -101,15 +97,13 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                 </div>
                 <div class="row chart__div">
 					<?php foreach($subcreation_data as $sub_key => $sub_data){ $sub_key++;  ?>
-					<div class="edit_loop">
-						<div class="col-12">
+					
+						<div class="col-lg-7 col-md-7 col-sm-7">
+							<div class="sec_devided">
 							<h4 class="section-link mb-2"><a href="">Experience: <?php echo $sub_key; ?></a></h4>
-						</div>
-						<div class="col-lg-7 col-md-7 col-sm-7 p-0">
 							<form method="post" id="sub_creation_frm_<?php echo $sub_key; ?>" action="" >
 							<!-- <div class="col-lg-7 col-md-7 col-sm-7 p-0"> -->
-								<div class="row m-0">
-									<div class="col-12">
+								<div class="row">
 										<input type="hidden" name="hdn_exp_sub_creation_id" id="hdn_exp_sub_creation_id_<?php echo $sub_key; ?>" value="<?php echo $sub_data['id']; ?>" />
 										
 										<div class="col-md-4">
@@ -124,11 +118,11 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 											<label><i class="fas fa-circle"></i> Location</label>
 											<input type="text" name="sub_exp_location" onblur="sub_exp_creation(<?php echo $sub_key; ?>)" placeholder="type here" class="form-control creation_input" value="<?php echo $sub_data['field_3']; ?>">
 										</div>
-									</div>
 								</div>
 								<div class="row m-0 mt-5">
-									<div class="col-12">
+									<div class="col-12 p-0">
 										<input type="hidden" name="skills_count" id="skills_count_<?php echo $sub_key; ?>" value="<?php echo count($sub_data['details']); ?>" />
+										<div class="table-responsive">
 										<table class="creation_table table_bordered experience__table">
 											<thead>
 												<tr>
@@ -168,34 +162,36 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 											</tbody>
 										</table>
 									</div>
-								</div>
-								
-								<div class="row m-0 mt-4 experience_row_box">
-									<div class="col-12">
+									</div>
+									<div class="col-12 mt-4 p-0">
 										<label>Outcomes & Achievements</label>
 										<input type="text" name="sub_exp_notes" onblur="sub_exp_creation(<?php echo $sub_key; ?>)" placeholder="Type Here" class="form-control creation_input" value="<?php echo $sub_data['notes']; ?>" >
-										<p>
+										<p class="mt-1">
 											[what were the outcomes or achievements you want to highlight from the experience]
 										</p>
 									</div>
 								</div>
+								
 							<!-- </div> -->
 							
 							</form>
 						</div>
-					</div>
+						
+					
 					<?php } ?>
+					<div class="additional_clone_data">
+					</div>
+					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
-						<div id="chartdiv"></div>
+						<div id="chartdiv" class="scoll_chart"></div>
 					</div>
                 </div>
 				
-				<div class="additional_clone_data">
-				</div>
+				
 				
             <!--</form>-->
             <div class="row">
-                <div class="col-lg-7 col-md-7 col-sm-12 mt-5">
+                <div class="col-lg-12 mt-2">
                     <h4 class="section-link mb-2"><a href="javascript:;" class="d-flex align-items-center"><i class="fas fa-plus mr-2 " onclick="html_clone()"></i> Experience: <span id="next_counter_value">2</span></a></h4>
                 </div>
             </div>
@@ -233,22 +229,20 @@ function html_clone(){
 	clone_counter++;
 	var html = '';
 	html += '<div class="row">';
-    html += '<div class="col-12"><h4 class="section-link mb-2"><a href="">Experience: ' + clone_counter + '</a></h4></div>';
-	html += '<form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
-	html += '<div class="col-lg-7 col-md-7 col-sm-12 p-0">';
-	html += '<div class="row m-0"><div class="col-12">';
+	html += '<div class="col-lg-12"><div class="sec_devided"><h4 class="section-link mb-2"><a href="">Experience: ' + clone_counter + '</a></h4><form method="post" id="sub_creation_frm_' + clone_counter + '" action="" >';
+	html += '<div class="col-lg-12 p-0">';
+	html += '<div class="row">';
 	html += '<input type="hidden" name="hdn_exp_sub_creation_id" id="hdn_exp_sub_creation_id_' + clone_counter + '" value="" />';
 	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Name of Experience</label>';
 	html += '<input type="text" name="sub_exp_name" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="name the experience" class="form-control creation_input"></div>';
-	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Position/Title</label><input type="text" name="sub_exp_title" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div><div class="col-md-4"><label><i class="fas fa-circle"></i> Location</label><input type="text" name="sub_exp_location" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div></div></div>';
-	html += '<div class="row m-0 mt-5"><div class="col-12">';
+	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Position/Title</label><input type="text" name="sub_exp_title" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div><div class="col-md-4"><label><i class="fas fa-circle"></i> Location</label><input type="text" name="sub_exp_location" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div></div>';
+	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
-	html += '<table class="creation_table table_bordered experience__table">';
+	html += '<div class="table-responsive"><table class="creation_table table_bordered experience__table">';
 	html += '<thead><tr><th style="width:50%">What skills did you learn or obtain during this experience?</th><th style="width:50%">What tools/languages were used in this skill? [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
-	html += '<div class="row m-0 mt-4 experience_row_box">';
-	html += '<div class="col-12"><label>Outcomes & Achievements</label><input type="text" name="sub_exp_notes" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"><p>[what were the outcomes or achievements you want to highlight from the experience]</p></div></div></div></form></div>';
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div><div class="col-12 p-0 mt-4"><label>Outcomes & Achievements</label><input type="text" name="sub_exp_notes" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"><p class="mt-1">[what were the outcomes or achievements you want to highlight from the experience]</p></div></div>';					
+	html += '</div></form></div></div></div>';
 	
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			
@@ -418,7 +412,7 @@ function plot_experience_graph(graph_data){
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
-	series.manyBodyStrength = -20;
+	series.manyBodyStrength = -50;
 series.links.template.distance = 1;
 series.links.template.strength = 1;
 	
