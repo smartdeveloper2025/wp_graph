@@ -1076,7 +1076,7 @@ function start_experience_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1097,7 +1097,7 @@ function start_experience_creation_graph_ajax() {
 									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
 									
 									// create link with sub-topic of left_node
-									$graph_child['link'][] = $detail_data['left_val'];
+									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
 								}
 								
 								//collect right node if not empty
@@ -1115,7 +1115,7 @@ function start_experience_creation_graph_ajax() {
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
-											$graph_child['link'][] = $r_val;
+											$graph_child[$sub_key]['link'][] = $r_val;
 										}
 									}
 								}
@@ -1130,7 +1130,8 @@ function start_experience_creation_graph_ajax() {
 					}
 				}
 				
-				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				//$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				$graph_data = $graph_child; //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
 				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
@@ -1378,7 +1379,7 @@ function start_network_creation_graph_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
+											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node

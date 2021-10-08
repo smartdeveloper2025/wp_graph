@@ -59,7 +59,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
     }
 	#chartdiv {
 	  width: 100%;
-	height:550px;
+	height:650px;
 	}
 </style>
 	<!-- Content -->
@@ -418,7 +418,7 @@ function plot_experience_graph(graph_data){
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
-	series.manyBodyStrength = -50;
+	series.manyBodyStrength = -20;
 series.links.template.distance = 1;
 series.links.template.strength = 1;
 	
