@@ -47,7 +47,7 @@ get_header();
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
                             <a href="Javascript:;" class="link mr-3">View Large</a>
-                            <a href="Javascript:;" class="share_link" target="_blank"><i class="fas fa-link mr-2"></i>Share</a>
+                            <a href="Javascript:;" class="share_link"><i class="fas fa-link mr-2"></i>Share</a>
                         </p>
                     </div>
                 </div>
@@ -236,6 +236,7 @@ function exp_main_creation(){
 						if(res.creation_id != ''){
 							create_experience_graph(res.creation_id);
 							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery(".share_link").attr("target", "_blank");
 						}
 						//graph ajax end
                         //location.reload();
@@ -287,6 +288,7 @@ function sub_exp_creation(index){
 						if(hdn_exp_creation_id != ''){
 							create_experience_graph(hdn_exp_creation_id);
 							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery(".share_link").attr("target", "_blank");
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";

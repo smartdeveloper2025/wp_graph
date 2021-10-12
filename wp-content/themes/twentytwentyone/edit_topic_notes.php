@@ -72,7 +72,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
                             <a href="Javascript:;" class="link mr-3">View Large</a>
-                            <a href="Javascript:;" class="link"><i class="fas fa-link mr-2"></i>Share</a>
+                            <a href="Javascript:;" class="share_link" ><i class="fas fa-link mr-2"></i>Share</a>
                         </p>
                     </div>
                 </div>
@@ -201,6 +201,12 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
 create_topic_graph(<?php echo $_GET['edit_id']; ?>);
+var home_url = "<?php echo home_url('/share-graph');  ?>";
+var current_user_id = "<?php echo get_current_user_id();  ?>";
+var hdn_creation_id = jQuery('#hdn_creation_id').val();
+jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
+jQuery(".share_link").attr("target", "_blank");
+
 jQuery(document).ready(function(){
 	var clone_counter_loop = parseInt(jQuery('#clone_counter').val());
 	jQuery('#next_counter_value').html(clone_counter_loop+1);	
@@ -275,6 +281,8 @@ function main_creation(){
 						//graph ajax start
 						if(res.creation_id != ''){
 							create_topic_graph(res.creation_id);
+							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
+							jQuery(".share_link").attr("target", "_blank");
 						}
 						//graph ajax end
                         //location.reload();
@@ -336,6 +344,8 @@ function sub_creation(index){
                         // alert(res.msg);
 						if(hdn_creation_id != ''){
 							create_topic_graph(hdn_creation_id);
+							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
+							jQuery(".share_link").attr("target", "_blank");
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";

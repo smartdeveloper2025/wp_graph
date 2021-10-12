@@ -1532,7 +1532,6 @@ function get_net_graph_data($user_id,$creation_id){
 	$response =array();
 	$graph_data = $graph_nodes = $graph_child = $other_nodes = $other_sub_nodes = array();
 
-	if(isset($_POST['action']) && $_POST['action'] == 'start_network_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
 		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
 		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
@@ -1626,11 +1625,9 @@ function get_net_graph_data($user_id,$creation_id){
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
-					echo "if";
-					echo "<pre>"; print_r($graph_data); die('==hello');
+					//echo "<pre>"; print_r($graph_data); die('==hello');
 				$graph_data = json_encode($graph_data); //die();
 			} else {
-				echo "ife";die('kkk');
 				$test = array (0 => array ('name' => $current_user->data->display_name,
 									'value' => 100,
 									'color' => '#000000'));
@@ -1639,7 +1636,6 @@ function get_net_graph_data($user_id,$creation_id){
 			return $graph_data;
 			
 		 } 
-	} 
 }
 
 function get_exp_graph_data($user_id,$creation_id){
@@ -1647,7 +1643,6 @@ function get_exp_graph_data($user_id,$creation_id){
 	$response =array();
 	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
 
-	if(isset($_POST['action']) && $_POST['action'] == 'start_experience_creation_graph_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
 		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
 		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
@@ -1743,7 +1738,6 @@ function get_exp_graph_data($user_id,$creation_id){
 			}
 			return $graph_data;
 		 } 
-	} 
 }
 /*add_action('wp_logout','auto_redirect_after_logout');
 
