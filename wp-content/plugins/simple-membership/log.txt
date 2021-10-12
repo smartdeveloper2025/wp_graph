@@ -58,3 +58,7 @@
 [2021/09/20 00:58:55] - SUCCESS: Admin notification email sent to: Knomad <hello@knomad.ai>
 [2021/09/20 00:58:55] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: shenal
 [2021/09/20 00:58:55] - SUCCESS: Handling auto login request...
+[2021/10/11 09:48:57] - SUCCESS: Member registration complete email sent to: test-1@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/11 09:48:57] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/11 09:48:57] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: test-1
+[2021/10/11 09:48:58] - SUCCESS: Handling auto login request...

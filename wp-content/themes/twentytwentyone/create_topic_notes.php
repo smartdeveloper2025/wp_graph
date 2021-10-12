@@ -29,6 +29,17 @@ body{
         display: grid;
         grid-template-rows: 85px;
     }
+	#chartdiv {
+	    position: sticky;
+	    width: 100%;
+	    height: 550px;
+	    top: 70px;
+	    display: flex;
+	    justify-content: center;
+	    background-color: transparent;
+	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
+	    border-radius: 5px;
+	}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -39,7 +50,7 @@ body{
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
                             <a href="Javascript:;" class="link mr-3">View Large</a>
-                            <a href="Javascript:;" class="link"><i class="fas fa-link mr-2"></i>Share</a>
+                            <a href="Javascript:;" class="share_link" target="_blank"><i class="fas fa-link mr-2"></i>Share</a>
                         </p>
                     </div>
                 </div>
@@ -86,7 +97,6 @@ body{
 								<div class="row m-0 mt-5">
 									<div class="col-12 p-0">
 										<input type="hidden" name="skills_count" id="skills_count_1" value="0" />
-										<div class="table-responsive">
 										<table class="creation_table table_bordered topic__table">
 											<thead>
 												<tr>
@@ -111,7 +121,6 @@ body{
 											</tbody>
 										</table>
 									</div>
-									</div>
 								</div>
 								
 								<div class="row m-0 mt-4 experience_row_box">
@@ -129,7 +138,7 @@ body{
 						</div>
 					</div>
 					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
-						<div id="chartdiv" class="scoll_chart"></div>
+						<div id="chartdiv"></div>
 					</div>
                 </div>
 				
@@ -149,6 +158,9 @@ body{
 <script type="text/javascript" src="<?php echo bloginfo('template_url'); ?>/assets/js/jquery.amsify.suggestags.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
+var home_url = "<?php echo home_url('/share-graph');  ?>";
+var current_user_id = "<?php echo get_current_user_id();  ?>";
+var hdn_creation_id = jQuery('#hdn_creation_id').val();
 /*********clone skills tr td start***********/
 function clone_skills(objThis , count ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
@@ -177,10 +189,10 @@ function html_clone(){
 	html += '<input type="text" name="sub_topic_name" onblur="sub_creation(' + clone_counter + ')" placeholder="Name the subject" class="form-control creation_input"></div></div>';
 	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
-	html += '<div class="table-responsive"><table class="creation_table table_bordered topic__table">';
+	html += '<table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" ></div></td></tr></tbody></table></div></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add key learnings" class="form-control creation_input" ></div></td></tr></tbody></table></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
 	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div>';
 	
@@ -216,6 +228,7 @@ function main_creation(){
 						//graph ajax start
 						if(res.creation_id != ''){
 							create_topic_graph(res.creation_id);
+							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
 						}
 						//graph ajax end
                         //location.reload();
@@ -245,6 +258,7 @@ function create_topic_graph(creation_id){
 							
 							plot_topic_graph(res);
 							console.log(res);
+							//jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
 						  if(res.flag == 'success'){
 							
 							
@@ -277,6 +291,7 @@ function sub_creation(index){
                         // alert(res.msg);
 						if(hdn_creation_id != ''){
 							create_topic_graph(hdn_creation_id);
+							jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";

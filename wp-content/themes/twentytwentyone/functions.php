@@ -1415,8 +1415,336 @@ function start_network_creation_graph_ajax() {
 }
 add_action('wp_ajax_start_network_creation_graph_by_ajax', 'start_network_creation_graph_ajax');
 
-/*****************Experience Functions End**************************/
+/*****************Network Functions End**************************/
 
+function my_wp_nav_menu_args( $args = '' ) {
+ 
+if( is_user_logged_in() ) { 
+    $args['menu'] = 'after-login-menu';
+} else { 
+    $args['menu'] = 'before-login-menu';
+} 
+    return $args;
+}
+add_filter( 'wp_nav_menu_args', 'my_wp_nav_menu_args' );
+
+function get_topic_graph_data($user_id,$creation_id){
+	global $wpdb;
+	$response =array();
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
+	$creation_table = $wpdb->prefix."tbl_creation";
+	$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+	$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+	$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$user_id}' and id = '{$creation_id}' ", ARRAY_A );
+	
+	if(count($creation_result) >= 0){
+		//graph main node
+		$graph_nodes = array('name' => $creation_result[0]['name'],	'value' => 100,'color' => '#9ba2a6');
+		
+		// get sub-topic
+		$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
+		//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+
+		if(count($sub_creation_result) >= 0){
+			// loop for all sub-topic
+			foreach($sub_creation_result as $sub_key => $sub_data){
+				if($sub_data['notes'] != ''){
+					$tooltip_text = $sub_data['notes'];
+				} else {
+					$tooltip_text = $sub_data['field_1'];
+				}
+				
+				// append children to main node
+				$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+				
+				// get left-right (Source-Learning) nodes
+				$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
+				//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+				
+				if(count($detail_sub_creation_result) >= 0){
+					// loop for all left-right (Source-Learning) nodes
+					foreach($detail_sub_creation_result as $key => $detail_data){
+						$left_node = array();
+						// pick all left node and right node
+						if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
+							//collect left node
+							if($detail_data['left_val'] != ''){
+								$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+								
+								// create link with sub-topic of left_node
+								$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
+							}
+							
+							//collect right node if not empty
+							if(!empty($detail_data['right_val'])){
+								$rightValueArray = explode(',', trim($detail_data['right_val']));
+								
+								if($detail_data['left_val'] != ''){
+									$left_node['link'] = $rightValueArray; //create left node linking with right node 
+								}
+								
+								foreach($rightValueArray as $r_key => $r_val){
+									if($r_val != ''){
+										// push right node to nodes array, so that it wil create a node
+										$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+										// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+										
+										// create link with sub-topic of right-node
+										$graph_child['children'][$sub_key]['link'][] = $r_val;
+									}
+								}
+							}
+							
+							//collect left node with linking
+							if(count($left_node) > 0){
+								$other_nodes[] = $left_node;
+							}
+						}
+					}
+					
+				}
+			}
+			
+			$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+			$graph_data = array_merge($graph_data,$other_nodes);
+				//echo "if";
+				//echo "<pre>"; print_r($graph_data); //die('==hello');
+			$graph_data = json_encode($graph_data);  
+			//echo json_encode($graph_data); die();
+			return $graph_data;
+		} else {
+				//echo "else";
+			$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
+			$graph_data = json_encode($test);
+			//echo json_encode($test); die();
+			return $graph_data;
+			
+		}
+	}
+}
+
+function get_net_graph_data($user_id,$creation_id){
+	global $wpdb;
+	$current_user = get_user_by( 'id', $user_id );
+	//$current_user = wp_get_current_user();
+		 //echo "<pre>"; print_r($current_user->data); die("======rrrrrrr");
+	
+	$response =array();
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = $other_sub_nodes = array();
+
+	if(isset($_POST['action']) && $_POST['action'] == 'start_network_creation_graph_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$user_id}' and id = '{$creation_id}' ", ARRAY_A );
+		// echo "<br>";
+		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		
+		
+		if(count($creation_result) >= 0){
+			//graph main node
+			$graph_nodes = array(
+									'name' => $current_user->data->display_name,
+									'value' => 100,
+									'color' => '#000000'
+								);
+			
+			// get sub-topic
+			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
+			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+
+			if(count($sub_creation_result) >= 0){
+				// loop for all sub-topic
+				foreach($sub_creation_result as $sub_key => $sub_data){
+					if($sub_data['notes'] != ''){
+						$tooltip_text = $sub_data['notes'];
+					} else {
+						$tooltip_text = $sub_data['field_1'];
+					}
+					
+					// append children to main node
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
+					
+					
+					
+					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => '#593e97', 'link'=>[$sub_data['field_3']] );
+					
+					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => '#b4bcfc','link'=>[$sub_data['field_1']] );
+					
+					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
+					// get left-right (Source-Learning) nodes
+					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
+					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+					
+					if(count($detail_sub_creation_result) >= 0){
+						// loop for all left-right (Source-Learning) nodes
+						foreach($detail_sub_creation_result as $key => $detail_data){
+							$left_node = array();
+							// echo '<pre><br/>===';
+							// var_dump($detail_data);
+							// echo '</pre>';
+							// pick all left node and right node
+							if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
+								// echo '<br/>he='.$detail_data['left_val'];
+								//collect left node
+								if($detail_data['left_val'] != ''){
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#9ba2a6');
+									
+									// create link with sub-topic of left_node
+									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
+								}
+								
+								//collect right node if not empty
+								if(!empty($detail_data['right_val'])){
+									$rightValueArray = explode(',', trim($detail_data['right_val']));
+									
+									if($detail_data['left_val'] != ''){
+										//$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									}
+									
+									foreach($rightValueArray as $r_key => $r_val){
+										if($r_val != ''){
+											// push right node to nodes array, so that it wil create a node
+											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											
+											// create link with sub-topic of right-node
+											//$graph_child['children'][$sub_key]['link'][] = $r_val;
+										}
+									}
+								}
+								
+								//collect left node with linking
+								if(count($left_node) > 0){
+									$other_nodes[] = $left_node;
+								}
+							}
+						}
+						
+					}
+				}
+				
+				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				$graph_data = array_merge($graph_data,$other_nodes);
+					echo "if";
+					echo "<pre>"; print_r($graph_data); die('==hello');
+				$graph_data = json_encode($graph_data); //die();
+			} else {
+				echo "ife";die('kkk');
+				$test = array (0 => array ('name' => $current_user->data->display_name,
+									'value' => 100,
+									'color' => '#000000'));
+				$graph_data = json_encode($test); //die();
+			}
+			return $graph_data;
+			
+		 } 
+	} 
+}
+
+function get_exp_graph_data($user_id,$creation_id){
+	global $wpdb;
+	$response =array();
+	$graph_data = $graph_nodes = $graph_child = $other_nodes = array();
+
+	if(isset($_POST['action']) && $_POST['action'] == 'start_experience_creation_graph_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$user_id}' and id = '{$creation_id}' ", ARRAY_A );
+		// echo "<br>";
+		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		
+		if(count($creation_result) >= 0){
+			//graph main node
+			/*$graph_nodes = array(
+									'name' => $creation_result[0]['name'],
+									'value' => 100,
+									'color' => '#9ba2a6'
+								);*/
+			
+			// get sub-topic
+			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
+			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+
+			if(count($sub_creation_result) >= 0){
+				// loop for all sub-topic
+				foreach($sub_creation_result as $sub_key => $sub_data){
+					if($sub_data['notes'] != ''){
+						$tooltip_text = $sub_data['notes'];
+					} else {
+						$tooltip_text = $sub_data['field_1'];
+					}
+					
+					// append children to main node
+					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					
+					// get left-right (Source-Learning) nodes
+					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
+					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
+					
+					if(count($detail_sub_creation_result) >= 0){
+						// loop for all left-right (Source-Learning) nodes
+						foreach($detail_sub_creation_result as $key => $detail_data){
+							$left_node = array();
+							// echo '<pre><br/>===';
+							// var_dump($detail_data);
+							// echo '</pre>';
+							// pick all left node and right node
+							if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
+								// echo '<br/>he='.$detail_data['left_val'];
+								//collect left node
+								if($detail_data['left_val'] != ''){
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									
+									// create link with sub-topic of left_node
+									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
+								}
+								
+								//collect right node if not empty
+								if(!empty($detail_data['right_val'])){
+									$rightValueArray = explode(',', trim($detail_data['right_val']));
+									
+									if($detail_data['left_val'] != ''){
+										$left_node['link'] = $rightValueArray; //create left node linking with right node 
+									}
+									
+									foreach($rightValueArray as $r_key => $r_val){
+										if($r_val != ''){
+											// push right node to nodes array, so that it wil create a node
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											
+											// create link with sub-topic of right-node
+											$graph_child[$sub_key]['link'][] = $r_val;
+										}
+									}
+								}
+								
+								//collect left node with linking
+								if(count($left_node) > 0){
+									$other_nodes[] = $left_node;
+								}
+							}
+						}
+						
+					}
+				}
+				
+				//$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
+				$graph_data = $graph_child; //appaned all child to main node
+				$graph_data = array_merge($graph_data,$other_nodes);
+				
+					//echo "<pre>"; print_r($graph_data); //die('==hello');
+				$graph_data = json_encode($graph_data); //die();
+			} else {
+				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
+				$graph_data = json_encode($test); //die();
+			}
+			return $graph_data;
+		 } 
+	} 
+}
 /*add_action('wp_logout','auto_redirect_after_logout');
 
 function auto_redirect_after_logout(){

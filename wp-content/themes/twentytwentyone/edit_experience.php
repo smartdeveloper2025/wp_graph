@@ -52,6 +52,9 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php bloginfo('template_url'); ?>/template-style.css" type="text/css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Athiti:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style type="text/css">
     .experience_row_box {
         display: grid;
@@ -96,9 +99,10 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                     </div>
                 </div>
                 <div class="row chart__div">
+					<div class="col-lg-7 col-md-7 col-sm-7">
 					<?php foreach($subcreation_data as $sub_key => $sub_data){ $sub_key++;  ?>
 					
-						<div class="col-lg-7 col-md-7 col-sm-7">
+						
 							<div class="sec_devided">
 							<h4 class="section-link mb-2"><a href="">Experience: <?php echo $sub_key; ?></a></h4>
 							<form method="post" id="sub_creation_frm_<?php echo $sub_key; ?>" action="" >
@@ -178,10 +182,12 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 						</div>
 						
 					
-					<?php } ?>
+					
 					<div class="additional_clone_data">
 					</div>
+					<?php } ?>
 					</div>
+					
 					<div class="col-lg-5 col-md-5 col-sm-5 p-0 ">
 						<div id="chartdiv" class="scoll_chart"></div>
 					</div>

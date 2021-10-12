@@ -405,29 +405,176 @@
 [2021/09/27 04:46:29] - SUCCESS: wp_login hook triggered. Username: support
 [2021/09/27 05:08:48] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
 [2021/09/27 05:08:48] - SUCCESS: SwpmAuth::login()
-[2021/09/28 05:11:17] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/09/28 05:11:59] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
-[2021/09/28 05:11:59] - SUCCESS: SwpmAuth::login()
-[2021/09/28 05:11:59] - SUCCESS: Authentication request - Username: support@knomad.ai
-[2021/09/28 05:11:59] - SUCCESS: wp_login hook triggered. Username: support
-[2021/09/30 10:07:53] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/09/30 10:07:56] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
-[2021/09/30 10:07:56] - SUCCESS: SwpmAuth::login()
-[2021/09/30 10:07:56] - SUCCESS: Authentication request - Username: support@knomad.ai
-[2021/09/30 10:07:58] - SUCCESS: wp_login hook triggered. Username: support
-[2021/10/04 05:34:23] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/10/04 05:34:26] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
-[2021/10/04 05:34:26] - SUCCESS: SwpmAuth::login()
-[2021/10/04 05:34:26] - SUCCESS: Authentication request - Username: support@knomad.ai
-[2021/10/04 05:34:26] - SUCCESS: wp_login hook triggered. Username: support
-[2021/10/06 06:30:53] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/10/06 06:31:12] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
-[2021/10/06 06:31:12] - SUCCESS: SwpmAuth::login()
-[2021/10/06 06:31:13] - SUCCESS: Authentication request - Username: support@knomad.ai
-[2021/10/06 06:31:13] - SUCCESS: wp_login hook triggered. Username: support
-[2021/10/07 08:10:19] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/10/08 07:42:36] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
-[2021/10/08 07:42:40] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
-[2021/10/08 07:42:40] - SUCCESS: SwpmAuth::login()
-[2021/10/08 07:42:40] - SUCCESS: Authentication request - Username: support@knomad.ai
-[2021/10/08 07:42:40] - SUCCESS: wp_login hook triggered. Username: support
+[2021/09/28 12:53:20] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/09/28 12:53:23] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/09/28 12:53:23] - SUCCESS: SwpmAuth::login()
+[2021/09/28 12:53:23] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/09/28 12:53:23] - SUCCESS: wp_login hook triggered. Username: support
+[2021/09/29 13:13:21] - SUCCESS: Authentication request - Username: knomad
+[2021/09/29 13:13:21] - SUCCESS: Authentication successful for username: knomad. Executing swpm_login action hook.
+[2021/09/29 13:13:21] - SUCCESS: Trying wp_signon() with username: knomad
+[2021/09/29 13:13:21] - SUCCESS: wp_authenticate action. User with username: knomad is already logged in.
+[2021/09/29 13:13:21] - SUCCESS: wp_login hook triggered. Username: knomad
+[2021/09/29 13:13:21] - SUCCESS: Setting current WP user to: knomad
+[2021/09/29 13:13:21] - SUCCESS: Triggering swpm_after_login hook.
+[2021/09/30 13:35:13] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/09/30 13:35:43] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/09/30 13:35:50] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/09/30 13:35:50] - SUCCESS: SwpmAuth::login()
+[2021/09/30 13:35:50] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/09/30 13:35:50] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/01 09:29:51] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/01 09:30:03] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/01 09:30:03] - SUCCESS: SwpmAuth::login()
+[2021/10/01 09:30:03] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/01 09:30:03] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/04 02:22:02] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 05:03:47] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 05:03:50] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 05:03:58] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 05:07:23] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/04 05:07:23] - SUCCESS: SwpmAuth::login()
+[2021/10/04 05:07:23] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/04 05:07:23] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/04 05:07:38] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/04 05:07:38] - SUCCESS: SwpmAuth::login()
+[2021/10/04 13:49:43] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 13:49:46] - SUCCESS: wp_authenticate action. Handling login for username: knomad
+[2021/10/04 13:49:46] - SUCCESS: SwpmAuth::login()
+[2021/10/04 13:49:46] - SUCCESS: Authentication request - Username: knomad
+[2021/10/04 13:49:46] - SUCCESS: Authentication successful for username: knomad. Executing swpm_login action hook.
+[2021/10/04 13:49:46] - SUCCESS: Trying wp_signon() with username: knomad
+[2021/10/04 13:49:46] - SUCCESS: wp_authenticate action. User with username: knomad is already logged in.
+[2021/10/04 13:49:46] - SUCCESS: wp_login hook triggered. Username: knomad
+[2021/10/04 13:49:46] - SUCCESS: Setting current WP user to: knomad
+[2021/10/04 13:49:46] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/04 13:53:54] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/04 13:54:00] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/04 13:54:00] - SUCCESS: SwpmAuth::login()
+[2021/10/04 13:54:00] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/04 13:54:00] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/06 06:31:51] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/06 06:31:55] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/06 06:31:55] - SUCCESS: SwpmAuth::login()
+[2021/10/06 06:31:55] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/06 06:31:55] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/06 10:42:42] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/06 10:42:49] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/06 10:43:22] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/06 10:43:22] - SUCCESS: SwpmAuth::login()
+[2021/10/06 10:43:22] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/06 10:43:22] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/06 10:43:35] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/06 10:43:49] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/06 10:43:49] - SUCCESS: SwpmAuth::login()
+[2021/10/06 10:43:49] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/06 10:43:49] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/07 01:08:52] - SUCCESS: Authentication request - Username: shenal
+[2021/10/07 01:09:12] - SUCCESS: Authentication request - Username: shenal
+[2021/10/07 01:09:12] - SUCCESS: Authentication successful for username: shenal. Executing swpm_login action hook.
+[2021/10/07 01:09:12] - SUCCESS: Trying wp_signon() with username: shenal
+[2021/10/07 01:09:12] - SUCCESS: wp_authenticate action. User with username: shenal is already logged in.
+[2021/10/07 01:09:12] - SUCCESS: wp_login hook triggered. Username: shenal
+[2021/10/07 01:09:12] - SUCCESS: Setting current WP user to: shenal
+[2021/10/07 01:09:12] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/07 04:17:32] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/07 04:17:47] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/07 04:17:47] - SUCCESS: SwpmAuth::login()
+[2021/10/07 04:17:47] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/07 04:17:47] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/07 06:13:46] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/07 06:13:49] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/07 06:13:49] - SUCCESS: SwpmAuth::login()
+[2021/10/07 06:13:49] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/07 06:13:51] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/07 13:24:02] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 10:51:39] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 10:51:40] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 10:51:44] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/08 10:51:44] - SUCCESS: SwpmAuth::login()
+[2021/10/08 10:51:44] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/08 10:51:44] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/08 12:14:37] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 12:14:49] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/08 12:14:49] - SUCCESS: SwpmAuth::login()
+[2021/10/08 12:14:49] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/08 12:14:50] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/08 12:32:32] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 12:33:03] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/08 12:33:03] - SUCCESS: SwpmAuth::login()
+[2021/10/08 12:33:03] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/08 12:33:03] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/08 22:56:34] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/08 23:00:10] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/08 23:00:10] - SUCCESS: SwpmAuth::login()
+[2021/10/08 23:00:10] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/08 23:00:32] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/08 23:00:32] - SUCCESS: SwpmAuth::login()
+[2021/10/08 23:00:32] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/08 23:00:40] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/09 05:17:23] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/09 05:17:24] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/09 05:18:02] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/09 05:18:10] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/09 05:18:57] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/09 05:18:57] - SUCCESS: SwpmAuth::login()
+[2021/10/09 05:18:57] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/09 05:18:57] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/09 05:19:02] - SUCCESS: wp_authenticate action. Handling login for username: support
+[2021/10/09 05:19:02] - SUCCESS: SwpmAuth::login()
+[2021/10/11 06:02:05] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/11 06:02:07] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/11 06:02:07] - SUCCESS: SwpmAuth::login()
+[2021/10/11 06:02:07] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/11 06:02:08] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/11 09:36:21] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/11 09:36:24] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/11 09:36:24] - SUCCESS: SwpmAuth::login()
+[2021/10/11 09:36:24] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/11 09:36:24] - SUCCESS: wp_login hook triggered. Username: support
+[2021/10/11 09:47:11] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/11 09:47:36] - SUCCESS: Authentication request - Username: knomad
+[2021/10/11 09:48:58] - SUCCESS: SwpmAuth::login()
+[2021/10/11 09:48:58] - SUCCESS: Authentication request - Username: test-1
+[2021/10/11 09:48:58] - SUCCESS: Authentication successful for username: test-1. Executing swpm_login action hook.
+[2021/10/11 09:48:58] - SUCCESS: Trying wp_signon() with username: test-1
+[2021/10/11 09:48:58] - SUCCESS: wp_authenticate action. User with username: test-1 is already logged in.
+[2021/10/11 09:48:58] - SUCCESS: wp_login hook triggered. Username: test-1
+[2021/10/11 09:48:58] - SUCCESS: Setting current WP user to: test-1
+[2021/10/11 09:48:58] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/11 09:51:46] - SUCCESS: Authentication request - Username: test-1
+[2021/10/11 09:51:46] - SUCCESS: Authentication successful for username: test-1. Executing swpm_login action hook.
+[2021/10/11 09:51:46] - SUCCESS: Trying wp_signon() with username: test-1
+[2021/10/11 09:51:46] - SUCCESS: wp_authenticate action. User with username: test-1 is already logged in.
+[2021/10/11 09:51:46] - SUCCESS: wp_login hook triggered. Username: test-1
+[2021/10/11 09:51:46] - SUCCESS: Setting current WP user to: test-1
+[2021/10/11 09:51:46] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/11 10:08:43] - SUCCESS: Authentication request - Username: test-1
+[2021/10/11 10:08:43] - SUCCESS: Authentication successful for username: test-1. Executing swpm_login action hook.
+[2021/10/11 10:08:43] - SUCCESS: Trying wp_signon() with username: test-1
+[2021/10/11 10:08:43] - SUCCESS: wp_authenticate action. User with username: test-1 is already logged in.
+[2021/10/11 10:08:43] - SUCCESS: wp_login hook triggered. Username: test-1
+[2021/10/11 10:08:43] - SUCCESS: Setting current WP user to: test-1
+[2021/10/11 10:08:43] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/11 11:11:23] - SUCCESS: Authentication request - Username: shenal
+[2021/10/11 11:11:41] - SUCCESS: Authentication request - Username: shenal
+[2021/10/11 11:12:47] - SUCCESS: Authentication request - Username: shenal
+[2021/10/11 11:12:47] - SUCCESS: Authentication successful for username: shenal. Executing swpm_login action hook.
+[2021/10/11 11:12:47] - SUCCESS: Trying wp_signon() with username: shenal
+[2021/10/11 11:12:47] - SUCCESS: wp_authenticate action. User with username: shenal is already logged in.
+[2021/10/11 11:12:47] - SUCCESS: wp_login hook triggered. Username: shenal
+[2021/10/11 11:12:47] - SUCCESS: Setting current WP user to: shenal
+[2021/10/11 11:12:47] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/11 11:14:15] - SUCCESS: Authentication request - Username: shenal
+[2021/10/11 11:14:34] - SUCCESS: Authentication request - Username: shenal
+[2021/10/11 11:14:34] - SUCCESS: Authentication successful for username: shenal. Executing swpm_login action hook.
+[2021/10/11 11:14:34] - SUCCESS: Trying wp_signon() with username: shenal
+[2021/10/11 11:14:34] - SUCCESS: wp_authenticate action. User with username: shenal is already logged in.
+[2021/10/11 11:14:35] - SUCCESS: wp_login hook triggered. Username: shenal
+[2021/10/11 11:14:35] - SUCCESS: Setting current WP user to: shenal
+[2021/10/11 11:14:35] - SUCCESS: Triggering swpm_after_login hook.
+[2021/10/12 06:37:27] - SUCCESS: wp_authenticate action. Empty username provided. Adding set_current_username hook to catch potential login attempt.
+[2021/10/12 06:37:29] - SUCCESS: wp_authenticate action. Handling login for username: support@knomad.ai
+[2021/10/12 06:37:29] - SUCCESS: SwpmAuth::login()
+[2021/10/12 06:37:29] - SUCCESS: Authentication request - Username: support@knomad.ai
+[2021/10/12 06:37:30] - SUCCESS: wp_login hook triggered. Username: support
