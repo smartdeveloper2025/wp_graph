@@ -175,7 +175,11 @@ get_header();
         
         <!-- Modal body -->
         <div class="modal-body">
-          
+			<label for="share-link-inp"><i class="fas fa-link mr-2"></i>Share via link [your creation will be made public to anyone with this link] </label>
+			<input type="text" name="share-link-inp" id="share-link-inp" value="" />
+			
+			<label for="share-link-iframe"><i class="fas fa-link mr-2"></i>Embed on a site</label>
+			<input type="text" name="share-link-iframe" id="share-link-iframe" value="" />
         </div>
         
         <!-- Modal footer -->
@@ -267,7 +271,8 @@ function exp_main_creation(){
 							
 							jQuery(".share_btn").attr("data-target", "#myModal");
 							
-							jQuery(".modal-body").html(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery("#share-link-inp").val(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery("#share-link-iframe").val('<iframe src="'+home_url+'/?user_id='+current_user_id+'&creation_id='+hdn_exp_creation_id+'&type=exp" title="description" height="100%" width="100%"></iframe>');
 						}
 						//graph ajax end
                         //location.reload();
@@ -323,7 +328,8 @@ function sub_exp_creation(index){
 							
 							jQuery(".share_btn").attr("data-target", "#myModal");
 							
-							jQuery(".modal-body").html(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery("#share-link-inp").val(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+							jQuery("#share-link-iframe").val('<iframe src="'+home_url+'/?user_id='+current_user_id+'&creation_id='+hdn_exp_creation_id+'&type=exp" title="description" height="100%" width="100%"></iframe>');
 						}
                         //location.reload();
                         //window.location.href="<?php //echo esc_url( home_url( '/chart' ) ); ?>";

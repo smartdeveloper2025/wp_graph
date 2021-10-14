@@ -97,10 +97,10 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <ul class="nav list_itms">
                             <li class="nav-item pr-1"><i class="fas fa-circle"></i> Topic
-								<div id="cp-component" class="input-group">
+								<!--<div id="cp-component" class="input-group">
 								  <input type="text" value="#269faf" class="form-control" />
 								  <span class="input-group-addon"><i></i></span>
-								</div>
+								</div>-->
 							</li>
                             <li class="nav-item px-1"><i class="fas fa-circle"></i> Sub Topic</li>
                             <li class="nav-item px-1"><i class="fas fa-circle"></i> Source</li>
@@ -217,7 +217,11 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
         
         <!-- Modal body -->
         <div class="modal-body">
-          
+			<label for="share-link-inp"><i class="fas fa-link mr-2"></i>Share via link [your creation will be made public to anyone with this link] </label>
+			<input type="text" name="share-link-inp" id="share-link-inp" value="" />
+			
+			<label for="share-link-iframe"><i class="fas fa-link mr-2"></i>Embed on a site</label>
+			<input type="text" name="share-link-iframe" id="share-link-iframe" value="" />
         </div>
         
         <!-- Modal footer -->
@@ -244,7 +248,8 @@ var current_user_id = "<?php echo get_current_user_id();  ?>";
 var hdn_creation_id = jQuery('#hdn_creation_id').val();
 jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
 jQuery(".share_link").attr("target", "_blank");
-jQuery(".modal-body").html(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
+jQuery("#share-link-inp").val(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_creation_id+"&type=tpc");
+jQuery("#share-link-iframe").val('<iframe src="'+home_url+'/?user_id='+current_user_id+'&creation_id='+hdn_creation_id+'&type=tpc" title="description" height="100%" width="100%"></iframe>');
 
 jQuery(document).ready(function(){
 	var clone_counter_loop = parseInt(jQuery('#clone_counter').val());
