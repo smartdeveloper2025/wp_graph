@@ -124,7 +124,7 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 									<ul>
 										<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><i class="fas fa-edit"></i>Edit</a></li>
 										
-										<li><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>
+										<!--<li><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>-->
 										
 										<li><a href="<?php echo esc_url( home_url( ) ); ?>/home/?del_id=<?php echo $creation_data['id']; ?>" ><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/delete-icon.png">Delete</a></li>
 									</ul>
