@@ -686,6 +686,86 @@
         display: grid;
         grid-template-rows: 85px;
     }
+    /**************/
+    .footer-secmenu .elementor-col-33:first-child, .footer-secmenu .elementor-col-33:last-child {
+        display: none;
+    }
+    .footer-secmenu .elementor-col-33 {
+        width: 100%!important;
+    }
+    .footer-secmenu .elementor-widget-container{
+        justify-content: center;
+        flex-direction: unset;
+    }
+    .hover-menu {
+        position: absolute;
+        right: 0;
+        top: 100%;
+        align-items: center;
+        background-color: #7B7A7A;
+        width: 120px;
+        border-radius: 8px;
+        opacity: 1;
+        z-index: 3;
+        display: none;
+        padding: 10px 0px;
+    }
+    .hover-menu ul {
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+    }
+    .hover-menu ul li {
+        padding-left: 38px;
+        text-align: left;
+        display: block;
+        width: 100%;
+        color: #fff;
+        font-size: 16px;
+        position: relative;
+    }
+    .hover-menu ul li a{
+        color: #fff;
+    }
+    .hover-menu ul li a:hover, .hover-menu ul li a:focus{
+        color: #fff;
+    }
+    .main-dot:hover .hover-menu {
+        display: flex!important;
+    }
+    .hover-menu ul li img, .hover-menu ul li i.fas.fa-edit {
+        position: absolute;
+        left: 13px;
+        top: 57%;
+        transform: translateY(-50%);
+        width: 12px;
+    }
+    .experiencemodal{
+        z-index: 1050;
+    }
+    .experiencemodal button.close:hover, .experiencemodal button.close {
+        background: transparent!important;
+        opacity: 1;
+        color: #fff!important;
+        text-shadow: none;
+        padding: 0px;
+        margin: 0px;
+    }
+    .experiencemodal .modal-header {
+        background-color: #28303d;
+        color: #fff;
+        border: #28303d;
+    }
+    .experiencemodal .modal-content{
+        border: none;
+    }
+    .experiencemodal .modal-body {
+       padding: 32px 15px;
+    }
+    .experiencemodal .modal-footer{
+        display: none;
+    }
+
     
     @media screen and (max-width: 1024px) { 
      .elementor-menu-toggle{

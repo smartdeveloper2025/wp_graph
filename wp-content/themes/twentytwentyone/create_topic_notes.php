@@ -50,8 +50,8 @@ body{
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
                             <a href="Javascript:;" class="link mr-3 share_link">View Large</a>
-                            <!--<a href="Javascript:;" class="share_link" ><i class="fas fa-link mr-2"></i>Share</a>-->
-							<button type="button" class="btn btn-info btn-lg share_btn" data-toggle="modal" >Share</button>
+                            <a href="Javascript:;" data-toggle="modal" class="share_btn" ><i class="fas fa-link mr-2"></i>Share</a>
+							<!--<button type="button" class="btn btn-info btn-lg share_btn" data-toggle="modal" >Share</button>-->
                         </p>
                     </div>
                 </div>
@@ -157,7 +157,7 @@ body{
     <!-- #content -->
 	
 	<!-- The Modal Start-->
-  <div class="modal" id="myModal">
+  <div class="modal experiencemodal" id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -550,4 +550,5 @@ jQuery(document).ready(function() {
   // });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 <!---Graph Js End--->

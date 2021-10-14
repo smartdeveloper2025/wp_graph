@@ -63,6 +63,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
     }
 	
 </style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
 	<!-- Content -->
 	<div id="content" class="content" role="main">
         <div class="container py-5">
@@ -72,8 +73,8 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
                             <a href="Javascript:;" class="link mr-3 share_link">View Large</a>
-                            <!--<a href="Javascript:;" class="share_link" ><i class="fas fa-link mr-2"></i>Share</a>-->
-							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Share</button>
+                            <a href="Javascript:;" data-toggle="modal" data-target="#myModal" ><i class="fas fa-link mr-2"></i>Share</a>
+							<!--<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Share</button>-->
                         </p>
                     </div>
                 </div>
@@ -95,7 +96,12 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 					</form>
                     <div class="col-lg-5 col-md-5 col-sm-12">
                         <ul class="nav list_itms">
-                            <li class="nav-item pr-1"><i class="fas fa-circle"></i> Topic</li>
+                            <li class="nav-item pr-1"><i class="fas fa-circle"></i> Topic
+								<div id="cp-component" class="input-group">
+								  <input type="text" value="#269faf" class="form-control" />
+								  <span class="input-group-addon"><i></i></span>
+								</div>
+							</li>
                             <li class="nav-item px-1"><i class="fas fa-circle"></i> Sub Topic</li>
                             <li class="nav-item px-1"><i class="fas fa-circle"></i> Source</li>
                             <li class="nav-item px-1"><i class="fas fa-circle"></i> Key Learning</li>
@@ -199,7 +205,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
     <!-- #content --> 
 	
 	<!-- The Modal Start-->
-  <div class="modal" id="myModal">
+  <div class="modal experiencemodal" id="myModal">
     <div class="modal-dialog">
       <div class="modal-content">
       
@@ -224,6 +230,11 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
   </div>
 	<!-- The Modal End-->
 <?php get_footer(); ?>
+
+ 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/js/bootstrap-colorpicker.js"></script>
+
+
 <script type="text/javascript" src="<?php echo bloginfo('template_url'); ?>/assets/js/jquery.amsify.suggestags.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
@@ -238,6 +249,11 @@ jQuery(".modal-body").html(home_url+"/?user_id="+current_user_id+"&creation_id="
 jQuery(document).ready(function(){
 	var clone_counter_loop = parseInt(jQuery('#clone_counter').val());
 	jQuery('#next_counter_value').html(clone_counter_loop+1);	
+	
+	/************color picker code start*************/
+	jQuery('#cp-component').colorpicker();
+	/************color picker code end*************/
+	
 });
 /*********clone skills tr td start***********/
 function clone_skills(objThis , count ){
@@ -595,4 +611,5 @@ jQuery(document).ready(function() {
   // });
 });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"></script>
 <!---Graph Js End--->

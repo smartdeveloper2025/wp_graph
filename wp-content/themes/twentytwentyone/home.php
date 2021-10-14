@@ -81,46 +81,7 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
     background: rgba(196, 196, 196);
     background: radial-gradient(circle, rgba(180, 188, 252, 0.9) 5%, rgba(196, 196, 196, 0.2) 85%);
 } 
-.hover-menu {
-    position: absolute;
-    right: 0;
-    top: 100%;
-    align-items: center;
-    background-color: #7B7A7A;
-    width: 120px;
-    border-radius: 8px;
-    opacity: 1;
-    z-index: 1;
-    display: none;
-    padding: 10px 0px;
-}
-.hover-menu ul {
-    padding: 0px;
-    margin: 0px;
-    width: 100%;
-}
-.hover-menu ul li {
-    padding-left: 38px;
-    text-align: left;
-    display: block;
-    width: 100%;
-    color: #fff;
-    font-size: 16px;
-    position: relative;
-}
-.hover-menu ul li a:hover, .hover-menu ul li a:focus{
-	color: #fff;
-}
-.main-dot:hover .hover-menu {
-	display: flex!important;
-}
-.hover-menu ul li img {
-    position: absolute;
-    left: 13px;
-    top: 57%;
-    transform: translateY(-50%);
-    width: 12px;
-}
+
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -161,7 +122,7 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 								</div>
 								<div class="hover-menu">
 									<ul>
-										<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Edit</a></li>
+										<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><i class="fas fa-edit"></i>Edit</a></li>
 										
 										<li><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>
 										

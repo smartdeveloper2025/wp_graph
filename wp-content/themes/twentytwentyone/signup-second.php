@@ -35,13 +35,16 @@ get_header();
 <style>
 
     body{
-
         background: #f2eff7 !important;
-
     }    
     form#swpm-editprofile-form table tr {
         margin-bottom: 15px;
         display: block;
+        width: 50%;
+        float: left;
+    }
+    form#swpm-editprofile-form table tr:first-child, form#swpm-editprofile-form table tr:last-child {
+        width: 100%;
     }
     form#swpm-editprofile-form table tr td {
         min-width: 100%;
@@ -58,6 +61,9 @@ get_header();
     form#swpm-editprofile-form .swpm-profile-country-row select{
         border: none;
         border-radius: 10px;
+    }
+    form#swpm-editprofile-form .swpm-profile-country-row select:focus {
+        outline: none;
     }
     form#swpm-editprofile-form input.swpm-edit-profile-submit {
         padding: 5px 30px;
@@ -79,13 +85,13 @@ get_header();
 
             <div class="row m-0">
 
-                <div class="col-lg-8">
+                <div class="col-lg-5">
 
                     <img src="http://beta.knomad.ai/wp-content/uploads/2021/09/connect-dots.png" width="100%">
 
                 </div>
 
-                <div class="col-lg-4">
+                <div class="col-lg-7">
 
                     <div class="form-box">
 
