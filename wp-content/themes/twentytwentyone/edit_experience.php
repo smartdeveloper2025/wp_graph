@@ -69,8 +69,9 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                 <div class="col-12">
                     <div class="d-flex justify-content-end">
                         <p class="form-text">
-                            <a href="Javascript:;" class="link mr-3">View Large</a>
-                            <a href="Javascript:;" class="share_link"><i class="fas fa-link mr-2"></i>Share</a>
+                            <a href="Javascript:;" class="link mr-3 share_link">View Large</a>
+                            <!--<a href="Javascript:;" class="share_link"><i class="fas fa-link mr-2"></i>Share</a>-->
+							<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Share</button>
                         </p>
                     </div>
                 </div>
@@ -204,8 +205,35 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
         </div>
         
 	</div>
-    <!-- #content -->
+    <!-- #content --> 
+	
+	<!-- The Modal Start-->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Graph Sharable Link:</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          
+        </div>
+        
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+	<!-- The Modal End-->
 <?php get_footer(); ?>
+
 <script type="text/javascript" src="<?php echo bloginfo('template_url'); ?>/assets/js/jquery.amsify.suggestags.js"></script>
 <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script type="text/javascript">
@@ -215,6 +243,8 @@ var current_user_id = "<?php echo get_current_user_id();  ?>";
 var hdn_exp_creation_id = jQuery('#hdn_exp_creation_id').val();
 jQuery(".share_link").attr("href", home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
 jQuery(".share_link").attr("target", "_blank");
+jQuery(".modal-body").html(home_url+"/?user_id="+current_user_id+"&creation_id="+hdn_exp_creation_id+"&type=exp");
+
 jQuery(document).ready(function(){
 	var clone_counter_loop = parseInt(jQuery('#clone_counter').val());
 	jQuery('#next_counter_value').html(clone_counter_loop+1);	

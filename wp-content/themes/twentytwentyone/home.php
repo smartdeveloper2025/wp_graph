@@ -37,7 +37,16 @@ global $wpdb;
 $current_user_id = get_current_user_id();
 
 $creation_table = $wpdb->prefix."tbl_creation";
-$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' ", ARRAY_A );
+
+if(isset($_GET['del_id']) && $_GET['del_id'] != '' ){
+	$del_id = $_GET['del_id'];
+	
+	$sqlUpdate = "update {$creation_table} set status='deactive' where id={$del_id} and user_id={$current_user_id}";
+			
+	$wpdb->query($sqlUpdate);
+}
+
+$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and status = 'active' ", ARRAY_A );
 
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -48,9 +57,17 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 <style>
 .dot_sec {
     position: absolute;
-    right: 10px;
+    right: 0px;
     top: 50%;
     transform: translateY(-50%);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.creation-row .mycreation-box .creaton-dot{
+	margin: 2px 0px;
 }
 .creation-row .topic_purple{
     background: rgba(196, 196, 196);
@@ -64,6 +81,46 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
     background: rgba(196, 196, 196);
     background: radial-gradient(circle, rgba(180, 188, 252, 0.9) 5%, rgba(196, 196, 196, 0.2) 85%);
 } 
+.hover-menu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    align-items: center;
+    background-color: #7B7A7A;
+    width: 120px;
+    border-radius: 8px;
+    opacity: 1;
+    z-index: 1;
+    display: none;
+    padding: 10px 0px;
+}
+.hover-menu ul {
+    padding: 0px;
+    margin: 0px;
+    width: 100%;
+}
+.hover-menu ul li {
+    padding-left: 38px;
+    text-align: left;
+    display: block;
+    width: 100%;
+    color: #fff;
+    font-size: 16px;
+    position: relative;
+}
+.hover-menu ul li a:hover, .hover-menu ul li a:focus{
+	color: #fff;
+}
+.main-dot:hover .hover-menu {
+	display: flex!important;
+}
+.hover-menu ul li img {
+    position: absolute;
+    left: 13px;
+    top: 57%;
+    transform: translateY(-50%);
+    width: 12px;
+}
 </style>
 	<!-- Content -->
 	<div id="content" class="content" role="main">
@@ -92,17 +149,31 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 								$link_name = 'edit-topic-notes';
 							} 
 						?>
-							<a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>">
-							<div class="mycreation-box <?php echo $color_class;  ?>">
-								<div class="dot_sec">
+							
+							<div class="mycreation-box <?php echo $color_class;  ?>">								
+								<h4 class="creation-heading m-0"><?php echo $creation_data['name']; ?></h4>
+								<p class="creation-info m-0"><?php echo time_elapsed_string($creation_data['updated_at']); ?></p>
+								<div class="main-dot">
+								<div class="dot_sec flex-column">
 									<i class="creaton-dot"></i>
 									<i class="creaton-dot"></i>
 									<i class="creaton-dot"></i>
 								</div>
-								<h4 class="creation-heading m-0"><?php echo $creation_data['name']; ?></h4>
-								<p class="creation-info m-0"><?php echo time_elapsed_string($creation_data['updated_at']); ?></p>
+								<div class="hover-menu">
+									<ul>
+										<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Edit</a></li>
+										
+										<li><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>
+										
+										<li><a href="<?php echo esc_url( home_url( ) ); ?>/home/?del_id=<?php echo $creation_data['id']; ?>" ><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/delete-icon.png">Delete</a></li>
+									</ul>
+									<!--<ul>
+										<li>Restore</li>
+									</ul>-->
+								</div>
+								</div>
 							</div>
-						</a>
+						
 				<?php
 						}
 					
