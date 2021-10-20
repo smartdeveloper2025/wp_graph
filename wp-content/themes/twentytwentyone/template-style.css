@@ -67,7 +67,7 @@
         min-height:40px;
         padding: 10px;
         background: #fff;
-        border-radius: 10px;
+        border-radius: 0.25rem;
         border-color: #593e97;
         border-width:1px ;
     }
@@ -153,7 +153,7 @@
     .modal-body .mycreation-box,
     .creation-row .mycreation-box{
         background: #fff;
-        border-radius: 10px;
+        border-radius: 0.25rem;
         padding: 10px;
         background-image: radial-gradient(#d3cce3, #e5e1ef, #f4f2f8);
         position: relative;
@@ -163,10 +163,10 @@
     .creation-row .mycreation-box:hover{
             box-shadow: 0px 0px 10px #00000042;
     }
-    .creation-row .mycreation-box:nth-child(5),
+    /*.creation-row .mycreation-box:nth-child(5),
     .creation-row .mycreation-box:nth-child(6){
         background-image: radial-gradient(#c8e0f8, #dee6f6, #ebeef7);
-    }
+    }*/
     .modal-body .creaton-dot{
         position: absolute;
         right: 5px;
@@ -746,24 +746,119 @@
     .experiencemodal button.close:hover, .experiencemodal button.close {
         background: transparent!important;
         opacity: 1;
-        color: #fff!important;
+        color: #000!important;
         text-shadow: none;
         padding: 0px;
         margin: 0px;
+        font-weight: 600;
+    }
+    .experiencemodal button.close:focus{
+        outline: none;
+        opacity: 1;
     }
     .experiencemodal .modal-header {
-        background-color: #28303d;
-        color: #fff;
-        border: #28303d;
-    }
-    .experiencemodal .modal-content{
+        background-color: transparent;
+        color: #000000;
         border: none;
+        margin-left: auto;
+        padding: 8px 15px;
     }
     .experiencemodal .modal-body {
-       padding: 32px 15px;
+        padding: 15px 45px 30px;
     }
     .experiencemodal .modal-footer{
         display: none;
+    }
+    .experiencemodal .modal-body label {
+        font-size: 13px;
+        display: block;
+        color: #000;
+    }
+    .experiencemodal .modal-body input {
+        width: 100%;
+        border: 1px solid #000000;
+        border-radius: 30px;
+        padding: 0px 16px;
+        height: 35px;
+        margin-bottom: 15px;
+        font-size: 13px;
+        color: #000;
+    }   
+    .experiencemodal .modal-body input:focus{
+        outline: none;
+    }
+    .experiencemodal .modal-content{
+        border-radius: 0px;
+        width: 100%;
+    }
+    .experiencemodal .modal-body h4 {
+        font-size: 13px;
+        margin-left: -18px;
+        color: #000;
+    }
+    .experiencemodal .modal-body h4 .fas {
+        margin-right: 2px!important;
+    }
+    /***********/
+    .colr_form ul.nav.list_itms {
+        display: block;
+    }
+    .colr_form {
+        width: 360px;
+        margin-left: auto;
+    }
+    .colr_form ul.nav.list_itms li {
+        margin-left: auto;
+        margin-bottom: 10px;
+        padding-left: 0px!important;
+        padding-right: 0px!important;
+        display: flex;
+        align-items: center;
+    }
+    .colr_form ul.nav.list_itms li input {
+        border: 1px solid #593e97;
+        border-radius: .25rem;
+        padding: 10px;
+        min-height: 40px;
+        font-weight: 400;
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-right: 32px;
+    }
+    .colr_form ul.nav.list_itms li span {
+        justify-content: flex-start;
+        margin-left: 10px;
+        align-items: center;
+        position: absolute;
+        right: 0;
+        height: 40px;
+        width: 26px;
+        z-index: 9;
+    }
+    .colr_form ul.nav.list_itms li span i {
+        height: 100%;
+        border-radius: 0rem .25rem .25rem 0rem;
+        width: 100%;
+    }
+    .colr_form ul.nav.list_itms li b {
+        display: inline-block;
+        width: 100px;
+        margin-left: 10px;
+        font-weight: 500;
+    }
+    .colr_form ul.nav.list_itms h5{
+        margin-top: 15px;
+    }
+    ul.nav.list_itms.freecutomer_list {
+       float: right;
+    }
+    ul.nav.list_itms.freecutomer_list li {
+        margin-left: 0px;
+        margin-right: 5px;
+        float: left;
+    }
+    ul.nav.list_itms.freecutomer_list li i {
+       margin-right: 4px;
     }
 
     
@@ -794,6 +889,10 @@
     @media screen and (max-width: 767px) {
         .creation-row-home {
             grid-template-columns: repeat(2, 1fr);
+        }
+        .colr_form ul.nav.list_itms {
+            width: 100%;
+            margin-top: 20px;
         }
     }
     @media screen and (max-width: 575px) {

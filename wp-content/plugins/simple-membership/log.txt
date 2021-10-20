@@ -62,3 +62,56 @@
 [2021/10/11 09:48:57] - SUCCESS: Admin notification email sent to: support@knomad.ai
 [2021/10/11 09:48:57] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: test-1
 [2021/10/11 09:48:58] - SUCCESS: Handling auto login request...
+[2021/10/13 06:48:02] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/13 06:48:05] - SUCCESS: Member registration complete email sent to: test-2@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/13 06:48:07] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/13 06:48:07] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: test-2
+[2021/10/13 06:48:08] - SUCCESS: Handling auto login request...
+[2021/10/13 06:53:39] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/13 06:53:41] - SUCCESS: Member registration complete email sent to: test-3@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/13 06:53:43] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/13 06:53:43] - SUCCESS: After registration redirect is configured in settings. Redirecting user to: http://localhost/knomad/signup-second/
+[2021/10/13 06:54:51] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/13 06:54:53] - SUCCESS: Member registration complete email sent to: test-4@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/13 06:54:55] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/13 06:54:55] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: test-4
+[2021/10/13 06:54:56] - SUCCESS: Handling auto login request...
+[2021/10/13 10:30:02] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/13 10:30:02] - SUCCESS: Member registration complete email sent to: param.staple@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/13 10:30:02] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/13 10:30:02] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: param
+[2021/10/13 10:30:03] - SUCCESS: Handling auto login request...
+[2021/10/14 13:34:55] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/14 13:34:55] - SUCCESS: Member registration complete email sent to: vipin@staplelogic.in. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/14 13:34:55] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/14 13:34:55] - SUCCESS: After registration redirect is configured in settings. Redirecting user to: https://beta.knomad.ai/signup-second/
+[2021/10/14 13:36:13] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/14 13:36:13] - SUCCESS: Member registration complete email sent to: vipin.staplelogic@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/14 13:36:14] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/14 13:36:14] - SUCCESS: After registration redirect is configured in settings. Redirecting user to: https://beta.knomad.ai/signup-second/
+[2021/10/14 13:42:47] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/14 13:42:47] - SUCCESS: Member registration complete email sent to: test-11@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/14 13:42:47] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/14 13:42:47] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: test-11
+[2021/10/14 13:42:48] - SUCCESS: Handling auto login request...
+[2021/10/14 14:21:44] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/14 14:21:44] - SUCCESS: Member registration complete email sent to: demo@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/14 14:21:45] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/14 14:21:45] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: demo101
+[2021/10/14 14:21:45] - SUCCESS: Handling auto login request...
+[2021/10/18 09:44:33] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/18 09:44:34] - SUCCESS: Member registration complete email sent to: sandeep.staple@gmail.com. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/18 09:44:34] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/18 09:44:34] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: sandeep
+[2021/10/18 09:44:34] - SUCCESS: Handling auto login request...
+[2021/10/18 10:45:35] - SUCCESS: create_swpm_member_entry_from_array_data() - SWPM member entry created successfully. Member ID: 16
+[2021/10/18 12:12:41] - SUCCESS: create_swpm_member_entry_from_array_data() - SWPM member entry created successfully. Member ID: 17
+[2021/10/18 12:25:25] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/18 12:43:23] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/20 08:05:05] - SUCCESS: create_swpm_member_entry_from_array_data() - SWPM member entry created successfully. Member ID: 18
+[2021/10/20 08:10:30] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.
+[2021/10/20 08:10:30] - SUCCESS: Member registration complete email sent to: skb@trans8.me. From email address value used: Knomad <hello@knomad.ai>
+[2021/10/20 08:10:30] - SUCCESS: Admin notification email sent to: support@knomad.ai
+[2021/10/20 08:10:30] - SUCCESS: Auto login after registration feature is enabled in settings. Performing auto login for user: skbhar
+[2021/10/20 08:10:31] - SUCCESS: Handling auto login request...
+[2021/10/20 09:16:24] - FAILURE: swpm_handle_wp_user_registration() - SWPM member account with this username already exists! No new account will be created for this user.

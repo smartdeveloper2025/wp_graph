@@ -64,6 +64,7 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 	
 </style>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.5.3/css/bootstrap-colorpicker.css" rel="stylesheet">
+
 	<!-- Content -->
 	<div id="content" class="content" role="main">
         <div class="container py-5">
@@ -79,11 +80,12 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
                     </div>
                 </div>
             </div>
+			<?php //echo "<pre>"; print_r($subcreation_data); ?>
             <!--<form method="post" id="topic_creation" action="" >-->
 			<input type="hidden" name="clone_counter" id="clone_counter" value="<?php echo count($subcreation_data); ?>" />
                 <div class="row mb-5">
-					<form method="post" id="main_creation_frm" action="" >
-						<div class="col-lg-7 col-md-7 col-sm-12">
+					<div class="col-lg-4 col-md-4 col-sm-12">
+						<form method="post" id="main_creation_frm" action="" >
 							<input type="text" placeholder="Name your overall topic" onblur="main_creation()"  id="topic_name" name="topic_name" value="<?php echo $creation_data['name']; ?>" class="form-control creation_input">
 							<label for="topic_desc">Description</label>
 							<textarea name="topic_desc" id="topic_desc" onblur="main_creation()" class="form-control creation_input" ><?php echo $creation_data['description']; ?></textarea>
@@ -92,21 +94,57 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 							</p>
 							<input type="hidden" name="hdn_creation_id" id="hdn_creation_id" value="<?php echo $creation_data['id']; ?>" />
 							<!--<input type="hidden" name="hdn_detail_sub_creation_id" id="hdn_detail_sub_creation_id" value="" />-->
-						</div>
-					</form>
-                    <div class="col-lg-5 col-md-5 col-sm-12">
+						</form>
+					</div>
+                    <div class="col-lg-8 col-md-8 col-sm-12">
+					<?php 
+						$user_plan = do_shortcode('[swpm_show_member_info column="membership_level_name"]'); 
+						if($user_plan == 'Basic - but make it custom'){
+						
+					?>
+							
+					<form method="post" id="node_color_frm" action="" class="colr_form" >
                         <ul class="nav list_itms">
-                            <li class="nav-item pr-1"><i class="fas fa-circle"></i> Topic
-								<!--<div id="cp-component" class="input-group">
-								  <input type="text" value="#269faf" class="form-control" />
+                            <li class="nav-item pr-1">
+								<div id="cp-component1" class="input-group">
+								  <input type="text" value="<?php echo $creation_data['node_color'] ? $creation_data['node_color'] : TP_CRE_MAIN; ?>" onchange="node_colors()" name="topic_color" id="topic_color" class="form-control" />
 								  <span class="input-group-addon"><i></i></span>
-								</div>-->
+								</div> 
+								<b>Topic</b>
 							</li>
-                            <li class="nav-item px-1"><i class="fas fa-circle"></i> Sub Topic</li>
-                            <li class="nav-item px-1"><i class="fas fa-circle"></i> Source</li>
-                            <li class="nav-item px-1"><i class="fas fa-circle"></i> Key Learning</li>
+                            <li class="nav-item px-1">
+								<div id="cp-component2" class="input-group">
+								  <input type="text" value="<?php echo $subcreation_data[0]['node_color'] ? $subcreation_data[0]['node_color'] : TP_CRE_SUB; ?>" onchange="node_colors()" name="sub_topic_color" id="sub_topic_color" class="form-control" readonly />
+								  <span class="input-group-addon"><i></i></span>
+								</div>
+								<b>Sub Topic</b>
+							</li>
+							<li class="nav-item px-1">
+								<div id="cp-component3" class="input-group">
+								  <input type="text" value="<?php echo $subcreation_data[0]['details'][0]['lft_node_color'] ? $subcreation_data[0]['details'][0]['lft_node_color'] : TP_CRE_LF; ?>" onchange="node_colors()" name="source_color"  id="source_color" class="form-control" readonly />
+								  <span class="input-group-addon"><i></i></span>
+								</div>
+								<b>Source</b>
+							</li>
+							<li class="nav-item px-1">
+								<div id="cp-component4" class="input-group">
+								  <input type="text" value="<?php echo $subcreation_data[0]['details'][0]['rt_node_color'] ? $subcreation_data[0]['details'][0]['rt_node_color'] : TP_CRE_RT; ?>" onchange="node_colors()" name="key_color"  id="key_color" class="form-control"  />
+								  <span class="input-group-addon"><i></i></span>
+								</div>
+								<b>Key Learning</b>
+							</li>                        
                         </ul>
                         <h5 class="m-0 mt-2">A Knomad creation</h5>
+					</form>
+					<?php } else { ?>
+							<ul class="nav list_itms freecutomer_list" style="margin-left: auto;">
+								<li class="nav-item pr-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_MAIN; ?>" ></i> Topic</li>
+								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_SUB; ?>"></i> Sub Topic</li>
+								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_LF; ?>"></i> Source</li>
+								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_RT; ?>"></i> Key Learning</li>
+								
+							</ul>
+						<?php } ?>
                     </div>
                 </div>
                 <div class="row chart__div">
@@ -154,13 +192,13 @@ if(isset($_GET['edit_id']) && $_GET['edit_id'] != ''){
 												<?php } ?>
 												<tr><td><div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(<?php echo $sub_key; ?>)" onclick="clone_skills(this,<?php echo $sub_key; ?>)" value="" >
+															<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_creation(<?php echo $sub_key; ?>)" onclick="clone_skills(this,<?php echo $sub_key; ?>, 'skills_input' )" value="" >
 														</div>
 													</td>
 													<td>
 														<div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][right]" onblur="sub_creation(<?php echo $sub_key; ?>)" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control tag_cls creation_input" value="" >
+															<input type="text" name="tag_val[0][right]" onblur="sub_creation(<?php echo $sub_key; ?>)" onclick="clone_skills(this,<?php echo $sub_key; ?>, 'skills_right')"  placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" value="" >
 														</div>
 													</td>
 												</tr>
@@ -256,17 +294,51 @@ jQuery(document).ready(function(){
 	jQuery('#next_counter_value').html(clone_counter_loop+1);	
 	
 	/************color picker code start*************/
-	jQuery('#cp-component').colorpicker();
+	jQuery('#cp-component1,#cp-component2,#cp-component3,#cp-component4').colorpicker({ format: 'rgba'});
 	/************color picker code end*************/
 	
 });
+
+/***********Node change colors start***********/
+function node_colors(){
+	//alert('cccc');
+	var hdn_creation_id = jQuery('#hdn_creation_id').val();
+	//console.log(jQuery("#node_color_frm").serialize());
+	var topic_color = jQuery('#topic_color').val();
+	var sub_topic_color = jQuery('#sub_topic_color').val();
+	var source_color = jQuery('#source_color').val();
+	var key_color = jQuery('#key_color').val();
+	/****************************/
+              jQuery.ajax({
+                url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
+                type:'POST',
+				//async:false,
+                data: jQuery("#node_color_frm").serialize() +'&action=change_nodes_color_by_ajax&type=tpc&hdn_creation_id='+hdn_creation_id,
+                dataType: 'JSON',
+                 success:function(res)
+                   {
+						create_topic_graph(hdn_creation_id);
+                      if(res.flag == 'success'){
+						  
+                      }else{
+                          // alert('Opps! Something went wrong');
+                      }
+                      }
+               });
+      
+    /****************************/
+}
+/***********Node change colors end***********/
+
+
 /*********clone skills tr td start***********/
-function clone_skills(objThis , count ){
+function clone_skills(objThis , count, focus_cls ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control skills_right creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(objThis).parent().parent().parent().before(tr);
-	jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
+	//jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
+	jQuery(objThis).closest('tr').prev('tr').find('input.'+focus_cls).focus();
 	jQuery('#skills_count_'+count ).val(skills_count);
 }
 //jQuery(document).ready(function () {
@@ -278,6 +350,8 @@ function clone_skills(objThis , count ){
 /*********clone code start*************/
 function html_clone(){
 	var clone_counter = jQuery('#clone_counter').val();
+	var skills_right_cls = "'skills_right'";
+	var skills_input_cls = "'skills_input'";
 	clone_counter++;
 	var html = '';
 	html += '<div class="row">';
@@ -292,7 +366,7 @@ function html_clone(){
 	html += '<div class="table-responsive"><table class="creation_table table_bordered topic__table">';
 	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control creation_input " onclick="clone_skills(this,' + clone_counter + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" ></div></td></tr></tbody></table></div></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control skills_input creation_input " onclick="clone_skills(this,' + clone_counter + ', ' + skills_input_cls + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="clone_skills(this,1, ' + skills_right_cls + ')" placeholder="Add tool/language/tech used as part of the skills" class="form-control skills_right creation_input" ></div></td></tr></tbody></table></div></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
 	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div></div>';
 	
@@ -314,13 +388,17 @@ jQuery('.tag_cls').amsifySuggestags({
 function main_creation(){
 	var topic_name = jQuery('#topic_name').val();
 	var hdn_creation_id = jQuery('#hdn_creation_id').val();
+	var topic_color = jQuery('#topic_color').val();
+	var sub_topic_color = jQuery('#sub_topic_color').val();
+	var source_color = jQuery('#source_color').val();
+	var key_color = jQuery('#key_color').val();
 	/****************************/
       if(topic_name != ''){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
 				//async:false,
-                data: jQuery("#main_creation_frm").serialize() +'&action=create_creation_by_ajax&type=topic',
+                data: jQuery("#main_creation_frm").serialize() +'&action=create_creation_by_ajax&type=topic&topic_color='+topic_color,
                 dataType: 'JSON',
                  success:function(res)
                    {
@@ -360,7 +438,7 @@ function create_topic_graph(creation_id){
 					   {
 							
 							plot_topic_graph(res);
-							console.log(res);
+							//console.log(res);
 						  if(res.flag == 'success'){
 							
 							
@@ -377,17 +455,20 @@ function create_topic_graph(creation_id){
 
 function sub_creation(index){
 	var hdn_creation_id = jQuery('#hdn_creation_id').val();
+	var sub_topic_color = jQuery('#sub_topic_color').val();
+	var source_color = jQuery('#source_color').val();
+	var key_color = jQuery('#key_color').val();
 	/****************************/
       if(hdn_creation_id != ''){
               jQuery.ajax({
                 url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
                 type:'POST',
 				async:false,
-                data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_sub_creation_by_ajax&creation_id='+hdn_creation_id+'&counter='+index,
+                data: jQuery("#sub_creation_frm_"+index).serialize() +'&action=create_sub_creation_by_ajax&creation_id='+hdn_creation_id+'&counter='+index+'&sub_topic_color='+sub_topic_color+'&source_color='+source_color+'&key_color='+key_color,
                 dataType: 'JSON',
                  success:function(res)
                    {
-					   console.log(res);
+					   //console.log(res);
                       if(res.flag == 'success'){
 						jQuery('#hdn_sub_creation_id_'+index).val(res.sub_creation_id);
                         // alert(res.msg);
@@ -442,7 +523,7 @@ function plot_topic_graph(graph_data){
 	marker.cornerRadius(12, 12, 12, 12);
 	marker.strokeWidth = 2;
 	marker.strokeOpacity = 1;
-	marker.stroke = am4core.color("#ccc");
+	marker.stroke = am4core.color("#000000");
 
 
 	chart.colors.step = 2;
@@ -454,6 +535,7 @@ function plot_topic_graph(graph_data){
 	series.dataFields.id = "name";
 	series.dataFields.linkWith = "link";
 	series.dataFields.color = "color";
+	
 	
 	series.data	= graph_data;
 	// series.data	= [{"name":"Main","value":100,"color":"#9ba2a6","children":[{"name":"Sub-1","value":50,"color":"#000000"},{"name":"sub-2","value":50,"color":"#000000"}]},{"name":"SB-Lft-1","value":30,"color":"#593e97","link":["a","b","c"]},{"name":"a","value":30,"color":"#593e97"},{"name":"b","value":30,"color":"#593e97"},{"name":"c","value":30,"color":"#593e97"},{"name":"SB-Lft-2","value":30,"color":"#593e97","link":["x","h"]},{"name":"x","value":30,"color":"#593e97"},{"name":"h","value":30,"color":"#593e97"},{"name":"SB2-LFT-1","value":30,"color":"#593e97","link":["1"]},{"name":"1","value":30,"color":"#593e97"}];
@@ -506,6 +588,11 @@ series.links.template.strength = 1;
 		return widths[to.dataItem.id];
 	  }
 	  return width;
+	});
+	
+	series.links.template.adapter.add("stroke", function(color) {
+	  color = "#000000";
+	  return color;
 	});
 	
 	// Add watermark
@@ -604,8 +691,8 @@ series.links.template.adapter.add("strokeWidth", function(width, target) {
 jQuery(document).ready(function() {
   	var stickyTop = jQuery('#chartdiv').offset().top;
   	var windowTop = jQuery(window).scrollTop();
-  	console.log(windowTop);
-  	console.log('stickyTop');
+  	//console.log(windowTop);
+  	//console.log('stickyTop');
   // 	jQuery(window).scroll(function() {
   //   	var windowTop = jQuery(window).scrollTop();
   //   	if(stickyTop<windowTop && jQuery(".chart__div").height() + jQuery(".chart__div").offset().top- jQuery("#chartdiv").height()>windowTop){

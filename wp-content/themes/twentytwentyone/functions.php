@@ -638,6 +638,103 @@ function twentytwentyone_add_ie_class() {
 }
 add_action( 'wp_footer', 'twentytwentyone_add_ie_class' );
 
+/*****************Node Change Color Functions Start**************************/
+function change_nodes_color_ajax() {
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$response =array();
+	//echo "<pre>"; print_r($_POST); die('=========form--------cccccc--');
+	if(isset($_POST['action']) && $_POST['action'] == 'change_nodes_color_by_ajax')	{
+		$creation_table = $wpdb->prefix."tbl_creation";
+		$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+		$topic_color = trim($_POST['topic_color']);
+		$sub_topic_color = trim($_POST['sub_topic_color']);
+		$source_color = trim($_POST['source_color']);
+		$key_color = trim($_POST['key_color']);
+		$they_help_color = trim($_POST['they_help_color']);
+		$i_help_color = trim($_POST['i_help_color']);
+		$hdn_creation_id = trim($_POST['hdn_creation_id']);
+		
+		if(!empty($hdn_creation_id) ){
+			if($_POST['type'] == 'tpc'){
+					$sqlUpdatecreation = "update {$creation_table} set node_color='{$topic_color}' where id={$hdn_creation_id} and user_id={$current_user_id}";
+				
+					$updResult = $wpdb->query($sqlUpdatecreation);
+					
+					
+					$sqlUpdateSub = "update {$sub_creation_table} set node_color='{$sub_topic_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+					
+					$wpdb->query($sqlUpdateSub);
+					
+					$sqlUpdateSubDetail = "update {$detail_sub_creation_table} set lft_node_color='{$source_color}', rt_node_color='{$key_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}' ";
+					
+					$wpdb->query($sqlUpdateSubDetail);
+				
+					if($updResult === 0 || $updResult > 0)
+					{
+						
+						// check if skill/tools array is not empty
+						$response = array('flag'=> 'success', 'msg'=> 'Topic Nodes colors updated successfully');
+					}else{
+						$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
+					}
+				} else if($_POST['type'] == 'exp'){
+					
+					$sqlUpdateSub = "update {$sub_creation_table} set node_color='{$topic_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+					
+					$wpdb->query($sqlUpdateSub);
+					
+					$sqlUpdateSubDetail = "update {$detail_sub_creation_table} set lft_node_color='{$sub_topic_color}', rt_node_color='{$source_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}' ";
+					
+					$wpdb->query($sqlUpdateSubDetail);
+				
+					if($sqlUpdateSub === 0 || $sqlUpdateSub > 0)
+					{
+						
+						// check if skill/tools array is not empty
+						$response = array('flag'=> 'success', 'msg'=> 'Experience Nodes colors updated successfully');
+					}else{
+						$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
+					}
+				} else if($_POST['type'] == 'net'){
+					
+					$sqlUpdatecreation = "update {$creation_table} set user_color='{$topic_color}' where id={$hdn_creation_id} and user_id={$current_user_id}";
+				
+					$updResult = $wpdb->query($sqlUpdatecreation);
+					
+					
+					$sqlUpdateSub = "update {$sub_creation_table} set node_color='{$sub_topic_color}', field_2_color='{$source_color}', field_3_color='{$key_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+					
+					$wpdb->query($sqlUpdateSub);
+					
+					$sqlUpdateSubDetail = "update {$detail_sub_creation_table} set lft_node_color='{$they_help_color}', rt_node_color='{$i_help_color}' where creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}' ";
+					
+					$wpdb->query($sqlUpdateSubDetail);
+				
+					if($updResult === 0 || $updResult > 0)
+					{
+						
+						// check if skill/tools array is not empty
+						$response = array('flag'=> 'success', 'msg'=> 'Topic Nodes colors updated successfully');
+					}else{
+						$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
+					}
+				}
+				
+		} else {
+			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
+		}
+	} // end if
+		// Encoding array in JSON format
+		echo json_encode($response);
+			die();
+}
+add_action('wp_ajax_change_nodes_color_by_ajax', 'change_nodes_color_ajax');
+
+/*****************Node Change Color Functions End**************************/
+
+
 /*****************Topic Functions Start**************************/
 
 function create_creation_ajax() {
@@ -650,10 +747,14 @@ function create_creation_ajax() {
 		$type = trim($_POST['type']);
 		$topic_name = trim($_POST['topic_name']);
 		$topic_desc = trim($_POST['topic_desc']);
+		$topic_color = trim($_POST['topic_color']);
+		//$sub_topic_color = trim($_POST['sub_topic_color']);
+		//$source_color = trim($_POST['source_color']);
+		//$key_color = trim($_POST['key_color']);
 		$hdn_creation_id = trim($_POST['hdn_creation_id']);
 		
 		if(empty($hdn_creation_id) && !empty($topic_name) ){ 
-			$sqlInsert = "INSERT INTO {$creation_table} set user_id='{$current_user_id}', name='{$topic_name}', description='{$topic_desc}', type='{$type}'";
+			$sqlInsert = "INSERT INTO {$creation_table} set user_id='{$current_user_id}', name='{$topic_name}', description='{$topic_desc}', type='{$type}', node_color='{$topic_color}' ";
 			
 			if($wpdb->query($sqlInsert)) 
     		{
@@ -664,7 +765,7 @@ function create_creation_ajax() {
 				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
 			}
 		} else if(!empty($hdn_creation_id) && !empty($topic_name) ){
-			$sqlUpdate = "update {$creation_table} set name='{$topic_name}', description='{$topic_desc}' where id={$hdn_creation_id} and user_id={$current_user_id}";
+			$sqlUpdate = "update {$creation_table} set name='{$topic_name}', description='{$topic_desc}', node_color='{$topic_color}' where id={$hdn_creation_id} and user_id={$current_user_id}";
 			
 			$updResult = $wpdb->query($sqlUpdate);
 			
@@ -689,6 +790,10 @@ function create_sub_creation_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
+	//$topic_color = trim($_POST['topic_color']);
+	$sub_topic_color = trim($_POST['sub_topic_color']);
+	$source_color = trim($_POST['source_color']);
+	$key_color = trim($_POST['key_color']);
 	//==waste
 		$sql_log =array();
 	//==end-waste
@@ -705,7 +810,7 @@ function create_sub_creation_ajax() {
 		//check creation_id not empty and sub_creation_id empty and sub_topic_name not empty
 		if(empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_topic_name}', field_2 = '', field_3 = '', notes = '{$topic_notes}' ";
+			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_topic_name}', field_2 = '', field_3 = '', notes = '{$topic_notes}', node_color='{$sub_topic_color}' ";
 			
 			//==waste
 			$sql_log[] = $sqlInsertSub;
@@ -724,7 +829,7 @@ function create_sub_creation_ajax() {
 					
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$source_color}', rt_node_color='{$key_color}' ";
 							$wpdb->query($sqlInsertSubDetail);
 				//==waste
 				$sql_log[] = $sqlInsertSubDetail;
@@ -739,7 +844,7 @@ function create_sub_creation_ajax() {
 			}
 		} else if(!empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_topic_name}', field_2 = '', field_3 = '', notes = '{$topic_notes}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_topic_name}', field_2 = '', field_3 = '', notes = '{$topic_notes}', node_color='{$sub_topic_color}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
 			
 			//==waste
 			$sql_log[] = $sqlUpdateSub;
@@ -759,7 +864,7 @@ function create_sub_creation_ajax() {
 			
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$source_color}', rt_node_color='{$key_color}' ";
 			//==waste
 			$sql_log[] = $sqlInsertSubDetail;
 			//==end-waste
@@ -803,7 +908,7 @@ function start_creation_graph_by_ajax() {
 			$graph_nodes = array(
 									'name' => $creation_result[0]['name'],
 									'value' => 100,
-									'color' => '#9ba2a6'
+									'color' => $creation_result[0]['node_color'] ? $creation_result[0]['node_color'] : TP_CRE_MAIN
 								);
 			
 			// get sub-topic
@@ -820,7 +925,7 @@ function start_creation_graph_by_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : TP_CRE_SUB ,'tooltip' => $tooltip_text );
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -838,7 +943,7 @@ function start_creation_graph_by_ajax() {
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : TP_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
@@ -855,7 +960,7 @@ function start_creation_graph_by_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
@@ -943,6 +1048,9 @@ function create_experience_sub_creation_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
+	$topic_color = trim($_POST['topic_color']);
+	$sub_topic_color = trim($_POST['sub_topic_color']);
+	$source_color = trim($_POST['source_color']);
 	//==waste
 		$sql_log =array();
 	//==end-waste
@@ -958,10 +1066,11 @@ function create_experience_sub_creation_ajax() {
 		$sub_exp_location = trim($_POST['sub_exp_location']);
 		$exp_notes = trim($_POST['sub_exp_notes']);
 		
+		
 		//check creation_id not empty and sub_creation_id empty and sub_topic_name not empty
 		if(empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_exp_name}', field_2 = '{$sub_exp_title}', field_3 = '{$sub_exp_location}', notes = '{$exp_notes}' ";
+			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_exp_name}', field_2 = '{$sub_exp_title}', field_3 = '{$sub_exp_location}', notes = '{$exp_notes}', node_color='{$topic_color}' ";
 			
 			//==waste
 			$sql_log[] = $sqlInsertSub;
@@ -980,7 +1089,7 @@ function create_experience_sub_creation_ajax() {
 					
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$sub_topic_color}', rt_node_color='{$source_color}' ";
 							$wpdb->query($sqlInsertSubDetail);
 				//==waste
 				$sql_log[] = $sqlInsertSubDetail;
@@ -995,7 +1104,7 @@ function create_experience_sub_creation_ajax() {
 			}
 		} else if(!empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_exp_name}', field_2 = '{$sub_exp_title}', field_3 = '{$sub_exp_location}', notes = '{$exp_notes}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_exp_name}', field_2 = '{$sub_exp_title}', field_3 = '{$sub_exp_location}', notes = '{$exp_notes}', node_color='{$topic_color}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
 			
 			//==waste
 			$sql_log[] = $sqlUpdateSub;
@@ -1015,7 +1124,7 @@ function create_experience_sub_creation_ajax() {
 			
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$sub_topic_color}', rt_node_color='{$source_color}' ";
 			//==waste
 			$sql_log[] = $sqlInsertSubDetail;
 			//==end-waste
@@ -1052,7 +1161,7 @@ function start_experience_creation_graph_ajax() {
 		$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
 		$creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and id = '{$_POST["creation_id"]}' ", ARRAY_A );
 		// echo "<br>";
-		// echo "<pre>"; print_r($results); die("======rrrrrrr");
+		 //echo "<pre>"; print_r($creation_result); die("======rrrrrrr");
 		
 		if(count($creation_result) >= 0){
 			//graph main node
@@ -1076,7 +1185,7 @@ function start_experience_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : EX_CRE_SUB ,'tooltip' => $tooltip_text );
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1094,7 +1203,7 @@ function start_experience_creation_graph_ajax() {
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
@@ -1111,7 +1220,7 @@ function start_experience_creation_graph_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
@@ -1155,6 +1264,8 @@ function create_network_creation_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
 	$response =array();
+	$topic_color = trim($_POST['topic_color']);
+	
 	//echo "<pre>"; print_r($_POST); die('=========form--------cccccc--');
 	if(isset($_POST['action']) && $_POST['action'] == 'create_network_creation_by_ajax')	{
 		$creation_table = $wpdb->prefix."tbl_creation";
@@ -1164,7 +1275,7 @@ function create_network_creation_ajax() {
 		$hdn_creation_id = trim($_POST['hdn_net_creation_id']);
 		
 		if(empty($hdn_creation_id) && !empty($net_name) ){ 
-			$sqlInsert = "INSERT INTO {$creation_table} set user_id='{$current_user_id}', name='{$net_name}', description='{$net_desc}', type='{$type}'";
+			$sqlInsert = "INSERT INTO {$creation_table} set user_id='{$current_user_id}', name='{$net_name}', description='{$net_desc}', type='{$type}', user_color='{$topic_color}'";
 			
 			if($wpdb->query($sqlInsert)) 
     		{
@@ -1175,7 +1286,7 @@ function create_network_creation_ajax() {
 				$response = array('flag'=> 'failure', 'msg'=> 'Opps! Something went wrong');
 			}
 		} else if(!empty($hdn_creation_id) && !empty($net_name) ){
-			$sqlUpdate = "update {$creation_table} set name='{$net_name}', description='{$net_desc}' where id={$hdn_creation_id} and user_id={$current_user_id}";
+			$sqlUpdate = "update {$creation_table} set name='{$net_name}', description='{$net_desc}', user_color='{$topic_color}' where id={$hdn_creation_id} and user_id={$current_user_id}";
 			
 			$updResult = $wpdb->query($sqlUpdate);
 			
@@ -1199,6 +1310,11 @@ add_action('wp_ajax_create_network_creation_by_ajax', 'create_network_creation_a
 function create_network_sub_creation_ajax() {
 	global $wpdb;
 	$current_user_id = get_current_user_id();
+	$sub_topic_color = trim($_POST['sub_topic_color']);
+	$source_color = trim($_POST['source_color']);
+	$key_color = trim($_POST['key_color']);
+	$they_help_color = trim($_POST['they_help_color']);
+	$i_help_color = trim($_POST['i_help_color']);
 	$response =array();
 	//==waste
 		$sql_log =array();
@@ -1218,7 +1334,7 @@ function create_network_sub_creation_ajax() {
 		//check creation_id not empty and sub_creation_id empty and sub_topic_name not empty
 		if(empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$net_notes}' ";
+			$sqlInsertSub = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$net_notes}', node_color = '{$sub_topic_color}', field_2_color = '{$source_color}', field_3_color = '{$key_color}' ";
 			
 			//==waste
 			$sql_log[] = $sqlInsertSub;
@@ -1237,7 +1353,7 @@ function create_network_sub_creation_ajax() {
 					
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$they_help_color}', rt_node_color='{$i_help_color}' ";
 							$wpdb->query($sqlInsertSubDetail);
 				//==waste
 				$sql_log[] = $sqlInsertSubDetail;
@@ -1252,7 +1368,7 @@ function create_network_sub_creation_ajax() {
 			}
 		} else if(!empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$exp_notes}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$exp_notes}', node_color = '{$sub_topic_color}', field_2_color = '{$source_color}', field_3_color = '{$key_color}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
 			
 			//==waste
 			$sql_log[] = $sqlUpdateSub;
@@ -1272,7 +1388,7 @@ function create_network_sub_creation_ajax() {
 			
 					foreach($_POST['tag_val'] as $key => $tag_val){
 						if(!(trim($tag_val["left"]) == '' && trim($tag_val["right"]) == '')){
-							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}' ";
+							$sqlInsertSubDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$hdn_creation_id}', sub_creation_id = '{$hdn_sub_creation_id}', left_val = '{$tag_val["left"]}', right_val = '{$tag_val["right"]}', lft_node_color='{$they_help_color}', rt_node_color='{$i_help_color}' ";
 			//==waste
 			$sql_log[] = $sqlInsertSubDetail;
 			//==end-waste
@@ -1320,7 +1436,7 @@ function start_network_creation_graph_ajax() {
 			$graph_nodes = array(
 									'name' => $current_user->display_name,
 									'value' => 100,
-									'color' => '#000000'
+									'color' => $creation_result[0]['user_color'] ? $creation_result[0]['user_color'] : NT_CRE_USER
 								);
 			
 			// get sub-topic
@@ -1337,13 +1453,13 @@ function start_network_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : NT_CRE_SUB ,'tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
 					
 					
 					
-					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => '#593e97', 'link'=>[$sub_data['field_3']] );
+					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
 					
-					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => '#b4bcfc','link'=>[$sub_data['field_1']] );
+					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
 					
 					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
 					// get left-right (Source-Learning) nodes
@@ -1362,7 +1478,7 @@ function start_network_creation_graph_ajax() {
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#9ba2a6');
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : NT_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
@@ -1379,8 +1495,8 @@ function start_network_creation_graph_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => NT_CRE_RT , 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
 											//$graph_child['children'][$sub_key]['link'][] = $r_val;
@@ -1427,6 +1543,19 @@ if( is_user_logged_in() ) {
     return $args;
 }
 add_filter( 'wp_nav_menu_args', 'my_wp_nav_menu_args' );
+
+/*add_filter('wp_nav_menu_items', 'my_custom_menu_item');
+
+function my_custom_menu_item($items)
+{
+    if (is_user_logged_in()) {
+        $user = wp_get_current_user();
+        $name = $user->display_name; // or user_login , user_firstname, user_lastname
+        $items .= '<li><a href=""> Hey'.ucfirst($name).'</a></li>';
+    }
+
+    return $items;
+}*/
 
 function get_topic_graph_data($user_id,$creation_id){
 	global $wpdb;
