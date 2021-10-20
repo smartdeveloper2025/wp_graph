@@ -37,6 +37,23 @@ define( 'DB_CHARSET', 'utf8mb4' );
 /** The database collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
+
+/******************Graph Nodes Colors Start***************************/
+define( 'TP_CRE_MAIN', '#9ba2a6' );
+define( 'TP_CRE_SUB', '#000000' );
+define( 'TP_CRE_LF', '#593e97' );
+define( 'TP_CRE_RT', '#b4bcfc' );
+define( 'EX_CRE_SUB', '#000000' );
+define( 'EX_CRE_LF', '#593e97' );
+define( 'EX_CRE_RT', '#b4bcfc' );
+define( 'NT_CRE_USER', '#000000' );
+define( 'NT_CRE_SUB', '#000000' );
+define( 'NT_CRE_ORG', '#593e97' );
+define( 'NT_CRE_POS', '#b4bcfc' );
+define( 'NT_CRE_LF', '#9ba2a6' );
+define( 'NT_CRE_RT', '#b4bcfc' );
+/******************Graph Nodes Colors End***************************/
+
 /**#@+
  * Authentication unique keys and salts.
  *
