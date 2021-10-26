@@ -1214,6 +1214,8 @@ function start_experience_creation_graph_ajax() {
 			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+			
+			$right_node_collection = array();
 
 			if(count($sub_creation_result) >= 0){
 				// loop for all sub-topic
@@ -1245,25 +1247,46 @@ function start_experience_creation_graph_ajax() {
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
+									//$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
+									
+									
+									//collect exp left node as first children
+									$graph_child[$sub_key]['children'][] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
+									
 								}
 								
 								//collect right node if not empty
 								if(!empty($detail_data['right_val'])){
 									$rightValueArray = explode(',', trim($detail_data['right_val']));
 									
-									if($detail_data['left_val'] != ''){
-										$left_node['link'] = $rightValueArray; //create left node linking with right node 
-									}
+									// if($detail_data['left_val'] != ''){
+										// $left_node['link'] = $rightValueArray; //create left node linking with right node 
+									// }
 									
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
-											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											if(!in_array($r_val,$right_node_collection)) {
+												$right_node_collection[] = $r_val; // add in collection for duplicate check
+												
+												// push right node to nodes array, so that it wil create a node
+												//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+												// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+												
+												
+												if($detail_data['left_val'] != ''){
+													$graph_child[$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+
+													// $graph_child[$sub_key]['children'][$key]['link'][] = $r_val;
+												} else {
+													$graph_child[$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+												}
+											} 
+											
+											if($detail_data['left_val'] != '')
+												$graph_child[$sub_key]['children'][$key]['link'][] = $r_val;
 											
 											// create link with sub-topic of right-node
 											$graph_child[$sub_key]['link'][] = $r_val;
@@ -1272,9 +1295,9 @@ function start_experience_creation_graph_ajax() {
 								}
 								
 								//collect left node with linking
-								if(count($left_node) > 0){
-									$other_nodes[] = $left_node;
-								}
+								// if(count($left_node) > 0){
+									// $other_nodes[] = $left_node;
+								// }
 							}
 						}
 						
@@ -1282,17 +1305,11 @@ function start_experience_creation_graph_ajax() {
 				}
 				//$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = $graph_child; //appaned all child to main node
-				$graph_data = array_merge($graph_data,$other_nodes);
+				//$graph_data = array_merge($graph_data,$other_nodes);
 				//echo "---hello";
-				$unique_array = [];
-				foreach($graph_data as $element) {
-					$hash = $element['name'];
-					$unique_array[$hash] = $element;
-				}
-				$unique_result = array_values($unique_array);
 				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
-				echo json_encode($unique_result); die();
+				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
 				echo json_encode($test); die();
@@ -1418,7 +1435,7 @@ function create_network_sub_creation_ajax() {
 			}
 		} else if(!empty($hdn_sub_creation_id) && !empty($hdn_creation_id)){
 			
-			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$exp_notes}', node_color = '{$sub_topic_color}', field_2_color = '{$source_color}', field_3_color = '{$key_color}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
+			$sqlUpdateSub = "update {$sub_creation_table} set field_1 = '{$sub_net_name}', field_2 = '{$sub_net_title}', field_3 = '{$sub_net_location}', notes = '{$net_notes}', node_color = '{$sub_topic_color}', field_2_color = '{$source_color}', field_3_color = '{$key_color}' where id = '{$hdn_sub_creation_id}' and creation_id = '{$hdn_creation_id}' and user_id = '{$current_user_id}'";
 			
 			//==waste
 			$sql_log[] = $sqlUpdateSub;
@@ -1493,6 +1510,8 @@ function start_network_creation_graph_ajax() {
 			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+			
+			$right_node_collection = array();
 
 			if(count($sub_creation_result) >= 0){
 				// loop for all sub-topic
@@ -1510,11 +1529,23 @@ function start_network_creation_graph_ajax() {
 					
 					
 					if($sub_data['field_2'] != ''){
-						$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
+						//$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
+						
+						$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG  );
+						
+						$graph_child['children'][$sub_key]['link'][] = $sub_data['field_2'];
 					}
 					
 					if($sub_data['field_3'] != ''){
-						$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+						//$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+						
+						if($sub_data['field_2'] != ''){
+							$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS , 'link' => [$sub_data['field_2']] );
+						} else {
+							$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS );
+						}	
+						
+						$graph_child['children'][$sub_key]['children'][$sub_key]['link'][] = $sub_data['field_3'];
 					}
 					
 					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
@@ -1550,19 +1581,27 @@ function start_network_creation_graph_ajax() {
 									
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
-											// push right node to nodes array, so that it wil create a node
-											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => NT_CRE_RT , 'link' => $rightValueArray);
+											if(!in_array($r_val,$right_node_collection)) {
 											
-											// create link with sub-topic of right-node
-											//$graph_child['children'][$sub_key]['link'][] = $r_val;
+												$right_node_collection[] = $r_val; // add in collection for duplicate check
+											
+												// push right node to nodes array, so that it wil create a node
+												//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+												// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+												
+												$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+												
+												// create link with sub-topic of right-node
+											}
+												$graph_child['children'][$sub_key]['link'][] = $r_val;
 										}
 									}
 								}
 								
 								//collect left node with linking
 								if(count($left_node) > 0){
-									$other_nodes[] = $left_node;
+									$graph_child['children'][$sub_key]['children'][] = $left_node;
+									//$other_nodes[] = $left_node;
 								}
 							}
 						}
@@ -1571,17 +1610,10 @@ function start_network_creation_graph_ajax() {
 				}
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
-				$graph_data = array_merge($graph_data,$other_nodes);
-				
-				$unique_array = [];
-				foreach($graph_data as $element) {
-					$hash = $element['name'];
-					$unique_array[$hash] = $element;
-				}
-				$unique_result = array_values($unique_array);
+				//$graph_data = array_merge($graph_data,$other_nodes);
 				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
-				echo json_encode($unique_result); die();
+				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
 				echo json_encode($test); die();
@@ -1875,7 +1907,7 @@ function get_net_graph_data($user_id,$creation_id){
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				//$graph_data = array_merge($graph_data,$other_nodes);
-					echo "<pre>"; print_r($graph_data); //die('==hello');
+					//echo "<pre>"; print_r($graph_data); //die('==hello');
 				$graph_data = json_encode($graph_data); //die();
 			} else {
 				$test = array (0 => array ('name' => $current_user->data->display_name,
@@ -2037,6 +2069,74 @@ SET ".
 	
 	return true;
 }
+
+function duplicate_creation($creation_id){
+	global $wpdb;
+	$current_user_id = get_current_user_id();
+	$creation_table = $wpdb->prefix."tbl_creation";
+	$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+	$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+	$response = array();
+	if(isset($_POST['creation_id']) && $_POST['creation_id'] != '' && isset($_POST['action']) && $_POST['action'] == 'duplicate_creation_by_ajax')	{
+		
+		$creation_id = $_POST['creation_id'];
+		
+		$sql_duplicate_creation = "INSERT INTO {$creation_table} (user_id, name, description, type, user_color) ".
+		"SELECT ". 
+			"user_id, CONCAT('Copy of ', name), description, type, user_color ". 
+		"FROM {$creation_table} ". 
+		"WHERE id = {$creation_id}" ;
+		
+		$wpdb->query($sql_duplicate_creation);
+		$last_inserted_creation_id = $wpdb->insert_id;
+		
+		if($last_inserted_creation_id){
+			$get_sub_data = "SELECT sc.* from {$sub_creation_table} as sc where sc.creation_id = {$creation_id}";
+			$resData = $wpdb->get_results($get_sub_data, ARRAY_A);
+			
+			// echo '<pre>';
+			// print_r($resData);
+			// echo '</pre>';
+
+			foreach($resData as $key => $rec) {
+				$f1 = $rec['field_1'];		
+				$f2 = $rec['field_2'];		
+				$f3 = $rec['field_3'];		
+				$cp_notes = $rec['notes'];		
+				$cp_node_color = $rec['node_color'];		
+				$cp_field_2_color = $rec['field_2_color'];		
+				$cp_field_3_color = $rec['field_3_color'];	
+				
+				$sqlSubCreation = "INSERT INTO {$sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$last_inserted_creation_id}', field_1 = '{$f1}', field_2 = '{$f2}', field_3 = '{$f3}', notes = '{$cp_notes}', node_color='{$cp_node_color}', field_2_color='{$cp_field_2_color}', field_3_color='{$cp_field_3_color}' ";
+				
+				$wpdb->query($sqlSubCreation);
+				$last_inserted_sub_creID = $wpdb->insert_id;
+				
+				if($last_inserted_sub_creID) {
+					$recSubCreationID = $rec['id'];
+					
+					$get_sub_crt_detail = "SELECT * from {$detail_sub_creation_table} where creation_id = {$creation_id} and sub_creation_id={$recSubCreationID}";
+					
+					$resDetailData = $wpdb->get_results($get_sub_crt_detail, ARRAY_A);
+					foreach($resDetailData as $key_d => $rec_d) {
+						$cp_left_val = $rec_d['left_val'];	
+						$cp_right_val = $rec_d['right_val'];	
+						$cp_lft_node_color = $rec_d['lft_node_color'];	
+						$cp_rt_node_color = $rec_d['rt_node_color'];	
+					
+						$sqlSubCreationDetail = "INSERT INTO {$detail_sub_creation_table} set user_id = '{$current_user_id}', creation_id = '{$last_inserted_creation_id}', sub_creation_id = '{$last_inserted_sub_creID}', left_val = '{$cp_left_val}', right_val = '{$cp_right_val}', lft_node_color='{$cp_lft_node_color}', rt_node_color='{$cp_rt_node_color}' ";
+						$wpdb->query($sqlSubCreationDetail);
+					}
+				}
+				
+			}	
+			$response = array('flag'=>'success', 'msg' => 'Creation duplicate successfully.');
+		}
+		
+	}
+	echo json_encode($response); die();
+}
+add_action('wp_ajax_duplicate_creation_by_ajax', 'duplicate_creation');
 
 /*add_action('wp_logout','auto_redirect_after_logout');
 

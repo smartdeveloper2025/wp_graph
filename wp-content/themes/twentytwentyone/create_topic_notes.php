@@ -485,6 +485,7 @@ function plot_topic_graph(graph_data){
 	// Create series
 	var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 	
+	chart.responsive.enabled = true;
 	/* chart.legend = new am4charts.Legend();
 	chart.legend.position = "bottom";
 	chart.legend.fontSize = 12;
@@ -545,6 +546,8 @@ series.links.template.strength = 1;
 		  case 1:
 			return "{tooltip}";
 		  case 2:
+			return "{name}";
+		  default :
 			return "{name}";
 		}
 	  }

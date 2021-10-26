@@ -533,6 +533,7 @@ function plot_experience_graph(graph_data){
 	// Create series
 	var series = chart.series.push(new am4plugins_forceDirected.ForceDirectedSeries());
 	
+	chart.responsive.enabled = true;
 	/* chart.legend = new am4charts.Legend();
 	chart.legend.position = "bottom";
 	chart.legend.fontSize = 12;
@@ -589,10 +590,12 @@ series.links.template.strength = 1;
 	  if (target.dataItem) {
 		switch(target.dataItem.level) {
 		  case 0:
-			return "{name}";
-		  case 1:
 			return "{tooltip}";
+		  case 1:
+			return "{name}";
 		  case 2:
+			return "{name}";
+		  default :
 			return "{name}";
 		}
 	  }

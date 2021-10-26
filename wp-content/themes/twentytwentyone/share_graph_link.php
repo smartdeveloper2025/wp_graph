@@ -7,17 +7,21 @@ $user_id = $_GET['user_id'];
 $creation_id = $_GET['creation_id'];
 $type = $_GET['type'];
 $tpl_graph_data = '';
+$sh_graph_type = '';
 
 if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '' && isset($type) && $type != ''){
 	switch( $type ){
 		case 'tpc':
 			$tpl_graph_data = get_topic_graph_data($user_id,$creation_id);
+			$sh_graph_type = 'tpc';
 			break;
 		case 'exp':
 			$tpl_graph_data = get_exp_graph_data($user_id,$creation_id);
+			$sh_graph_type = 'exp';
 			break;
 		case 'net':
 			$tpl_graph_data = get_net_graph_data($user_id,$creation_id);
+			$sh_graph_type = 'net';
 			break;
 	}
 	//echo $tpl_graph_data; die('hello');
@@ -42,7 +46,6 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 
 	
 			<div id="chartdiv"></div>
-        
     <!-- #content -->
 
 
@@ -72,8 +75,8 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	chart.fontFamily = "Arial"; */
 	
 	chart.responsive.enabled = true;
-	chart.tooltip.label.maxWidth = 150;
-	chart.tooltip.label.wrap = true;
+	//chart.tooltip.label.maxWidth = 150;
+	//chart.tooltip.label.wrap = true;
 	
 	chart.legend = new am4charts.Legend();
 	chart.legend.useDefaultMarker = true;
@@ -117,26 +120,44 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
-	// series.manyBodyStrength = -10;
-	// series.links.template.distance = 7;
-	// series.links.template.strength = 0.25;
-	series.manyBodyStrength = -50;
-	series.links.template.distance = 3;
-	series.links.template.strength = 1;
+	series.manyBodyStrength = -10;
+	series.links.template.distance = 7;
+	series.links.template.strength = 0.25;
+	// series.manyBodyStrength = -50;
+	// series.links.template.distance = 3;
+	// series.links.template.strength = 1;
 	
+	//var get_sh_graph_type = jQuery('#sh_graph_type').val();
+	var get_sh_graph_type = '<?php echo $sh_graph_type; ?>';
 	// Set tooltip of nodes on hover
 	series.nodes.template.adapter.add("tooltipText", function(text, target) {
 	  if (target.dataItem) {
-		switch(target.dataItem.level) {
-		  case 0:
-			return "{name}";
-		  case 1:
-			return "{tooltip}";
-		  case 2:
-			return "{name}";
-		  default : 
-		    return "{name}";
-		}
+		
+			if(get_sh_graph_type == 'tpc' || get_sh_graph_type == 'net'){
+				switch(target.dataItem.level) {
+				  case 0:
+					return "{name}";
+				  case 1:
+					return "{tooltip}";
+				  case 2:
+					return "{name}";
+				  default : 
+					return "{name}";
+				}
+			} else {
+				switch(target.dataItem.level) {
+				case 0:
+					return "{tooltip}";
+				  case 1:
+					return "{name}";
+				  case 2:
+					return "{name}";
+				  default : 
+					return "{name}";
+				}
+			}
+		  
+		
 	  }
 	  return text;
 	});

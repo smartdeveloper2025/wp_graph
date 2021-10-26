@@ -48,6 +48,7 @@ if(isset($_GET['del_id']) && $_GET['del_id'] != '' ){
 
 $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where user_id = '{$current_user_id}' and status = 'active' ", ARRAY_A );
 
+
 ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -127,15 +128,12 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 								</div>
 								<div class="hover-menu">
 									<ul>
-										<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><i class="fas fa-edit"></i>Edit</a></li>
+										<!--<li><a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" ><i class="fas fa-edit"></i>Edit</a></li>-->
 										
-										<!--<li><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>-->
+										<li onclick="create_duplicate(<?php echo $creation_data['id']; ?>)"><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/duplicate-icon.png">Duplicate</li>
 										
 										<li><a href="<?php echo esc_url( home_url( ) ); ?>/home/?del_id=<?php echo $creation_data['id']; ?>" ><img src="http://beta.knomad.ai/wp-content/uploads/2021/10/delete-icon.png">Delete</a></li>
 									</ul>
-									<!--<ul>
-										<li>Restore</li>
-									</ul>-->
 								</div>
 								</div>
 							</div>
@@ -161,3 +159,23 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 	</div>
     <!-- #content -->
 <?php get_footer(); ?>
+<script type="text/javascript">
+function create_duplicate(recID){
+	if(recID != ''){
+	  jQuery.ajax({
+		url:"<?php echo bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php",
+		type:'POST',
+		data: 'action=duplicate_creation_by_ajax&creation_id='+recID,
+		dataType: 'JSON',
+		success:function(res){
+			  if(res.flag == 'success'){
+				alert(res.msg);
+				location.reload();
+			  }else{
+				alert('Opps! Something went wrong');
+			  }
+		}
+	   });
+	} 
+}
+</script>
