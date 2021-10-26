@@ -1838,6 +1838,8 @@ function get_net_graph_data($user_id,$creation_id){
 											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
+											$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+											
 											// create link with sub-topic of right-node
 											//$graph_child['children'][$sub_key]['link'][] = $r_val;
 										}
@@ -1857,7 +1859,7 @@ function get_net_graph_data($user_id,$creation_id){
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				//$graph_data = array_merge($graph_data,$other_nodes);
-					//echo "<pre>"; print_r($graph_data); //die('==hello');
+					echo "<pre>"; print_r($graph_data); //die('==hello');
 				$graph_data = json_encode($graph_data); //die();
 			} else {
 				$test = array (0 => array ('name' => $current_user->data->display_name,

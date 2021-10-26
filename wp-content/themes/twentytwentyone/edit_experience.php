@@ -391,6 +391,7 @@ function html_clone(){
 
 /*********clone code end*************/
 
+/*********key learnings tags js code start*************/
 function tag_call(obj){
 	jQuery(obj).amsifySuggestags({
 		type : 'amsify',
@@ -418,6 +419,7 @@ jQuery('.tag_cls').on('suggestags.change', function(e){
 	var last = fromID.split("_").pop();
 	sub_exp_creation(last);
 });
+/*********key learnings tags js code end*************/
 
 function exp_main_creation(){
 	var exp_name = jQuery('#exp_name').val();

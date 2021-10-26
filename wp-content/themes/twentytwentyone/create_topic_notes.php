@@ -333,11 +333,22 @@ function html_clone(){
 
 /*********clone code end*************/
 
+/*********key learnings tags js code start*************/
 function tag_call(obj){
 	jQuery(obj).amsifySuggestags({
-		type : 'amsify'
+		type : 'amsify',
+		printValues: false,
 	});
+	
+	jQuery(obj).on('suggestags.change', function(e){
+		// Do something while add/remove tag
+		var form = jQuery(this).closest('form')[0];
+		var fromID = form.id;
+		var last = fromID.split("_").pop();
+		sub_creation(last);
+	}); 
 }
+/*********key learnings tags js code end*************/
 
 function main_creation(){
 	var topic_name = jQuery('#topic_name').val();
