@@ -117,9 +117,12 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
-	series.manyBodyStrength = -10;
-series.links.template.distance = 7;
-series.links.template.strength = 0.25;
+	// series.manyBodyStrength = -10;
+	// series.links.template.distance = 7;
+	// series.links.template.strength = 0.25;
+	series.manyBodyStrength = -50;
+	series.links.template.distance = 3;
+	series.links.template.strength = 1;
 	
 	// Set tooltip of nodes on hover
 	series.nodes.template.adapter.add("tooltipText", function(text, target) {

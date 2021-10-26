@@ -1768,6 +1768,8 @@ function get_net_graph_data($user_id,$creation_id){
 			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
+			
+			$right_node_collection = array();
 
 			if(count($sub_creation_result) >= 0){
 				// loop for all sub-topic
@@ -1791,15 +1793,23 @@ function get_net_graph_data($user_id,$creation_id){
 						
 						//$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
 						
+						// $graph_child['children'][$sub_key]['children'][$sub_key]['link=='][] = $sub_data['field_3'];
 						$graph_child['children'][$sub_key]['link'][] = $sub_data['field_2'];
 					}
 					
 					if($sub_data['field_3'] != ''){
 						//$graph_child['children'][$sub_key]['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
-						$graph_child['children'][$sub_key]['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS  );
+						
+					if($sub_data['field_2'] != ''){
+						$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS , 'link' => [$sub_data['field_2']] );
+					} else {
+						$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS );
+					}	
 						
 						//$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
-						$graph_child['children'][$sub_key]['link'][] = $sub_data['field_3'];
+						
+
+						$graph_child['children'][$sub_key]['children'][$sub_key]['link'][] = $sub_data['field_3'];
 					}
 					
 					// get left-right (Source-Learning) nodes
@@ -1834,14 +1844,20 @@ function get_net_graph_data($user_id,$creation_id){
 									
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
-											// push right node to nodes array, so that it wil create a node
-											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
-											$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+											if(!in_array($r_val,$right_node_collection)) {
 											
-											// create link with sub-topic of right-node
-											//$graph_child['children'][$sub_key]['link'][] = $r_val;
+												$right_node_collection[] = $r_val; // add in collection for duplicate check
+											
+												// push right node to nodes array, so that it wil create a node
+												//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+												// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+												
+												$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
+												
+												// create link with sub-topic of right-node
+											}
+												$graph_child['children'][$sub_key]['link'][] = $r_val;
 										}
 									}
 								}
@@ -1895,7 +1911,9 @@ function get_exp_graph_data($user_id,$creation_id){
 			// get sub-topic
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
-
+	
+			$right_node_collection = array();
+			
 			if(count($sub_creation_result) >= 0){
 				// loop for all sub-topic
 				foreach($sub_creation_result as $sub_key => $sub_data){
@@ -1916,18 +1934,16 @@ function get_exp_graph_data($user_id,$creation_id){
 						// loop for all left-right (Source-Learning) nodes
 						foreach($detail_sub_creation_result as $key => $detail_data){
 							$left_node = array();
-							// echo '<pre><br/>===';
-							// var_dump($detail_data);
-							// echo '</pre>';
+
 							// pick all left node and right node
 							if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
-								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
 									//$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
+									
 									
 									//collect exp left node as first children
 									$graph_child[$sub_key]['children'][] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
@@ -1945,18 +1961,30 @@ function get_exp_graph_data($user_id,$creation_id){
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+											if(!in_array($r_val,$right_node_collection)) {
+												$right_node_collection[] = $r_val; // add in collection for duplicate check
+												
+												// push right node to nodes array, so that it wil create a node
+												//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+												// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+												
+												
+												if($detail_data['left_val'] != ''){
+													$graph_child[$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+
+													// $graph_child[$sub_key]['children'][$key]['link'][] = $r_val;
+												} else {
+													$graph_child[$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+												}
+											} 
+											
+											if($detail_data['left_val'] != '')
+												$graph_child[$sub_key]['children'][$key]['link'][] = $r_val;
+											
 											
 											// create link with sub-topic of right-node
 											$graph_child[$sub_key]['link'][] = $r_val;
-											
-											if($detail_data['left_val'] != ''){
-												$graph_child[$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
-											} else {
-												$graph_child[$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
-											}
-											
+												
 										}
 									}
 								}
