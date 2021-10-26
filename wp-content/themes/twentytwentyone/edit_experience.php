@@ -393,12 +393,31 @@ function html_clone(){
 
 function tag_call(obj){
 	jQuery(obj).amsifySuggestags({
-		type : 'amsify'
+		type : 'amsify',
+		printValues: false,
 	});
+	
+	jQuery(obj).on('suggestags.change', function(e){
+		// Do something while add/remove tag
+		var form = jQuery(this).closest('form')[0];
+		var fromID = form.id;
+		var last = fromID.split("_").pop();
+		sub_exp_creation(last);
+	}); 
 }
-/* jQuery('.tag_cls').amsifySuggestags({
-		type : 'amsify'
-	}); */
+
+jQuery('.tag_cls').amsifySuggestags({
+	type : 'amsify',
+	printValues: false,
+});
+
+jQuery('.tag_cls').on('suggestags.change', function(e){
+	// Do something while add/remove tag
+	var form = jQuery(this).closest('form')[0];
+	var fromID = form.id;
+	var last = fromID.split("_").pop();
+	sub_exp_creation(last);
+});
 
 function exp_main_creation(){
 	var exp_name = jQuery('#exp_name').val();
