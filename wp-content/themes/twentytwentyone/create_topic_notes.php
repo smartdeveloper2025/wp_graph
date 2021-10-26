@@ -79,10 +79,18 @@ body{
                     <?php 
 						$user_plan = do_shortcode('[swpm_show_member_info column="membership_level_name"]'); 
 						if($user_plan == 'Basic - but make it custom'){
+							$show_form = 'block;';
+							$show_free_list = 'none;';
+							
+						} else {
+							$show_form = 'none;';
+							$show_free_list = 'block;';
+							
+						}
 						
 					?>
 							
-					<form method="post" id="node_color_frm" action="" class="colr_form" >
+					<form method="post" id="node_color_frm" action="" class="colr_form" style="display:<?php echo $show_form; ?>" >
                         <ul class="nav list_itms">
                             <li class="nav-item pr-1">
 								<div id="cp-component1" class="input-group">
@@ -116,15 +124,13 @@ body{
                         <h5 class="mb-0">A Knomad creation</h5>
 					</form>
 					
-					<?php } else { ?>
-							<ul class="nav list_itms freecutomer_list" style="margin-left: auto;">
-								<li class="nav-item pr-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_MAIN; ?>" ></i> Topic</li>
-								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_SUB; ?>"></i> Sub Topic</li>
-								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_LF; ?>"></i> Source</li>
-								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_RT; ?>"></i> Key Learning</li>
-								
-							</ul>
-						<?php } ?>
+					<ul class="nav list_itms freecutomer_list" style="margin-left: auto;display:<?php echo $show_free_list; ?>">
+						<li class="nav-item pr-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_MAIN; ?>" ></i> Topic</li>
+						<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_SUB; ?>"></i> Sub Topic</li>
+						<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_LF; ?>"></i> Source</li>
+						<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo TP_CRE_RT; ?>"></i> Key Learning</li>
+						
+					</ul>
                     </div>
                 </div>
                 <div class="row chart__div">                    
@@ -138,7 +144,7 @@ body{
 										<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_1" value="" />
 										
 										<label><i class="fas fa-circle"></i> Name of Sub-Topic</label>
-										<input type="text" name="sub_topic_name" onblur="sub_creation(1)" placeholder="Name the subject" class="form-control creation_input">
+										<input type="text" name="sub_topic_name" onblur="sub_creation(1)"  class="form-control creation_input">
 									</div>
 								</div>
 								<div class="row m-0 mt-5">
@@ -148,19 +154,19 @@ body{
 											<thead>
 												<tr>
 													<th style="width:50%">Source material/location [you can use this to group the keyword]?</th>
-													<th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th>
+													<th style="width:50%">Key learnings form this material/location [Press Enter to separate]</th>
 												</tr>
 											</thead>
 											<tbody>
 												<tr><td><div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][left]" placeholder="Add source" class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1,'skills_input')" >
+															<input type="text" name="tag_val[0][left]"  class="form-control creation_input " onblur="sub_creation(1)" onclick="clone_skills(this,1,'skills_input')" >
 														</div>
 													</td>
 													<td>
 														<div class="d-flex align-items-center">
 															<i class="fas fa-circle" aria-hidden="true"></i>
-															<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="clone_skills(this,1,'skills_right')" placeholder="Add key learnings" class="form-control creation_input" >
+															<input type="text" name="tag_val[0][right]" onblur="sub_creation(1)" onclick="clone_skills(this,1,'skills_right')"  class="form-control creation_input" >
 														</div>
 													</td>
 												</tr>
@@ -173,7 +179,7 @@ body{
 								<div class="row m-0 mt-4 experience_row_box">
 									<div class="col-12 p-0">
 										<label>Notes</label>
-										<input type="text" name="sub_topic_notes" onblur="sub_creation(1)" placeholder="Type Here" class="form-control creation_input">
+										<textarea name="sub_topic_notes" onblur="sub_creation(1)"  class="form-control creation_input"></textarea>
 									</div>
 								</div>
 							<!-- </div> -->
@@ -266,7 +272,8 @@ function node_colors(){
                 dataType: 'JSON',
                  success:function(res)
                    {
-						create_topic_graph(hdn_creation_id);
+					   if( hdn_creation_id != '' )
+							create_topic_graph(hdn_creation_id);
                       if(res.flag == 'success'){
 						  
                       }else{
@@ -284,7 +291,7 @@ function node_colors(){
 function clone_skills(objThis , count, focus_cls ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')" placeholder="Add source" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" onfocus="tag_call(this)" placeholder="Add key learnings" class="form-control skills_right creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_creation('+count+')"  class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_creation('+count+')" onclick="tag_call(this)" onfocus="tag_call(this)"  class="form-control skills_right creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(objThis).parent().parent().parent().before(tr);
 	//jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
 	//jQuery(objThis).closest('tr').prev('tr').find('input.'+focus_cls).trigger('click');
@@ -309,15 +316,15 @@ function html_clone(){
 	html += '<div class="row m-0"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="hdn_sub_creation_id" id="hdn_sub_creation_id_' + clone_counter + '" value="" />';
 	html += '<label><i class="fas fa-circle"></i> Name of Sub-Topic</label>';
-	html += '<input type="text" name="sub_topic_name" onblur="sub_creation(' + clone_counter + ')" placeholder="Name the subject" class="form-control creation_input"></div></div>';
+	html += '<input type="text" name="sub_topic_name" onblur="sub_creation(' + clone_counter + ')"  class="form-control creation_input"></div></div>';
 	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
 	html += '<table class="creation_table table_bordered topic__table">';
-	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to seperate]</th></tr></thead><tbody>';
+	html += '<thead><tr><th style="width:50%">Source material/location [you can use this to group the keyword]?</th><th style="width:50%">Key learnings form this material/location [Press Enter to separate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')" placeholder="Add source" class="form-control skills_input creation_input " onclick="clone_skills(this,' + clone_counter + ', ' + skills_input_cls + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="clone_skills(this,1, ' + skills_right_cls + ')" placeholder="Add key learnings" class="form-control skills_right creation_input" ></div></td></tr></tbody></table></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_creation(' + clone_counter + ')"  class="form-control skills_input creation_input " onclick="clone_skills(this,' + clone_counter + ', ' + skills_input_cls + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_creation(' + clone_counter + ')" onclick="clone_skills(this,1, ' + skills_right_cls + ')"  class="form-control skills_right creation_input" ></div></td></tr></tbody></table></div></div>';					
 	html += '<div class="row m-0 mt-4 experience_row_box">';
-	html += '<div class="col-12 p-0"><label>Notes</label><input type="text" name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"></div></div></div></form></div></div>';
+	html += '<div class="col-12 p-0"><label>Notes</label><textarea name="sub_topic_notes" onblur="sub_creation(' + clone_counter + ')"  class="form-control creation_input"></textarea></div></div></div></form></div></div>';
 	
 	jQuery(".additional_clone_data").append(html);
 	jQuery('#clone_counter').val(clone_counter);			

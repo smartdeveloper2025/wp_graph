@@ -28,15 +28,15 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 ?>
 <style type="text/css">
 	#chartdiv {
-	    position: sticky;
 	    width: 100%;
-	    height: 600px;
+	    height: 100%;
+	    /*position: sticky;
 	    top: 70px;
 	    display: flex;
 	    justify-content: center;
 	    background-color: transparent;
 	    box-shadow: 0px 1px 3px rgb(0 0 0 / 40%);
-	    border-radius: 5px;
+	    border-radius: 5px;*/
 	}
 </style>
 
@@ -71,6 +71,10 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	chart.legend.fontSize = 12;
 	chart.fontFamily = "Arial"; */
 	
+	chart.responsive.enabled = true;
+	chart.tooltip.label.maxWidth = 150;
+	chart.tooltip.label.wrap = true;
+	
 	chart.legend = new am4charts.Legend();
 	chart.legend.useDefaultMarker = true;
 	var marker = chart.legend.markers.template.children.getIndex(0);
@@ -95,7 +99,7 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	
 
 	// Add labels
-	series.nodes.template.label.text = "{name}";
+	series.nodes.template.label.text = "[bold]{name}[/]";
 	//series.minRadius = 50;
 	series.centerStrength = 0.5;
 		
@@ -104,8 +108,8 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	series.nodes.template.label.valign = "bottom";
 	series.nodes.template.label.fill = am4core.color("#000");
 	series.nodes.template.label.dy = 10;
-	//series.nodes.template.tooltipText = "[bold]{tooltip}[/]";
-	series.fontSize = 9;
+	//series.nodes.template.tooltipText = "[bold]{name}[/]";
+	series.fontSize = 16;
 	series.minRadius = 10;
 	series.maxRadius = 20;
 	series.dataFields.collapsed = "off";
@@ -113,9 +117,9 @@ if(isset($user_id) && $user_id != '' && isset($creation_id) && $creation_id != '
 	series.nodes.template.propertyFields.x = "x";
 	series.nodes.template.propertyFields.y = "y";
 	
-	series.manyBodyStrength = -50;
-series.links.template.distance = 1;
-series.links.template.strength = 1;
+	series.manyBodyStrength = -10;
+series.links.template.distance = 7;
+series.links.template.strength = 0.25;
 	
 	// Set tooltip of nodes on hover
 	series.nodes.template.adapter.add("tooltipText", function(text, target) {
@@ -127,9 +131,16 @@ series.links.template.strength = 1;
 			return "{tooltip}";
 		  case 2:
 			return "{name}";
+		  default : 
+		    return "{name}";
 		}
 	  }
 	  return text;
+	});
+	series.nodes.template.adapter.add("tooltip", function(text, target) {
+	  color_t = "#000000";
+	  
+	  return color_t;
 	});
  
 	// Set link width
@@ -141,6 +152,11 @@ series.links.template.strength = 1;
 		return widths[to.dataItem.id];
 	  }
 	  return width;
+	});
+	
+	series.links.template.adapter.add("stroke", function(color) {
+	  color = "#000000";
+	  return color;
 	});
 	
 	// Add watermark

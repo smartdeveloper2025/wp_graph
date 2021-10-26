@@ -72,12 +72,20 @@ get_header();
 					</div>
                     <div class="col-lg-8 col-md-8 col-sm-12">
                     <?php 
-						$user_plan = do_shortcode('[swpm_show_member_info column="membership_level_name"]'); 
-						if($user_plan == 'Basic - but make it custom'){
-						
-					?>
+							$user_plan = do_shortcode('[swpm_show_member_info column="membership_level_name"]'); 
+							if($user_plan == 'Basic - but make it custom'){
+								$show_form = 'block;';
+								$show_free_list = 'none;';
+								
+							} else {
+								$show_form = 'none;';
+								$show_free_list = 'block;';
+								
+							}
 							
-					<form method="post" id="node_color_frm" action="" class="colr_form" >
+						?>
+							
+					<form method="post" id="node_color_frm" action="" class="colr_form" style="display:<?php echo $show_form; ?>" >
                         <ul class="nav list_itms">
                             <li class="nav-item pr-1">
 								<div id="cp-component1" class="input-group">
@@ -103,13 +111,11 @@ get_header();
                         </ul>
                         <h5 class="mb-0">A Knomad creation</h5>
 					</form>
-					<?php } else { ?>
-							<ul class="nav list_itms freecutomer_list" style="margin-left: auto;">
-								<li class="nav-item pr-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_SUB; ?>" ></i> Experience</li>
-								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_LF; ?>"></i> Skills</li>
-								<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_RT; ?>"></i> Tools</li>
-							</ul>
-						<?php } ?>
+					<ul class="nav list_itms freecutomer_list" style="margin-left: auto;display:<?php echo $show_free_list; ?>">
+						<li class="nav-item pr-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_SUB; ?>" ></i> Experience</li>
+						<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_LF; ?>"></i> Skills</li>
+						<li class="nav-item px-1"><i class="fas fa-circle" aria-hidden="true" style="color:<?php echo EX_CRE_RT; ?>"></i> Tools</li>
+					</ul>
 					
                     </div>
                 </div>
@@ -125,15 +131,15 @@ get_header();
 									<div class="row">
 										<div class="col-md-4">
 											<label><i class="fas fa-circle"></i> Name of Experience</label>
-											<input type="text" name="sub_exp_name" onblur="sub_exp_creation(1)" placeholder="name the experience" class="form-control creation_input">
+											<input type="text" name="sub_exp_name" onblur="sub_exp_creation(1)" class="form-control creation_input">
 										</div>
 										<div class="col-md-4">
 											<label><i class="fas fa-circle"></i> Position/Title</label>
-											<input type="text" name="sub_exp_title" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
+											<input type="text" name="sub_exp_title" onblur="sub_exp_creation(1)" class="form-control creation_input">
 										</div>
 										<div class="col-md-4">
 											<label><i class="fas fa-circle"></i> Location</label>
-											<input type="text" name="sub_exp_location" onblur="sub_exp_creation(1)" placeholder="type here" class="form-control creation_input">
+											<input type="text" name="sub_exp_location" onblur="sub_exp_creation(1)" class="form-control creation_input">
 										</div>
 									</div>
 								</div>
@@ -145,19 +151,19 @@ get_header();
 										<thead>
 											<tr>
 												<th style="width:50%">What skills did you learn or obtain during this experience?</th>
-												<th style="width:50%">What tools/languages were used in this skill? [Press Enter to seperate]</th>
+												<th style="width:50%">What tools/languages were used in this skill? [Press Enter to separate]</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr><td><div class="d-flex align-items-center">
 														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][left]" placeholder="Add Skills" class="form-control creation_input " onblur="sub_exp_creation(1)" onclick="clone_skills(this,1,'skills_input')" >
+														<input type="text" name="tag_val[0][left]" class="form-control creation_input " onblur="sub_exp_creation(1)" onclick="clone_skills(this,1,'skills_input')" >
 													</div>
 												</td>
 												<td>
 													<div class="d-flex align-items-center">
 														<i class="fas fa-circle" aria-hidden="true"></i>
-														<input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(1)" onclick="clone_skills(this,1,'skills_right')" placeholder="Add tool/language/tech used as part of the skills" class="form-control creation_input" >
+														<input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(1)" onclick="clone_skills(this,1,'skills_right')" class="form-control creation_input" >
 													</div>
 												</td>
 											</tr>
@@ -167,7 +173,7 @@ get_header();
 								</div>
 								<div class="col-12 p-0 mt-4">
 									<label>Outcomes & Achievements</label>
-									<input type="text" name="sub_exp_notes" onblur="sub_exp_creation(1)" placeholder="Type Here" class="form-control creation_input">
+									<textarea name="sub_exp_notes" onblur="sub_exp_creation(1)" class="form-control creation_input"></textarea>
 									<p class="mt-1">
 										[what were the outcomes or achievements you want to highlight from the experience]
 									</p>
@@ -261,7 +267,8 @@ function node_colors(){
                 dataType: 'JSON',
                  success:function(res)
                    {
-						create_experience_graph(hdn_creation_id);
+						if( hdn_creation_id != '' )
+							create_experience_graph(hdn_creation_id);
 						//console.log(res);
                       if(res.flag == 'success'){
 						  
@@ -279,7 +286,7 @@ function node_colors(){
 function clone_skills(objThis , count, focus_cls ){
 	var skills_count = jQuery('#skills_count_'+count ).val();
 	skills_count++;
-	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_exp_creation('+count+')" placeholder="Add Skills" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_exp_creation('+count+')" onclick="tag_call(this)" placeholder="Add tool/language/tech used as part of the skills" class="form-control skills_right creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
+	let tr = '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][left]" onblur="sub_exp_creation('+count+')" class="form-control creation_input skills_input"></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle"></i><input type="text" name="tag_val['+skills_count+'][right]" onblur="sub_exp_creation('+count+')" onclick="tag_call(this)" class="form-control skills_right creation_input"><span class="fas fa-times remove__list"></span></div></td></tr>';
 	jQuery(objThis).parent().parent().parent().before(tr);
 	//jQuery(objThis).closest('tr').prev('tr').find('input.skills_input').focus();
 	jQuery(objThis).closest('tr').prev('tr').find('input.'+focus_cls).focus();
@@ -304,14 +311,14 @@ function html_clone(){
 	html += '<div class="row m-0"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="hdn_exp_sub_creation_id" id="hdn_exp_sub_creation_id_' + clone_counter + '" value="" />';
 	html += '<div class="row"><div class="col-md-4"><label><i class="fas fa-circle"></i> Name of Experience</label>';
-	html += '<input type="text" name="sub_exp_name" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="name the experience" class="form-control creation_input"></div>';
-	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Position/Title</label><input type="text" name="sub_exp_title" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div><div class="col-md-4"><label><i class="fas fa-circle"></i> Location</label><input type="text" name="sub_exp_location" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="type here" class="form-control creation_input"></div></div></div></div>';
+	html += '<input type="text" name="sub_exp_name" onblur="sub_exp_creation(' + clone_counter + ')" class="form-control creation_input"></div>';
+	html += '<div class="col-md-4"><label><i class="fas fa-circle"></i> Position/Title</label><input type="text" name="sub_exp_title" onblur="sub_exp_creation(' + clone_counter + ')" class="form-control creation_input"></div><div class="col-md-4"><label><i class="fas fa-circle"></i> Location</label><input type="text" name="sub_exp_location" onblur="sub_exp_creation(' + clone_counter + ')" class="form-control creation_input"></div></div></div></div>';
 	html += '<div class="row m-0 mt-5"><div class="col-12 p-0">';
 	html += '<input type="hidden" name="skills_count" id="skills_count_' + clone_counter + '" value="0" />';
 	html += '<table class="creation_table table_bordered experience__table">';
-	html += '<thead><tr><th style="width:50%">What skills did you learn or obtain during this experience?</th><th style="width:50%">What tools/languages were used in this skill? [Press Enter to seperate]</th></tr></thead><tbody>';
+	html += '<thead><tr><th style="width:50%">What skills did you learn or obtain during this experience?</th><th style="width:50%">What tools/languages were used in this skill? [Press Enter to separate]</th></tr></thead><tbody>';
 	html += '<tr><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i>';
-	html += '<input type="text" name="tag_val[0][left]" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Add Skills" class="form-control skills_input creation_input " onclick="clone_skills(this,' + clone_counter + ', ' + skills_input_cls + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(' + clone_counter + ')" onclick="clone_skills(this,1, ' + skills_right_cls + ')" placeholder="Add tool/language/tech used as part of the skills" class="form-control skills_right creation_input" ></div></td></tr></tbody></table></div><div class="col-12 mt-4"><label>Outcomes & Achievements</label><input type="text" name="sub_exp_notes" onblur="sub_exp_creation(' + clone_counter + ')" placeholder="Type Here" class="form-control creation_input"><p class="mt-1">[what were the outcomes or achievements you want to highlight from the experience]</p></div></div>';					
+	html += '<input type="text" name="tag_val[0][left]" onblur="sub_exp_creation(' + clone_counter + ')" class="form-control skills_input creation_input " onclick="clone_skills(this,' + clone_counter + ', ' + skills_input_cls + ')" ></div></td><td><div class="d-flex align-items-center"><i class="fas fa-circle" aria-hidden="true"></i><input type="text" name="tag_val[0][right]" onblur="sub_exp_creation(' + clone_counter + ')" onclick="clone_skills(this,1, ' + skills_right_cls + ')" class="form-control skills_right creation_input" ></div></td></tr></tbody></table></div><div class="col-12 mt-4"><label>Outcomes & Achievements</label><textarea name="sub_exp_notes" onblur="sub_exp_creation(' + clone_counter + ')" class="form-control creation_input"></textarea><p class="mt-1">[what were the outcomes or achievements you want to highlight from the experience]</p></div></div>';					
 	html += '</div></form></div></div></div>';
 	
 	jQuery(".additional_clone_data").append(html);

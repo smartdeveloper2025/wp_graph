@@ -65,6 +65,9 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
     justify-content: center;
     padding-right: 10px;
     padding-left: 10px;
+    width: 40px;
+    align-items: self-end;
+    cursor: pointer;
 }
 .creation-row .mycreation-box .creaton-dot{
 	margin: 2px 0px;
@@ -112,8 +115,10 @@ $creation_result = $wpdb->get_results( "SELECT * from {$creation_table} where us
 						?>
 							
 							<div class="mycreation-box <?php echo $color_class;  ?>">								
-								<h4 class="creation-heading m-0"><?php echo $creation_data['name']; ?></h4>
-								<p class="creation-info m-0"><?php echo time_elapsed_string($creation_data['updated_at']); ?></p>
+								<a href="<?php echo esc_url( home_url( ) ); ?>/<?php echo $link_name; ?>/?edit_id=<?php echo $creation_data['id']; ?>" target="_blank" >
+									<h4 class="creation-heading m-0"><?php echo $creation_data['name']; ?></h4>
+									<p class="creation-info m-0"><?php echo time_elapsed_string($creation_data['updated_at']); ?></p>
+								</a>
 								<div class="main-dot">
 								<div class="dot_sec flex-column">
 									<i class="creaton-dot"></i>

@@ -4,4 +4,43 @@
 
 .main-header{
     background: transparent !important;
+}
+.social_login_cls .nsl-container-buttons {
+       width: 100%;
+    }
+    .social_login_cls .nsl-button.nsl-button-default {
+        background-color: transparent!important;
+        border: 1px solid #fff;
+        justify-content: center;
+        align-items: center;
+    }
+    .social_login_cls .nsl-container-buttons .nsl-button-svg-container {
+        padding: 0px!important;
+        background-color: transparent!important;
+        margin-right: 8px!important;
+    }
+    .social_login_cls .nsl-container-buttons .nsl-button-label-container {
+        flex: unset!important;
+        margin: 0px!important;
+    }
+    .social_login_cls .nsl-button-google .nsl-button-svg-container svg {
+        background-color: #fff!important;
+        border-radius: 50px;
+    }
+    .social_login_cls {
+    margin-bottom: 0px!important;
+        padding-left: 10px;
+    padding-right: 10px;
+}
+@media screen and (max-width: 750px) {
+.social_login_cls {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+}
+@media screen and (max-width: 479px) {
+.social_login_cls {
+    padding-left: 0px;
+    padding-right: 0px;
+}
 }/* End custom CSS */

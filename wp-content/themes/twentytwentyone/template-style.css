@@ -762,6 +762,7 @@
         border: none;
         margin-left: auto;
         padding: 8px 15px;
+        width: 100%;
     }
     .experiencemodal .modal-body {
         padding: 15px 45px 30px;
@@ -859,6 +860,46 @@
     }
     ul.nav.list_itms.freecutomer_list li i {
        margin-right: 4px;
+    }
+    .social_login_cls .nsl-container-buttons {
+       width: 100%;
+    }
+    .social_login_cls .nsl-button.nsl-button-default {
+        background-color: transparent!important;
+        border: 1px solid #fff;
+        justify-content: center;
+        align-items: center;
+    }
+    .social_login_cls .nsl-container-buttons .nsl-button-svg-container {
+        padding: 0px!important;
+        background-color: transparent!important;
+        margin-right: 8px!important;
+    }
+    .social_login_cls .nsl-container-buttons .nsl-button-label-container {
+        flex: unset!important;
+        margin: 0px!important;
+    }
+    .social_login_cls .nsl-button-google .nsl-button-svg-container svg {
+        background-color: #fff!important;
+        border-radius: 50px;
+    }
+    .main-header .elementor-nav-menu li:last-child a {
+       padding: 10px 0px 0px 10px;
+    }
+    .main-header .elementor-nav-menu li:last-child a svg path{
+        fill: #7a7a7a;
+    }
+    .main-header .elementor-nav-menu li:last-child a:hover svg path{
+        fill: #593E97;
+    }
+    .elementor-location-footer .elementor-nav-menu li:last-child a{
+        padding: 10px 0px 0px 10px;
+    }
+    .elementor-location-footer .elementor-nav-menu li:last-child a svg path {
+       fill: #7a7a7a;
+    }
+    .elementor-location-footer .elementor-nav-menu li:last-child a:hover svg path{
+        fill: #593E97;
     }
 
     

@@ -771,6 +771,9 @@ function create_creation_ajax() {
 			
 			if($updResult === 0 || $updResult > 0)
     		{
+				//set updated time for all the tables
+				set_updated_at($hdn_creation_id);
+				
 				// check if skill/tools array is not empty
 				$response = array('flag'=> 'success','creation_id'=>$hdn_creation_id, 'msg'=> 'Topic Note Updated successfully');
 			}else{
@@ -881,6 +884,10 @@ function create_sub_creation_ajax() {
 		} else {
 			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
 		}
+		
+		//set updated time for all the tables
+		set_updated_at($hdn_creation_id);
+		
 	} // end if
 		
 		// Encoding array in JSON format
@@ -915,6 +922,7 @@ function start_creation_graph_by_ajax() {
 			$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' ", ARRAY_A );
 			//echo "<pre>"; print_r($sub_creation_result); die('==hello');
 
+	$right_node_collection = array();
 			if(count($sub_creation_result) >= 0){
 				// loop for all sub-topic
 				foreach($sub_creation_result as $sub_key => $sub_data){
@@ -925,7 +933,9 @@ function start_creation_graph_by_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : TP_CRE_SUB ,'tooltip' => $tooltip_text );
+					if($sub_data['field_1'] != ''){
+						$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : TP_CRE_SUB ,'tooltip' => $tooltip_text );
+					}
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -947,6 +957,7 @@ function start_creation_graph_by_ajax() {
 									
 									// create link with sub-topic of left_node
 									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
+									$graph_child['children'][$sub_key]['children'][] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : TP_CRE_LF );
 								}
 								
 								//collect right node if not empty
@@ -960,19 +971,35 @@ function start_creation_graph_by_ajax() {
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
-											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+if(!in_array($r_val,$right_node_collection)) {
+											
+											$right_node_collection[] = $r_val; // add in collection for duplicate check
+											
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT);
+											
+											if($detail_data['left_val'] != ''){
+												//if left (Source) is not empty them mark right node (Keys) as children left
+												$graph_child['children'][$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
+											} else {
+												//if left (Source) is empty them mark right node (Keys) as children sub topic node
+												
+												$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
+												
+											}
+											
+										}
 											
 											// create link with sub-topic of right-node
 											$graph_child['children'][$sub_key]['link'][] = $r_val;
+											$graph_child['children'][$sub_key]['children'][$key]['link'][] = $r_val;
 										}
 									}
 								}
 								
 								//collect left node with linking
-								if(count($left_node) > 0){
+								/*if(count($left_node) > 0){
 									$other_nodes[] = $left_node;
-								}
+								}*/
 							}
 						}
 						
@@ -980,9 +1007,17 @@ function start_creation_graph_by_ajax() {
 				}
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
-				$graph_data = array_merge($graph_data,$other_nodes);
+				//$graph_data = array_merge($graph_data,$other_nodes);
 				
-					//echo "<pre>"; print_r($graph_data); //die('==hello');
+			/*	$unique_array = [];
+				foreach($graph_data as $element) {
+					$hash = $element['name'];
+					$unique_array[$hash] = $element;
+				}
+				$unique_result = array_values($unique_array);*/
+				
+					//echo "<pre>"; print_r($unique_result); //die('==hello');
+		 
 				echo json_encode($graph_data); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
@@ -991,7 +1026,6 @@ function start_creation_graph_by_ajax() {
 			
 		 } 
 	} 
-	
 	
 }
 add_action('wp_ajax_start_creation_graph_by_ajax', 'start_creation_graph_by_ajax');
@@ -1029,6 +1063,9 @@ function create_experience_creation_ajax() {
 			
 			if($updResult === 0 || $updResult > 0)
     		{
+				//set updated time for all the tables
+				set_updated_at($hdn_creation_id);
+				
 				// check if skill/tools array is not empty
 				$response = array('flag'=> 'success','creation_id'=>$hdn_creation_id, 'msg'=> 'Experience Updated successfully');
 			}else{
@@ -1141,6 +1178,9 @@ function create_experience_sub_creation_ajax() {
 		} else {
 			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
 		}
+		
+		//set updated time for all the tables
+		set_updated_at($hdn_creation_id);
 	} // end if
 		
 		// Encoding array in JSON format
@@ -1185,7 +1225,9 @@ function start_experience_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : EX_CRE_SUB ,'tooltip' => $tooltip_text );
+					if($sub_data['field_1'] != ''){
+						$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : EX_CRE_SUB ,'tooltip' => $tooltip_text );
+					}
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$current_user_id}' and creation_id = '{$_POST["creation_id"]}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1238,13 +1280,19 @@ function start_experience_creation_graph_ajax() {
 						
 					}
 				}
-				
 				//$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = $graph_child; //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
+				//echo "---hello";
+				$unique_array = [];
+				foreach($graph_data as $element) {
+					$hash = $element['name'];
+					$unique_array[$hash] = $element;
+				}
+				$unique_result = array_values($unique_array);
 				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
-				echo json_encode($graph_data); die();
+				echo json_encode($unique_result); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
 				echo json_encode($test); die();
@@ -1292,6 +1340,8 @@ function create_network_creation_ajax() {
 			
 			if($updResult === 0 || $updResult > 0)
     		{
+				//set updated time for all the tables
+				set_updated_at($hdn_creation_id);
 				// check if skill/tools array is not empty
 				$response = array('flag'=> 'success','creation_id'=>$hdn_creation_id, 'msg'=> 'Network Updated successfully');
 			}else{
@@ -1405,8 +1455,9 @@ function create_network_sub_creation_ajax() {
 		} else {
 			$response = array('flag'=> 'failure', 'msg'=> 'Invalid Empty Field');
 		}
+		//set updated time for all the tables
+		set_updated_at($hdn_creation_id);
 	} // end if
-		
 		// Encoding array in JSON format
 		echo json_encode(array_merge($response, $sql_log));
 			die();
@@ -1453,13 +1504,18 @@ function start_network_creation_graph_ajax() {
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : NT_CRE_SUB ,'tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
+					if($sub_data['field_1'] != ''){
+						$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : NT_CRE_SUB ,'tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
+					}
 					
 					
+					if($sub_data['field_2'] != ''){
+						$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
+					}
 					
-					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
-					
-					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+					if($sub_data['field_3'] != ''){
+						$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+					}
 					
 					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
 					// get left-right (Source-Learning) nodes
@@ -1517,8 +1573,15 @@ function start_network_creation_graph_ajax() {
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = array_merge($graph_data,$other_nodes);
 				
+				$unique_array = [];
+				foreach($graph_data as $element) {
+					$hash = $element['name'];
+					$unique_array[$hash] = $element;
+				}
+				$unique_result = array_values($unique_array);
+				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
-				echo json_encode($graph_data); die();
+				echo json_encode($unique_result); die();
 			} else {
 				$test = array (0 => array ('name' => $creation_result[0]['name'] ,'value' => 100,'color' => '#9ba2a6'));
 				echo json_encode($test); die();
@@ -1568,12 +1631,14 @@ function get_topic_graph_data($user_id,$creation_id){
 	
 	if(count($creation_result) >= 0){
 		//graph main node
-		$graph_nodes = array('name' => $creation_result[0]['name'],	'value' => 100,'color' => '#9ba2a6');
+		$graph_nodes = array('name' => $creation_result[0]['name'],	'value' => 100,'color' => $creation_result[0]['node_color'] ? $creation_result[0]['node_color'] : TP_CRE_MAIN );
 		
 		// get sub-topic
 		$sub_creation_result = $wpdb->get_results( "SELECT * from {$sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' ", ARRAY_A );
 		//echo "<pre>"; print_r($sub_creation_result); die('==hello');
-
+		
+		$right_node_collection = array();
+		
 		if(count($sub_creation_result) >= 0){
 			// loop for all sub-topic
 			foreach($sub_creation_result as $sub_key => $sub_data){
@@ -1584,7 +1649,9 @@ function get_topic_graph_data($user_id,$creation_id){
 				}
 				
 				// append children to main node
-				$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+				if($sub_data['field_1'] != ''){
+					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : TP_CRE_SUB ,'tooltip' => $tooltip_text );
+				}
 				
 				// get left-right (Source-Learning) nodes
 				$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1598,10 +1665,13 @@ function get_topic_graph_data($user_id,$creation_id){
 						if(!(trim($detail_data['left_val']) == '' && trim($detail_data['right_val']) == '' )){
 							//collect left node
 							if($detail_data['left_val'] != ''){
-								$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+								$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : TP_CRE_LF );
 								
 								// create link with sub-topic of left_node
 								$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
+								
+								$graph_child['children'][$sub_key]['children'][] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : TP_CRE_LF );
+								
 							}
 							
 							//collect right node if not empty
@@ -1615,19 +1685,36 @@ function get_topic_graph_data($user_id,$creation_id){
 								foreach($rightValueArray as $r_key => $r_val){
 									if($r_val != ''){
 										// push right node to nodes array, so that it wil create a node
-										$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
-										// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
+										if(!in_array($r_val,$right_node_collection)) {
+											
+											$right_node_collection[] = $r_val; // add in collection for duplicate check
+											
+											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT);
+											
+											if($detail_data['left_val'] != ''){
+												//if left (Source) is not empty them mark right node (Keys) as children left
+												$graph_child['children'][$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
+											} else {
+												//if left (Source) is empty them mark right node (Keys) as children sub topic node
+												
+												$graph_child['children'][$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : TP_CRE_RT );
+												
+											}
+											
+										}
 										
 										// create link with sub-topic of right-node
 										$graph_child['children'][$sub_key]['link'][] = $r_val;
+										
+										$graph_child['children'][$sub_key]['children'][$key]['link'][] = $r_val;
 									}
 								}
 							}
 							
 							//collect left node with linking
-							if(count($left_node) > 0){
-								$other_nodes[] = $left_node;
-							}
+							// if(count($left_node) > 0){
+								// $other_nodes[] = $left_node;
+							// }
 						}
 					}
 					
@@ -1635,9 +1722,10 @@ function get_topic_graph_data($user_id,$creation_id){
 			}
 			
 			$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
-			$graph_data = array_merge($graph_data,$other_nodes);
+			//$graph_data = array_merge($graph_data,$other_nodes);
 				//echo "if";
 				//echo "<pre>"; print_r($graph_data); //die('==hello');
+			
 			$graph_data = json_encode($graph_data);  
 			//echo json_encode($graph_data); die();
 			return $graph_data;
@@ -1674,7 +1762,7 @@ function get_net_graph_data($user_id,$creation_id){
 			$graph_nodes = array(
 									'name' => $current_user->data->display_name,
 									'value' => 100,
-									'color' => '#000000'
+									'color' => $creation_result[0]['user_color'] ? $creation_result[0]['user_color'] : NT_CRE_USER
 								);
 			
 			// get sub-topic
@@ -1691,15 +1779,29 @@ function get_net_graph_data($user_id,$creation_id){
 					}
 					
 					// append children to main node
-					$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text, 'link'=>[$sub_data['field_2']] );
+					if($sub_data['field_1'] != ''){
+						$graph_child['children'][$sub_key] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : NT_CRE_SUB ,'tooltip' => $tooltip_text);
+					}
 					
 					
+					if($sub_data['field_2'] != ''){
+						//$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
+						
+						$graph_child['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG  );
+						
+						//$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => $sub_data['field_2_color'] ? $sub_data['field_2_color'] : NT_CRE_ORG , 'link'=>[$sub_data['field_3']] );
+						
+						$graph_child['children'][$sub_key]['link'][] = $sub_data['field_2'];
+					}
 					
-					$other_nodes[] = array('name' =>$sub_data['field_2'],'value' => 50,'color' => '#593e97', 'link'=>[$sub_data['field_3']] );
+					if($sub_data['field_3'] != ''){
+						//$graph_child['children'][$sub_key]['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+						$graph_child['children'][$sub_key]['children'][$sub_key]['children'][] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS  );
+						
+						//$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => $sub_data['field_3_color'] ? $sub_data['field_3_color'] : NT_CRE_POS ,'link'=>[$sub_data['field_1']] );
+						$graph_child['children'][$sub_key]['link'][] = $sub_data['field_3'];
+					}
 					
-					$other_nodes[] = array('name' =>$sub_data['field_3'],'value' => 50,'color' => '#b4bcfc','link'=>[$sub_data['field_1']] );
-					
-					$graph_child['children'][$sub_key]['link'][] = $sub_data['field_1'];
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
 					//echo "<pre>"; print_r($detail_sub_creation_result); die('==hello');
@@ -1716,7 +1818,7 @@ function get_net_graph_data($user_id,$creation_id){
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#9ba2a6');
+									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : NT_CRE_LF);
 									
 									// create link with sub-topic of left_node
 									$graph_child['children'][$sub_key]['link'][] = $detail_data['left_val'];
@@ -1733,7 +1835,7 @@ function get_net_graph_data($user_id,$creation_id){
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#9ba2a6');
+											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : NT_CRE_RT);
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
@@ -1744,7 +1846,8 @@ function get_net_graph_data($user_id,$creation_id){
 								
 								//collect left node with linking
 								if(count($left_node) > 0){
-									$other_nodes[] = $left_node;
+									$graph_child['children'][$sub_key]['children'][] = $left_node;
+									//$other_nodes[] = $left_node;
 								}
 							}
 						}
@@ -1753,8 +1856,8 @@ function get_net_graph_data($user_id,$creation_id){
 				}
 				
 				$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
-				$graph_data = array_merge($graph_data,$other_nodes);
-					//echo "<pre>"; print_r($graph_data); die('==hello');
+				//$graph_data = array_merge($graph_data,$other_nodes);
+					//echo "<pre>"; print_r($graph_data); //die('==hello');
 				$graph_data = json_encode($graph_data); //die();
 			} else {
 				$test = array (0 => array ('name' => $current_user->data->display_name,
@@ -1801,7 +1904,7 @@ function get_exp_graph_data($user_id,$creation_id){
 					}
 					
 					// append children to main node
-					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => '#000000','tooltip' => $tooltip_text );
+					$graph_child[] = array('name' =>$sub_data['field_1'],'value' => 50,'color' => $sub_data['node_color'] ? $sub_data['node_color'] : EX_CRE_SUB ,'tooltip' => $tooltip_text );
 					
 					// get left-right (Source-Learning) nodes
 					$detail_sub_creation_result = $wpdb->get_results( "SELECT * from {$detail_sub_creation_table} where user_id = '{$user_id}' and creation_id = '{$creation_id}' and sub_creation_id = '{$sub_data["id"]}' ", ARRAY_A );
@@ -1819,36 +1922,47 @@ function get_exp_graph_data($user_id,$creation_id){
 								// echo '<br/>he='.$detail_data['left_val'];
 								//collect left node
 								if($detail_data['left_val'] != ''){
-									$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => '#593e97');
+									//$left_node = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
 									
 									// create link with sub-topic of left_node
 									$graph_child[$sub_key]['link'][] = $detail_data['left_val'];
+									
+									//collect exp left node as first children
+									$graph_child[$sub_key]['children'][] = array('name' =>$detail_data['left_val'],'value' => 30,'color' => $detail_data['lft_node_color'] ? $detail_data['lft_node_color'] : EX_CRE_LF );
 								}
 								
 								//collect right node if not empty
 								if(!empty($detail_data['right_val'])){
 									$rightValueArray = explode(',', trim($detail_data['right_val']));
 									
-									if($detail_data['left_val'] != ''){
-										$left_node['link'] = $rightValueArray; //create left node linking with right node 
-									}
+									//if($detail_data['left_val'] != ''){
+										//$left_node['link'] = $rightValueArray; //create left node linking with right node 
+										//$graph_child[$sub_key]['children'][$key]['link'] = $rightValueArray; //create left node linking with right node 
+									//}
 									
 									foreach($rightValueArray as $r_key => $r_val){
 										if($r_val != ''){
 											// push right node to nodes array, so that it wil create a node
-											$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc');
+											//$other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
 											// $other_nodes[] = array('name' =>$r_val,'value' => 20,'color' => '#b4bcfc', 'link' => $rightValueArray);
 											
 											// create link with sub-topic of right-node
 											$graph_child[$sub_key]['link'][] = $r_val;
+											
+											if($detail_data['left_val'] != ''){
+												$graph_child[$sub_key]['children'][$key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+											} else {
+												$graph_child[$sub_key]['children'][] = array('name' =>$r_val,'value' => 20,'color' => $detail_data['rt_node_color'] ? $detail_data['rt_node_color'] : EX_CRE_RT );
+											}
+											
 										}
 									}
 								}
 								
 								//collect left node with linking
-								if(count($left_node) > 0){
-									$other_nodes[] = $left_node;
-								}
+								// if(count($left_node) > 0){
+									// $other_nodes[] = $left_node;
+								// }
 							}
 						}
 						
@@ -1857,7 +1971,7 @@ function get_exp_graph_data($user_id,$creation_id){
 				
 				//$graph_data[] = array_merge($graph_nodes,$graph_child); //appaned all child to main node
 				$graph_data = $graph_child; //appaned all child to main node
-				$graph_data = array_merge($graph_data,$other_nodes);
+				//$graph_data = array_merge($graph_data,$other_nodes);
 				
 					//echo "<pre>"; print_r($graph_data); //die('==hello');
 				$graph_data = json_encode($graph_data); //die();
@@ -1868,7 +1982,34 @@ function get_exp_graph_data($user_id,$creation_id){
 			return $graph_data;
 		 } 
 }
+
+/*****************Network Functions Start**************************/
+function set_updated_at($creation_id) {
+	global $wpdb;
+	$creation_table = $wpdb->prefix."tbl_creation";
+	$sub_creation_table = $wpdb->prefix."tbl_sub_creation";
+	$detail_sub_creation_table = $wpdb->prefix."tbl_sub_creation_detail";
+	$updated_at = date('Y-m-d H:i:s');
+	//$sqlUpdate = "update {$creation_table} set updated_at='{$updated_at}' where id={$creation_id} ";
+			
+	
+	$all_sql_update = "UPDATE {$creation_table} as table_1, {$sub_creation_table} as table_2 , {$detail_sub_creation_table} as table_3 
+SET ". 
+    "table_1.updated_at= '{$updated_at}', ".
+    "table_2.updated_at = '{$updated_at}', ".
+    "table_3.updated_at = '{$updated_at}' ".
+"WHERE  ".
+    "table_1.id = '{$creation_id}' AND table_2.creation_id = '{$creation_id}' AND table_3.creation_id = '{$creation_id}' ".
+"and table_1.id= table_2.creation_id ".
+"and table_1.id= table_3.creation_id";
+	
+	$wpdb->query($all_sql_update);
+	
+	return true;
+}
+
 /*add_action('wp_logout','auto_redirect_after_logout');
+
 
 function auto_redirect_after_logout(){
   wp_safe_redirect( home_url() );
